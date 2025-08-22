@@ -1,0 +1,125 @@
+@use "../../scss/abstracts/" as *;
+
+.myprofilewrapper {
+  //background-color:#ff8400;
+  border-radius: 15px;
+  padding: 60px 30px;
+  @media screen and (max-width: 600px) {
+    padding: 20px 15px;
+  }
+  h2 {
+    color: #fff;
+    font-size: 32px;
+    margin-bottom: 60px;
+  }
+  .upbtn {
+    background: linear-gradient(180deg, #f8974d 0%, #eb7d07 100%);
+    color: #000;
+    box-shadow: 1px 5px 15px #5c5c5c;
+    padding: 18px 58px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 5px;
+    cursor: pointer;
+    &:hover {
+      background: linear-gradient(180deg, #eb7d07 0%, #f8974d 100%);
+    }
+    @media screen and (max-width: 1440px) {
+      padding: 10px 28px !important;
+      font-size: 14px;
+    }
+  }
+  .form__control {
+    position: relative;
+    margin-bottom: 2rem;
+    @media screen and (max-width: 600px) {
+      margin-bottom: 20px;
+    }
+  }
+  .fullWidth {
+    width: 100% !important;
+  }
+  .profileformcol {
+    width: 50%;
+    padding: 0px 30px;
+    margin-top: 15px;
+
+    label {
+      background-color: transparent;
+      top: 0;
+      position: relative;
+      margin-bottom: 3px;
+      display: block;
+      padding: 0.3rem;
+      color: #fff;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #c7c7c7;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.05);
+      padding: 1rem 1.5rem;
+      /*@media screen and (max-width: 1440px) {
+        padding: 0.7rem 1.5rem;
+      }*/
+    }
+    // Select{width: 100%;
+    //   border: 1px solid #c7c7c7;
+    //   background-color: #fff;
+    //   border-radius: 100px;
+    //   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.05);}
+    @media screen and (max-width: 600px) {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 0px !important;
+    }
+  }
+}
+
+.deviderCustom {
+  border-bottom: 3px solid #ccc;
+  margin-bottom: 20px;
+}
+.profile_flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:20px;
+}
+h2 {
+  margin-bottom: 0px !important;
+  @media screen and (max-width: 600px) {
+    font-size: 22px !important;
+  }
+}
+
+.back_btn {
+  background: linear-gradient(180deg, #f8974d 0%, #eb7d07 100%);
+  color: #000;
+  box-shadow: 1px 5px 15px #5c5c5c;
+  padding: 18px 58px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(180deg, #eb7d07 0%, #f8974d 100%);
+  }
+  @media screen and (max-width: 1440px) {
+    padding: 10px 28px !important;
+    font-size: 14px;
+  }
+}
+
+.profileform {
+  display: flex;
+  flex-wrap: wrap;
+  @media screen and (max-width: 600px) {
+    display: block;
+  }
+}

@@ -1,0 +1,114 @@
+@use "../../scss/abstracts/" as *;
+
+//html {  background-color: var(--bgc);}
+
+.container {
+  @include flex();
+  min-height: 100vh;
+  //background-color: var(--bgc);
+  .keyPic {
+    width: 800px;
+    min-width: 600px;
+    order: 2;
+    @media screen and (max-width: 992px) {
+      display: none;
+    }
+  }
+}
+
+.loginBox label {
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  padding: 0 0 10px;
+  display: block;
+  white-space: nowrap;
+}
+
+.loginBox {
+  @include flex();
+  flex-direction: column;
+  width: 400px;
+  padding: 0 2rem 4rem;
+  background-color: var(--clr-body);
+  color: white;
+  border-radius: $mediumBorderRadius;
+  box-shadow: $mainBoxShadow;
+
+  .logo {
+    margin-top: -2rem;
+    width: 200px;
+    height: 80px;
+  }
+
+  .title {
+    // font-size: $fontSizeHeadlineMedium;
+    font-size: 20px;
+    line-height: normal;
+    letter-spacing: 0;
+    color: #ffffff;
+    font-weight: 400;
+    margin-bottom: 30px !important;
+  }
+  & input {
+    color: #000;
+  }
+
+  & label,
+  & a {
+    color: #fff;
+  }
+
+  .errorMessage {
+    position: relative;
+    font-size: 14px;
+    color: red;
+    top: -25px;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .forgat_pass {
+    margin: 1rem 0;
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+
+  .checkbox {
+    @include flex(center, flex-start);
+
+    input {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    label {
+      margin: 0 0.5rem;
+    }
+  }
+}
+
+.rtl {
+  font-family: iranyekan, "IRANSans", "Tahoma";
+  direction: rtl;
+  text-align: right;
+
+  label {
+    left: auto;
+    right: 10px;
+  }
+}

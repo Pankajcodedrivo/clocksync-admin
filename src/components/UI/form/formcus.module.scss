@@ -1,0 +1,74 @@
+@use "../../../scss/abstracts/" as *;
+
+.myprofilewrapper {
+  //background: #ff8400;
+  border-radius: 35px;
+  padding: 60px 30px;
+  @media screen and (max-width: 600px) {
+    padding: 20px 15px;
+  }
+  h2 {
+    color: #000;
+    font-size: 32px;
+    margin-bottom: 60px;
+  }
+  .upbtn {
+    background: linear-gradient(180deg, #eb7d07 0%, #f8974d 100%);
+    color: #fff;
+    box-shadow: 1px 5px 15px #5c5c5c;
+    padding: 18px 58px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: 400 !important;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-left: 30px;
+    @media screen and (max-width: 1440px) {
+      padding: 10px 58px;
+    }
+
+    &:hover {
+      background: linear-gradient(180deg, #f8974d, #eb7d07);
+    }
+    @media screen and (max-width: 600px) {
+      margin-left: 15px;
+    }
+  }
+
+  .form__control {
+    position: relative;
+    margin-bottom: 2rem;
+    @media screen and (max-width: 600px) {
+      margin-bottom: 20px;
+    }
+  }
+  .profileformcol {
+    width: 50%;
+    padding: 0px 30px;
+
+    label {
+      background-color: transparent;
+      top: 0;
+      position: relative;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #c7c7c7;
+      background-color: #fff; 
+      box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    @media screen and (max-width: 300px) {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+}
+.profile-card > h2 {
+  margin-bottom: 20px !important;
+  display: block;
+}

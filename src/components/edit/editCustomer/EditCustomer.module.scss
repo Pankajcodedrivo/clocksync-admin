@@ -1,0 +1,388 @@
+@use "../../../scss/abstracts/" as *;
+
+.edit__container {
+  @include flex();
+  flex-wrap: wrap;
+}
+
+.edit__left,
+.edit__right {
+  flex: 1;
+  min-width: 400px;
+  max-width: 600px;
+  margin: 0 1rem;
+
+  @media screen and (max-width: 1210px) {
+    margin-top: 2rem;
+  }
+
+  @media screen and (max-width: 410px) {
+    min-width: 350px;
+  }
+
+  @media screen and (max-width: 290px) {
+    min-width: 250px;
+  }
+}
+
+.edit__right {
+  position: relative;
+
+  .img_wrapper {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    @media screen and (max-width: 410px) {
+      top: 5rem;
+      right: auto;
+      left: 0;
+    }
+  }
+
+  .upload_icon {
+    @include flex();
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 4rem;
+    color: #ebebeb;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    @include mobile {
+      opacity: 1;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+
+  .img_wrapper:hover .upload_icon,
+  .img_wrapper:active .upload_icon {
+    opacity: 1;
+  }
+
+  .file_input_control {
+    .file_input {
+      position: absolute;
+      top: 35%;
+      opacity: 0;
+      padding: 2rem 0;
+    }
+  }
+}
+
+.upbtn {
+  background: linear-gradient(180deg, #eb7d07 0%, #f8974d 100%);
+  color: #fff;
+  box-shadow: 1px 5px 15px #5c5c5c;
+  padding: 18px 58px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  font-weight: 400 !important;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-left: 0px;
+  @media screen and (max-width: 1440px) {
+    padding: 10px 58px;
+  }
+}
+
+.img_wrapper {
+  @include flex(stretch, center);
+  align-self: center;
+  margin: 0 1rem 1rem 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: $mainBoxShadow;
+
+  @media screen and (max-width: 410px) {
+    width: 150px;
+    height: 150px;
+    align-self: flex-start;
+  }
+}
+
+.details-wrapper .dtls p {
+  margin-bottom: 10px;
+}
+
+h4 {
+  color: #000;
+}
+
+.avatar {
+  object-fit: cover;
+}
+
+.account {
+  @include flex(baseline, center);
+  flex-direction: column;
+  flex: 1;
+  margin: 0rem;
+  padding: 20px 0px 0;
+
+  @media screen and (max-width: 1250px) {
+    margin: 3rem 0.5rem;
+  }
+
+  @media screen and (max-width: 410px) {
+    position: relative;
+  }
+
+  &__info {
+    color: lightslategray;
+    margin-bottom: 2rem;
+
+    & > div {
+      @include flex(center, flex-start);
+      color: var(--text-color);
+      margin: 0.5rem 1rem;
+
+      & > div {
+        margin: 0.5rem 1rem;
+      }
+    }
+  }
+
+  &__contact__phone div {
+    direction: ltr;
+  }
+
+  &__contact__email svg {
+    margin: 0 0.2rem;
+  }
+
+  .subTitle {
+    @include flex();
+    font-size: 36px;
+    font-weight: 400;
+    margin-top: 2rem;
+    margin-bottom: 7rem;
+
+    @media screen and (max-width: 410px) {
+      margin-bottom: 14rem;
+    }
+  }
+}
+
+.btn__wrapper {
+  @include flex(center, space-between);
+  flex-wrap: wrap;
+
+  & a {
+    flex: 1;
+    margin: 0.5rem 0;
+  }
+
+  & button {
+    width: 90%;
+
+    @include tablet {
+      margin: 0;
+    }
+  }
+}
+
+html[dir="rtl"] {
+  input[type="tel"] {
+    text-align: right;
+    direction: ltr;
+  }
+
+  .edit__right {
+    .img_wrapper {
+      right: auto;
+      left: 1rem;
+
+      @media screen and (max-width: 410px) {
+        right: 0;
+        left: auto;
+      }
+    }
+  }
+}
+
+.account__info__userName,
+.account__contact__email,
+.account__contact__phone,
+.account__contact__company {
+  width: 100%;
+  // border-bottom: 1px solid #c7c7c7 !important;
+  padding: 0px 0px;
+  margin: 0px !important;
+  margin-bottom: 20px !important;
+}
+
+.back_btn {
+  background: linear-gradient(180deg, #eb7d07, #f8974d);
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 50px;
+  border: none;
+
+  @media screen and (max-width: 1440px) {
+    padding: 10px 28px;
+  }
+
+  &:hover {
+    background: linear-gradient(180deg, #f8974d, #eb7d07);
+  }
+}
+
+.verify_btn {
+  background: green;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 50px;
+  border: none;
+
+  &:hover {
+    background: rgb(0, 75, 0);
+  }
+
+  @media screen and (max-width: 1440px) {
+    padding: 10px 28px;
+  }
+}
+
+.block_btn {
+  background: red;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  padding: 16px 28px;
+  border-radius: 50px;
+  border: none;
+  &:hover {
+    background: rgb(150, 0, 0);
+  }
+
+  @media screen and (max-width: 1440px) {
+    padding: 10px 28px;
+  }
+}
+
+.com_header_flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+
+  @media screen and (max-width: 480px) {
+    display: block;
+  }
+}
+
+.com_header_flex h2 {
+  margin-bottom: 0px !important;
+
+  @media screen and (max-width: 480px) {
+    margin-bottom: 20px;
+  }
+}
+
+.account__contact__company {
+  display: block;
+}
+
+.account__info {
+  width: 100% !important;
+
+  @media screen and (max-width: 767px) {
+    padding-left: 0px !important;
+  }
+}
+
+.account {
+  flex-direction: row;
+  max-width: 100%;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column !important;
+  }
+}
+
+.edit__left {
+  max-width: 100%;
+}
+
+.user_acc {
+  .account__info {
+    margin-bottom: 0px !important;
+  }
+
+  .account__info__userName,
+  .account__contact__email {
+    margin-bottom: 0px !important;
+  }
+}
+
+.user_acc {
+  .edit__left {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .account__info {
+    svg {
+      flex: 0 0 auto;
+    }
+
+    // .account__contact__company{display: flex !important;}
+  }
+}
+
+.user_acc {
+  .account {
+    flex-wrap: wrap;
+    justify-content: start !important;
+
+    .account__info {
+      width: 25% !important;
+      margin-bottom: 20px;
+
+      @media screen and (max-width: 1440px) {
+        width: 33.33% !important;
+      }
+
+      @media screen and (max-width: 991px) {
+        width: 50% !important;
+      }
+    }
+  }
+}
+
+.user_edit {
+  .account__info div {
+    // margin-bottom: 12px !important;
+    word-break: break-all;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.user_edit {
+  .account__info {
+    .account__contact__company {
+      margin: 0px;
+    }
+  }
+}
+
+// .com_details{
+//   .user_acc{ .account__info{width: 100% !important;display: block;}}
+
+// }

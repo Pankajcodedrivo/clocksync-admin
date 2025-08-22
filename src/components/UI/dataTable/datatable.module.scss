@@ -1,0 +1,171 @@
+@use "../../../scss/abstracts/" as *;
+.tbodywrap {
+  .productwrp {
+    // display: flex;
+    // align-items: center;
+
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  }
+  .actionwrap {
+    display: flex;
+    align-items: center;
+  }
+  .edit {
+    background-color: #f4a931;
+    width: 40px;
+    height: 40px;
+    padding: 9px;
+    border-radius: 50%;
+    margin-right: 15px;
+    cursor: pointer;
+  }
+  .delete {
+    background-color: #fa4520;
+    width: 40px;
+    height: 40px;
+    padding: 9px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+.tbodymain {
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none !important;
+  thead {
+    tr {
+      box-shadow: 0px 2px 4px 0px #00000014;
+      overflow: hidden;
+      border-radius: 10px;
+      th {
+        font-size: 16px;
+        color: #676767;
+        font-weight: 700;
+        border: none;
+        background-color: #fff;
+      }
+      th:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+      th:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    }
+  }
+}
+.tbodymain {
+  tbody {
+    tr {
+      box-shadow: 0px 2px 4px 0px #00000014;
+      overflow: hidden;
+      border-radius: 10px;
+      td {
+        font-size: 14px;
+        color: #000;
+        font-weight: 500;
+        border: none;
+        background-color: #fff;
+      }
+      th {
+        border: none;
+        background-color: #fff;
+      }
+    }
+    tr td:first-child {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+    tr td:last-child {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+}
+.datatablemainwrap {
+  background-color: #f2f2f2;
+  padding: 60px 30px;
+  border-radius: 35px;
+  @media screen and (max-width: 991px) {
+    padding: 20px 15px;
+    border-radius: 20px;
+  }
+  h2 {
+    color: #000;
+    font-size: 32px;
+    margin-bottom: 30px;
+    @media screen and (max-width: 991px) {
+      font-size: 28px;
+      margin-bottom: 20px !important;
+    }
+  }
+  .compheaderflex {
+    button {
+      margin-left: 0px !important;
+    }
+  }
+}
+
+.dltbtn {
+  border: 2px solid #fa4520 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  padding: 18px 58px !important;
+  font-size: 16px !important;
+  background-color: #fa4520 !important;
+}
+.modalbtnwrap {
+  display: flex;
+  justify-content: center;
+}
+.canclebtn {
+  border: 2px solid #676767 !important;
+  color: #676767 !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  padding: 18px 58px !important;
+  font-size: 16px !important;
+}
+.approved p {
+  background-color: #dcffd9;
+  text-align: center !important;
+  color: #399831 !important;
+  font-size: 14px;
+  font-weight: 500 !important;
+  border-radius: 100px;
+  padding: 10px;
+}
+.pending p {
+  background-color: #c8f2ff;
+  text-align: center !important;
+  color: #1b86a8 !important;
+  font-size: 14px;
+  font-weight: 500 !important;
+  border-radius: 100px;
+  padding: 10px;
+}
+.rejected p {
+  background-color: #ffdede;
+  text-align: center !important;
+  color: #cb2f2f !important;
+  font-size: 14px;
+  font-weight: 500 !important;
+  border-radius: 100px;
+  padding: 10px;
+}
+.modalimg {
+  width: 118px;
+  height: 118px;
+  border: 5px solid #fa4520;
+  border-radius: 50%;
+  padding: 20px;
+  margin: -100px auto 0px;
+  background-color: #fff;
+}

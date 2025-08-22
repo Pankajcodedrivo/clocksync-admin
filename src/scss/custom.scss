@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --clr-primary: #F68402;
+    --clr-secondary: #444444;
+    --clr-accent: #F68402;
+    --clr-body: #292C31;
+    --clr-bg: #f2f2f2;  
+    --clr-white: #ffffff;  
+    --clr-black: #000000; 
+    
+    --acc-color:#444444;
+    --card-bg:#292C31;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background: #222222 !important;
+}
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+
+.table-btn, .custom-button {
+    padding: 16px 39px;
+    background: linear-gradient(120deg, rgb(248, 151, 77), rgb(235, 125, 7));
+    background-size: 200% 200%;
+    background-position: left center; 
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+:is(.table-btn, .custom-button):hover {  
+    background-position: right center;
+}
+
+.spinner-wrap-cus { 
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 200px;
+    z-index: 55;
+    background-color: rgba(255, 255, 255, .7);
+    backdrop-filter: blur(5px);
+}
+/*--- Input Styles ---*/
+input {
+  &:focus {
+    outline:none;
+  }  
+}
+
+.custom-input-field label {
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.custom-input {
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    background-color: #FFF !important;
+    outline: none !important;
+    box-shadow: none !important;
+    width: 100%;
+}
+input[type="text"]:not(.react-select__input), input[type="password"], input[type="file"] {
+    height: 53px;
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.mat-inp-fix label { transform:none; position:relative; margin-bottom:10px; font-weight:500; color: var(--card-bg) !important; }
+.mat-inp-fix .MuiOutlinedInput-notchedOutline legend { display:none }
+.mat-inp-fix .MuiOutlinedInput-notchedOutline { top:0; border-radius:10px; border-color: #CCCCCC !important; border-width: 1px !important; }
+
+.react-select__control { min-height: 54px !important; border-radius: 10px !important; outline: none !important; box-shadow: none !important; }
+.react-select__control .react-select__indicator-separator  { display: none; }
+.react-select__control .react-select__indicator { color:var(--card-bg); }
+.react-select__input-container .react-select__input { background-color: transparent !important; border-radius: 0 !important;}
+.react-select__menu * { color:var(--card-bg); }
+/*--- Input Styles ---*/
+
+html[theme=light] .sidebar-main {
+    background-color: var(--clr-body);
+}
+
+
+.sidebar-main {
+    padding: 20px;
+    transition: none;
+    .sidebar-logo {
+        padding: 20px 15px 30px 15px;
+        background: transparent;
+    }
+    .sidenav-li {
+        background-color: var(--clr-secondary);
+        padding: 10px 15px;
+        border-radius: 10px;
+        &.active {
+            color: var(--clr-primary);
+        }
+    }
+}
+
+.dashboard-card {
+    background-color: var(--acc-color);
+    color: var(--clr-white);
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.dashboard-card-global {
+    background-color: var(--card-bg) !important;
+    color: var(--clr-white);
+    padding: 30px;
+    border-radius: 10px;
+    .dashboard-card-title {
+        h2 {
+            color: var(--clr-white);
+        }
+        margin-bottom: 40px;
+        margin-top: 10px;
+    }
+    .passwordlabel span svg {
+        color: var(--clr-body);
+    }
+}
+.from-fix-global-wrap {
+    .from-fix-global {  
+        margin-left: -15px;
+        margin-right: -15px;
+        div[class^="_profileformcol_"] {
+            padding-left: 15px !important;
+            padding-right: 15px !important; 
+        }
+    }
+    .submit-btn-wrap {
+        padding-left: 0;
+        margin-top: 30px;
+    }
+}
+
+
+.settingTabContent {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.top-nav-icon {
+    display: none;
+}
+
+.image-preview {
+    margin-top: 30px;
+}
+
+:is(.loginpage, .forgotPassworpage, .resetPasswordpage)  {
+    .login-form {
+        width: 100%;
+    
+    }
+    :is([class^="_loginBox_"], [class^="_resetPasswordBox_"]) {
+       padding: 40px;
+    }
+    [class^="_forgat_pass_"] {
+        text-align: center;
+        margin-bottom: 0 !important;
+        display: block !important;
+    }
+    [class^="_logo_"] {
+        height: auto !important;
+        margin-bottom: 30px;
+    }
+}
+
+.resetPasswordpage {
+    .formgrp {
+        label {
+            margin-bottom: 10px;
+        }
+    }
+    [class^="_resetPasswordBox_"] {
+        background-color: var(--clr-body);
+    }
+}
+
+.error {
+    display: block;
+    font-size: 14px;
+}
+
+.edit-profile-wrap {
+    .uploadimage {
+        margin-left: 0;
+    }
+}
+
+.disabled-input {
+    all: unset;
+}
+
+input[disabled] {
+    opacity: .7;
+}
+
+.change-pass-wrap {
+    label {
+        margin-bottom: 5px;
+        display: block;
+    }
+}

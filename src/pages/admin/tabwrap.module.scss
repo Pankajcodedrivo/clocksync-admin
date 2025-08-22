@@ -1,0 +1,47 @@
+.tabwrapper {
+  margin-bottom: 30px;
+  width: 70%;
+  .tablistw {
+    background: #e2b167 !important;
+    color: #ffffff;
+    font-weight: bold;
+    border: 1px solid #ff8400;
+    border-radius: 5px;
+    margin-right: 10px;
+    min-height: 45px;
+    span {
+      display: none;
+    }
+  }
+}
+.Mui-selected {
+  border: none !important;
+}
+.boxWrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.tabWrapholder .btnholder {
+  flex-wrap: wrap;
+}
+
+.adduserbtn {
+  background: linear-gradient(rgb(248, 151, 77) 0%, rgb(235, 125, 7) 100%);
+  color: #fff !important;
+  font-weight: bold;
+  border: 0 none !important;
+  border-radius: 50px !important;
+  padding: 15px !important;
+  cursor: pointer !important;
+  &:hover {
+    background: linear-gradient(180deg, #b37a4f, #e5b15f);
+  }
+
+  @media screen and (max-width: 1440px) {
+    padding: 10px 15px !important;
+    font-size: 12px !important;
+  }
+}

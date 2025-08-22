@@ -1,0 +1,42 @@
+@use "../../../scss/abstracts/index" as *;
+
+.btn {
+  font: inherit;
+  border-radius: $smallBorderRadius;
+  padding: 0.8rem 3rem;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  border-radius: 50px;
+
+  @media screen and (max-width: 1440px) {
+    padding: 0.5rem 3rem;
+  }
+}
+
+.button {
+  border: none;
+  background: linear-gradient(180deg, #f8974d 0%, #eb7d07 100%);
+  color: var(--white);
+
+  &:hover,
+  &:active {
+    background: linear-gradient(180deg, #f8974d, #eb7d07);
+    color: var(--white);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.outline {
+  background-color: transparent;
+  border: 1px solid var(--secondaryColor);
+  color: var(--text-color);
+}
+
+html[dir="rtl"] {
+  .btn {
+    font-family: iranyekan, "IRANSans", "Tahoma";
+  }
+}
