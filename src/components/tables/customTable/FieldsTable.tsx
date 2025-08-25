@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link ,useLocation} from "react-router-dom";
-import { Itable, complex, ITeamsTable } from "../../../interfaces/Itable";
+import { Itable, complex,IFieldTable } from "../../../interfaces/Itable";
 import noImage from "../../../assets/images/dummy.jpg";
 import {Table,TableBody,TableCell,TableContainer,TableHead, TableRow,Paper,Button,Dialog,DialogActions,DialogContent,
         DialogContentText,DialogTitle,Stack,Pagination,} from "@mui/material";
 import dataTable from "./datatable.module.scss";
-import { teamsApi, deleteTeam,resetAuctionApi } from "../../../service/apis/team.api";
+import { fieldList,deleteField } from "../../../service/apis/field.api";
 
 import { faEye, faPen } from "@fortawesome/free-solid-svg-icons";
 import del from "../../../assets/images/ic_outline-delete.png";
@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
 
-const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
+const FieldsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
   const [sortOrderData, setSortOrderData] = useState<complex[]>(bodyData);
@@ -23,18 +23,16 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
   const [totalResult, setTotalResult] = useState(totalData);
   const [loading, setLoading] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
-  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [resetModel, setResetModel] = useState(false);
 
   const rowsPerPage = 10;
 
   const handleClickOpen = (id: string) => {
-    setSelectedTeamId(id);
+    setSelectedFieldId(id);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const handleResetAuctionClose = () => setResetModel(false);
 
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value;
@@ -49,11 +47,11 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         search: searchQuery,
       };
       setLoading(true);
-      const response = await teamsApi(bodyData);
+      const response = await fieldList(1,10);
       if (response) {
         setLoading(false);
         setTotalResult(response?.totalResults);
-        setSortOrderData(response?.Teams);
+        setSortOrderData(response?.Fields);
         setAddClass("");
       }
     } catch (err) {
@@ -61,22 +59,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
     }
   };
 
-  const handleSort = async (field: string) => {
-    try {
-      const bodyData = {
-        currentPage: currentPage,
-        limit: rowsPerPage,
-        search: searchTerm,
-      };
-      const response = await teamsApi(bodyData);
-      if (response) {
-        setSortOrderData(response?.Teams);
-      }
-    } catch (err) {
-      console.error("Failed to fetch data", err);
-    } finally {
-    }
-  };
+ 
 
   const clearSearch = async () => {
     setSearchTerm("");
@@ -88,9 +71,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         search: "",
       };
       setLoading(true);
-      const response = await teamsApi(bodyData);
+      const response = await fieldList(bodyData);
       if (response) {
-        setSortOrderData(response?.Teams);
+        setSortOrderData(response?.Fields);
         setTotalResult(response?.totalResults);
         setLoading(false);
         setAddClass("");
@@ -114,9 +97,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         limit: rowsPerPage,
         search: searchTerm,
       };
-      const response = await teamsApi(bodyData);
+      const response = await fieldList(bodyData);
       if (response) {
-        setSortOrderData(response?.Teams);
+        setSortOrderData(response?.Fields);
         setLoading(false);
         setAddClass("");
       }
@@ -139,7 +122,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteTeam(selectedTeamId);
+      const response = await deleteField(selectedFieldId);
       if (response.status === 200) {
         toast.success(response.message);
         try {
@@ -147,9 +130,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             currentPage: 1,
             limit: rowsPerPage,
           };
-          const response = await teamsApi(bodyData);
+          const response = await fieldList(bodyData);
           if (response) {
-            setSortOrderData(response?.Teams);
+            setSortOrderData(response?.Fields);
             setTotalResult(response?.totalResults)
             // setLoading(false);
             // setAddClass("");
@@ -167,32 +150,6 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
     setOpen(false);
   };
 
-  const resetTeamAuction = async () => {
-    setResetModel(false);
-    setLoading(true);
-    try {
-      setAddClass("add_blur");
-      const response = await resetAuctionApi();
-      if (response.status === 200) {
-        toast.success(response.message||"Auction has been reset successfully.");
-        const bodyData = {
-          currentPage: 1,
-          limit: rowsPerPage,
-        };
-        const fetchResponse = await teamsApi(bodyData);
-        if (fetchResponse) {
-          setSortOrderData(fetchResponse?.Teams);
-          setTotalResult(fetchResponse?.totalResults);
-          // setLoading(false);
-          setAddClass("");
-        }
-      } 
-    } catch (error) {
-      toast.error("An error occurred while resetting the auction.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div style={{ position: "relative" }} className='dsp'>
@@ -205,8 +162,8 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
       >
         <div className='search-wrap'>
           <div className="button-holder-wrap">
-            <Link to='/admin/teams/add'> <button className="custom-button" > Add Team </button> </Link>
-            <button onClick={() => setResetModel(true)} className="custom-button" style={{marginLeft:15}}> Reset Auction </button>
+            <Link to='/admin/fields/add'> <button className="custom-button" > Add Field </button> </Link>
+          
           </div>
           <div
             className='searchwrap'
@@ -267,7 +224,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                     <TableCell
                       align='left'
                       key={index}
-                      onClick={() => handleSort(item)}
+                     
                     >
                       {ucwords(item)}
                     </TableCell>
@@ -276,7 +233,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
               </TableHead>
 
               <TableBody className={dataTable.tbodywrap}>
-                {(sortOrderData as ITeamsTable[]).map((row: ITeamsTable) => {
+                {(sortOrderData as IFieldTable[]).map((row: IFieldTable) => {
                  // console.log(row);
                   return (
                     <TableRow
@@ -285,29 +242,17 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                     >
-                      <TableCell align='left'>
-                        <img
-                          src={row?.teamLogo || noImage}
-                          alt='Team Logo'
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </TableCell>
                       <TableCell
                         className={dataTable.productwrp}
                         component='th'
                         scope='row'
                       >
-                        {row?.teamName}
+                        {row?.name}
                       </TableCell>
-                      <TableCell align='left'>{row?.location}</TableCell>
-                      <TableCell align='left'>{row?.status || "NA"}</TableCell>
+                    
                       <TableCell align='left'>
                         <div className={dataTable.actionwrap}>
-                          <Link to={`/admin/teams/${row._id}`}state={{ fromPage: currentPage }}>
+                          <Link to={`/admin/fields/${row._id}`}state={{ fromPage: currentPage }}>
                             <p className={dataTable.edit}>
                               <FontAwesomeIcon
                                 icon={faPen}
@@ -408,7 +353,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             fontWeight: "700",
           }}
         >
-          {"Delete Team"}
+          {"Delete Field"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText
@@ -432,67 +377,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-      sx={{
-        "& .MuiPaper-root": {
-          borderRadius: "35px",
-          overflowY: "inherit",
-          padding: "40px",
-          maxWidth: "562px",
-        },
-      }}
-      maxWidth="md"
-      fullWidth
-      open={resetModel}
-      onClose={handleResetAuctionClose}
-      className={dataTable.custommodal}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <div className={dataTable.modalimg}>
-        <img src={bid} alt="Auction Reset Confirmation" />
-      </div>
-      <DialogTitle
-        id="alert-dialog-title"
-        style={{
-          textAlign: "center",
-          fontSize: "32px",
-          color: "#000",
-          fontWeight: "700",
-        }}
-      >
-        {"Reset Auction"}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          id="alert-dialog-description"
-          style={{
-            textAlign: "center",
-            color: "#676767",
-            fontSize: "16px",
-          }}
-        >
-          {"Are you sure you want to reset the auction?"}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions style={{ justifyContent: "center", gap: "15px" }}>
-        <Button onClick={handleResetAuctionClose} className="btn-cancel">
-          {"Cancel"}
-        </Button>
-        <Button
-          onClick={async () => {
-            await resetTeamAuction();
-            handleResetAuctionClose();
-          }}
-          className="btn"
-        >
-          {"Reset"}
-        </Button>
-      </DialogActions>
-    </Dialog>
 
     </div>
   );
 };
 
-export default TeamsTable;
+export default FieldsTable;

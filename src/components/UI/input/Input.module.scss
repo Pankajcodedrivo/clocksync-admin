@@ -1,4 +1,15 @@
 @use "../../../scss/abstracts/" as *;
+.full {
+  width:100%; // takes full row
+}
+
+.half {
+  width: calc(50% - 16px); // 2 per row
+}
+
+.third {
+  width: calc(33.333% - 16px); // 3 per row
+}
 .form__control {
   position: relative;
   margin-bottom: 1rem;
@@ -15,6 +26,7 @@
   // }
 
   input {
+        width: 100%;
     padding: 1rem 1.5rem;
     border: 1px solid gainsboro;
     outline: gray;

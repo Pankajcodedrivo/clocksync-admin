@@ -9,7 +9,6 @@ import classes from "./Sidebar.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useDispatch } from "react-redux";
-
 import { logOut } from "../../store/auth.store";
 
 function Sidebar() {

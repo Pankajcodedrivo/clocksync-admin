@@ -19,6 +19,7 @@ export interface IUsersRoleTable {
   amount?: any;
 }
 export type ITeamsTable = any;
+export type IFieldTable = any;
 export interface IUserID {
   email: string;
   fullName: string | null;
@@ -30,6 +31,10 @@ export interface ITeam {
   score: number;
   shortName: string;
   teamId: string;
+}
+
+export interface IField {
+  name: string;
 }
 
 export interface IMatchTable {
@@ -52,21 +57,18 @@ export interface IRoundScheduleTable {
   roundorder: number,
 }
 
-export type complex = IUsersRoleTable | IFaqTable | ITeamsTable|IMatchTable|IRoundScheduleTable;
+export type complex = IUsersRoleTable | IFaqTable | ITeamsTable|IMatchTable|IRoundScheduleTable|IField;
 
 export interface Itable {
-  limit?: number;
-  selectedCategory?: string;
-  headData: string[];
-  dataShow?: complex[]; // Mark as optional
-  pages?: number; // Mark as optional
-  currPage?: number; // Mark as optional
-  changePage?: (pageNumber: number) => void; // Mark as optional
+  title: string; // use string instead of any
+  columns: complex[];
   bodyData: complex[];
   totalData: number;
-  totalPage: number;
   dataCurrentPage: number;
-  role?: any;
+  changePage?: (page: number) => void;
+  deleteMessage?: string;
+  handleDelete?: (id: string) => void;
+  renderActions?: (row: any) => React.ReactNode;
 }
 
 export interface ICustomModelSettingstable {

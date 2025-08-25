@@ -16,11 +16,13 @@ interface Props {
   autocomplete?: string;
   name?: string;
   onChange?: (_event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (_event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   errorMsg?: string;
   title?: string;
   autoComplete?: string;
   rightIcon?: React.ReactNode; // Add this line to define the rightIcon prop
+  width?:string
 }
 
 interface IImperativeHandler {
@@ -46,7 +48,15 @@ const Input = React.forwardRef<IImperativeHandler, Props>((props, ref) => {
 
   return (
     <div
-      className={`${classes.form__control} ${props.classes ? props.classes : ""}`}
+      className={`${classes.form__control} ${props.classes ? props.classes : ""} ${
+    props.width === "half"
+      ? classes.half
+      : props.width === "third"
+      ? classes.third
+      : props.width === "full"
+      ? classes.full
+      : "" // 👈 if width is not set
+  }`}
     >
       <label htmlFor={props.title ?? props.id}>
         {props.title ?? t(`${props.id}`)}{" "}
@@ -67,6 +77,7 @@ const Input = React.forwardRef<IImperativeHandler, Props>((props, ref) => {
           readOnly={props.readonly || false}
           disabled={props.disabled || false}
           onChange={props.onChange}
+          onBlur={props.onChange}
           autoComplete={props.autocomplete || "off"}
           className={classes.input} // Apply any specific styles for input
         />

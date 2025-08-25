@@ -21,19 +21,14 @@ const DashboardPage = React.lazy(() => import("./pages/admin/Dashboard"));
 const UpdateUser = React.lazy(() => import("./pages/admin/UpdateUser"));
 
 const Users = React.lazy(() => import("./pages/admin/Users"));
+const Fileds = React.lazy(() => import("./pages/admin/field/list"));
 
 // const Pages = React.lazy(() => import("./pages/admin/Pages"));
 
 // const AddPage = React.lazy(() => import("./pages/admin/AddPage"));
 
 const Settings = React.lazy(() => import("./pages/admin/Settings"));
-const Teams = React.lazy(() => import("./pages/admin/Teams"));
-const TeamDetails = React.lazy(() => import("./pages/admin/TeamDetails"));
-const TeamAdd = React.lazy(() => import("./pages/admin/TeamAdd"));
 
-const Match=React.lazy(()=>import("./pages/admin/Match"));
-const MatchUpdate=React.lazy(()=>import("./pages/admin/MatchUpdate"));
-const RoundSchedule=React.lazy(()=>import("./pages/admin/roundScheduleDate"));
 
 function App() {
   return (
@@ -50,14 +45,9 @@ function App() {
               <Route path='/admin/dashboard' element={<DashboardPage />} />
               <Route path='/admin/users' element={<Users />} />
               <Route path='/admin/users/update-user/:id?'element={<UpdateUser />}/>
+              <Route path='/admin/field' element={<Fileds />} />
               {/* <Route path='/admin/pages' element={<Pages />} />
               <Route path='/admin/page/edit/:id?' element={<AddPage />} /> */}
-              <Route path='/admin/teams' element={<Teams />} />
-              <Route path='/admin/teams/:id' element={<TeamDetails />} />
-              <Route path='/admin/teams/add' element={<TeamAdd />} />
-              <Route path='/admin/round-schedule-date' element={<RoundSchedule/>} />
-              <Route path='/admin/match' element={<Match/>} />
-              <Route path='/admin/match/update-match/:id?' element={<MatchUpdate/>} />
             </Route>
           </Route>
           <Route path='/login' element={<Login />} />

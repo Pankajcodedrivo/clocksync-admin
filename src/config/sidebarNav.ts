@@ -7,34 +7,19 @@ const sidebarNav = [
     role: ["admin"],
   },
   {
+    link: "/admin/field",
+    section: "field",
+    icon: "mdi:stadium", //width:"20"
+    text: "Field",
+    role: ["admin"],
+  },
+  {
     link: "/admin/users",
     section: "users",
     icon: "ph:users-bold", //width:"20"
     text: "Users",
     role: ["admin"],
   },
-  {
-    link: "/admin/round-schedule-date",
-    section: "round-schedule-date",
-    icon: "ph:trophy", //width:"20"
-    text: "Match Round",
-    role: ["admin"],
-  },
-  {
-    link: "/admin/match",
-    section: "match",
-    icon:"mdi:tournament", //width:"20"
-    text: "Matches",
-    role: ["admin"],
-  },
-  {
-    link: "/admin/teams",
-    section: "teams",
-    icon: "ph:users-four", //width:"20"
-    text: "Teams",
-    role: ["admin"],
-  },
-
   // {
   //   link: "/admin/pages",
   //   section: "pages",

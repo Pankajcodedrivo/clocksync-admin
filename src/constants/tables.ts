@@ -6,6 +6,16 @@ export const adminUsersHeader = [
   "Actions",
 ];
 
+export const adminFieldsHeader  = [
+    { key: "name", label: "Name" },
+    {
+      key: "createdAt",
+      label: "Created At",
+      render: (v:any) => new Date(v).toLocaleDateString(),
+    },
+    { key: "actions", label: "Actions" },
+  ];
+
 export const pagesHeader = {
   title: "Title",
   createdAt: "Date",

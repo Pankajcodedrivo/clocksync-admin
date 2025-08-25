@@ -2,9 +2,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { logOut } from "../store/auth.store";
 import {store} from '../store/store'
+import { environment } from "../config/environment";
 
 axios.interceptors.request.use(async (config:any) => {
-  config.baseURL = import.meta.env.VITE_API_BASE_URL;
+  config.baseURL = environment.base_url;
 
   const token = localStorage.getItem("access_token") ?? "";
 
