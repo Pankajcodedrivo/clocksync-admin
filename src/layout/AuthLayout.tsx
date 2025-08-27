@@ -12,12 +12,20 @@ const AuthLayout = () => {
   // Redirect paths based on role
   const roleBasedRedirects: Record<string, string> = {
     admin: "/admin/dashboard",
+    scorekeeper: "/admin/field",
   };
 
   // If user is logged in and role is recognized, render `Outlet` (child routes)
   if (isLoggedIn) {
     if (role && roleBasedRedirects[role]) {
       // Redirect to role-specific default page if user tries to access the root `/`
+      if (role === "scorekeeper" && user?.firstTimeLogin === true) {
+          // ✅ don't redirect if already on /change-password
+          if (location.pathname !== "/change-password") {
+            return <Navigate to="/change-password" replace />;
+          }
+          return <Outlet />;
+        }
       if (location.pathname === "/") {
         return <Navigate to={roleBasedRedirects[role]} replace />;
       }

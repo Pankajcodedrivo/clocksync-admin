@@ -3,11 +3,12 @@ import Input from "../UI/input/Input";
 import form from "./formcus.module.scss";
 import { useAddUser } from "./useAddUser";
 import LoadingSpinner from "../UI/loadingSpinner/LoadingSpinner";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faPencilAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { useParams,useLocation } from "react-router-dom";
 import { userDetails } from "../../service/apis/user.api";
+import { images } from "../../constants";
 
 const UpdateUser = () => {
   const params = useParams();
@@ -33,6 +34,7 @@ const UpdateUser = () => {
               email: userData.userData?.email || "",
               profileImage: userData.userData?.profileimageurl || "",
               password: "",
+              role: userData.userData?.role || "admin"
             });
             setImagePreview(userData.userData?.profileimageurl || "");
           }
@@ -74,6 +76,30 @@ const UpdateUser = () => {
           autoComplete='off'
           className='formadduser from-fix-global-wrap'
         >
+          <div className='profile-picture-upload'>
+          <div className='uploadimage center'>
+            <div className='upimg'>
+              <img src={imagePreview?imagePreview:images.noimage} alt='Avatar' />
+              <input
+                className='choosefile'
+                id='profileImage'
+                name='profileImage'
+                type='file'
+                accept='image/*'
+                onChange={handleImageChange}
+              />
+              <div className="overlay">
+                <span className="icon"> <FontAwesomeIcon icon={faUpload} /></span>
+              </div>
+              {addUserFormik.touched.profileImage &&
+                  addUserFormik.errors.profileImage && (
+                    <div className='error'>
+                      {addUserFormik.errors.profileImage}
+                    </div>
+                  )}
+            </div>
+          </div>
+        </div>
           <div className={`${form.profileform}  from-fix-global`}>
             <div className={form.profileformcol}>
               <div className='formgrp'>
@@ -168,31 +194,15 @@ const UpdateUser = () => {
 
             <div className={form.profileformcol}>
               <div className='formgrp'>
-                <label htmlFor='profileImage'>Profile Image</label>
-                <input
-                  type='file'
-                  id='profileImage'
-                  name='profileImage'
-                  onChange={handleImageChange}
-                />
-                {imagePreview && (
-                  <div className='image-preview'>
-                    <img
-                      src={imagePreview}
-                      alt='Preview'
-                      width={100}
-                      height={100}
-                    />
-                  </div>
-                )}
-                {addUserFormik.touched.profileImage &&
-                  addUserFormik.errors.profileImage && (
-                    <div className='error'>
-                      {addUserFormik.errors.profileImage}
-                    </div>
-                  )}
+                <label htmlFor='profileImage'>Role</label>
+                <select id='role'
+                    name='role'  onChange={addUserFormik.handleChange}>
+                  <option value="admin">Admin</option>
+                  <option value="scorekeeper">Score Keeper</option>
+                </select>
               </div>
             </div>
+            
           </div>
 
           {loading ? (

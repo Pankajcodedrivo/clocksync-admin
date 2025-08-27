@@ -20,6 +20,10 @@ type changePasswordData = {
   password_new: string;
 };
 
+type changePassData = {
+  password_new: string;
+};
+
 export const logInApi = catchAsync(async (values: LoginData) => {
   try {
     const data = await httpsCall.post(`/admin/login`, values);
@@ -47,6 +51,16 @@ export const changePasswordApi = catchAsync(
   async (values: changePasswordData) => {
     const data = await httpsCall.patch(
       `/admin/profile/change-password`,
+      values
+    );
+    return data;
+  }
+);
+
+export const changePasswordFirstTimeApi = catchAsync(
+  async (values: changePassData) => {
+    const data = await httpsCall.patch(
+      `/admin/profile/change-password-first`,
       values
     );
     return data;

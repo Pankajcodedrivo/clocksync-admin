@@ -11,6 +11,7 @@ import { setUser } from "../../../store/auth.store";
 import toast from "react-hot-toast";
 import { updateProfileImage } from "../../../service/apis/user.api";
 import GoogleAutoComplete from "../../../layout/GoogleAutoComplete";
+import { images } from "../../../constants";
 
 const FormCus = () => {
   const { addProfileFormik } = useProfileUpdate();
@@ -64,7 +65,7 @@ const FormCus = () => {
         <div className='profile-picture-upload'>
           <div className='uploadimage'>
             <div className='upimg'>
-              <img src={preview} alt='Avatar' />
+              <img src={preview?preview:images.noimage} alt='Avatar' />
             </div>
             <div className='upbtn'>
               <input

@@ -90,15 +90,56 @@ function CommonTable<T extends { _id: string }>({
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     {columns.map((col:any, idx) => (
-                      <TableCell key={`${col.key}_${idx}`}>
-                        {col.key === "actions"
-                          ? renderActions
-                            ? renderActions(row)
-                            : null
-                          : col.render
-                          ? col.render(row[col.key], row)
-                          : String(row[col.key])}
-                      </TableCell>
+  <TableCell key={`${col.key}_${idx}`} align="left">
+              {col.key === "actions" ? (
+                renderActions ? (
+                  <div className={dataTable.actionwrap}>
+                    {(() => {
+                      const actions = renderActions(row);
+
+                      // unwrap fragment if needed
+                      const children =
+                        (actions as any)?.type === React.Fragment
+                          ? (actions as any).props.children
+                          : actions;
+
+                      return React.Children.map(
+                        children ?? [],
+                        (child: any, index: number) => {
+                          if (React.isValidElement(child) && child.type === "p") {
+                              // Now TS knows child has props
+                            const props = child.props as { [key: string]: any };
+                            let extraProps: any = {};
+
+                            // detect delete <p> via data-title or data-id
+                            if (props["data-title"] === "delete" || props["data-id"]) {
+                              const id = props["data-id"] ?? row?._id;
+                              extraProps.onClick = () => handleClickOpen(id);
+                            }
+
+
+                            return React.cloneElement(child, {
+                              ...props,
+                              ...extraProps,
+                              key: `action-${index}`,
+                              className: `${dataTable.edit} ${
+                               props.className || ""
+                              }`,
+                            });
+                          }
+                          return child;
+                        }
+                      );
+                    })()}
+                  </div>
+                ) : null
+              ) : col.render ? (
+                col.render(row[col.key], row)
+              ) : (
+                String(row[col.key])
+              )}
+            </TableCell>
+
                     ))}
                   </TableRow>
                 ))
@@ -121,32 +162,32 @@ function CommonTable<T extends { _id: string }>({
           style={{ marginTop: "30px" }}
         >
           <Pagination
-            count={Math.ceil(totalData / rowsPerPage)}
-            page={dataCurrentPage}
-            onChange={(_, page) => changePage?.(page)}
-            sx={{
-              ".MuiPaginationItem-page": {
-                backgroundColor: "#fff",
-                color: "#414141",
-                width: "44px",
-                height: "44px",
-                borderRadius: "50%",
-                "&.Mui-selected": {
-                  backgroundColor: "#E94257",
-                  color: "#fff",
-                  pointerEvents: "none",
-                  cursor: "default",
-                },
-                "&:hover": {
-                  backgroundColor: "#E94257",
-                  color: "#fff",
-                },
-              },
-              "& .MuiPagination-ul": {
-                justifyContent: "center",
-              },
-            }}
-          />
+  count={Math.max(1, Math.ceil((totalData ?? 0) / rowsPerPage))}
+  page={dataCurrentPage}
+  onChange={(_, page) => changePage?.(page)}
+  sx={{
+    ".MuiPaginationItem-page": {
+      backgroundColor: "#fff",
+      color: "#414141",
+      width: "44px",
+      height: "44px",
+      borderRadius: "50%",
+      "&.Mui-selected": {
+        backgroundColor: "#E94257",
+        color: "#fff",
+        pointerEvents: "none",
+      },
+      "&:hover": {
+        backgroundColor: "#E94257",
+        color: "#fff",
+      },
+    },
+    "& .MuiPagination-ul": {
+      justifyContent: "center",
+    },
+  }}
+/>
+
         </Stack>
 
       {/* 🗑️ Delete Confirmation Dialog */}

@@ -6,6 +6,7 @@ export type User = {
   email: string;
   notification: boolean;
   isEmailVerified: boolean;
+  firstTimeLogin: boolean;
   isAccountVerified: boolean;
   profileimageurl: string;
   about: any;

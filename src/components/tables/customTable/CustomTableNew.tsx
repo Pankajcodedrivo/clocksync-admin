@@ -344,9 +344,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         </TableCell>
                         <TableCell align='left'>{row?.email}</TableCell>
                         <TableCell align='left'>
-                          {row?.amount || row.amount === 0
-                            ? `$${row.amount}`
-                            : "NA"}
+                          {row.role}
                         </TableCell>
                         <TableCell align='left'>
                           <div className={dataTable.actionwrap}>
@@ -354,31 +352,10 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                               <p className={dataTable.edit}>
                                 <FontAwesomeIcon
                                   icon={faPencilAlt}
-                                  style={{
-                                    color: "#fff",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    fontSize: "20px",
-                                  }}
+                                  className="icon-themes"
                                 />
                               </p>
                             </Link>
-                            <p
-                              className={dataTable.edit}
-                              onClick={() => handleOpenDialog(row.id)}
-                            >
-                              <FontAwesomeIcon
-                                icon={faCircleDollarToSlot}
-                                style={{
-                                  color: "#fff",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  fontSize: "20px",
-                                }}
-                              />
-                            </p>
 
                             <p
                               className={dataTable.delete}

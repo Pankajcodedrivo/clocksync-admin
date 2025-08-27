@@ -14,6 +14,13 @@ const sidebarNav = [
     role: ["admin"],
   },
   {
+    link: "/game",
+    section: "game",
+    icon: "mdi:gamepad", //width:"20"
+    text: "Game",
+    role: ["admin","scorekeeper"],
+  },
+  {
     link: "/admin/users",
     section: "users",
     icon: "ph:users-bold", //width:"20"

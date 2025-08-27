@@ -42,7 +42,7 @@ function LoginBox() {
               />
             </div>
             <h2 className={classes.title} style={{ textAlign: "center" }}>
-              {t("Admin Login")}
+              {t("Login")}
             </h2>
             <form onSubmit={loginFormik.handleSubmit} className='login-form'>
               <div className='formgrp'>

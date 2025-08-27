@@ -10,6 +10,7 @@ interface FormValues {
   email: string;
   password?: string;
   profileImage: string | null;
+  role: string ;
 }
 export const useAddUser = (id?: string) => {
   const navigate = useNavigate();
@@ -39,12 +40,14 @@ export const useAddUser = (id?: string) => {
       email: "",
       password: "",
       profileImage: null,
+      role:"admin"
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log(values.profileImage);
+      console.log(values);
       setLoading(true);
       const formData = new FormData();
+      formData.append("role", values.role);
       formData.append("fullName", values.fullName);
       if (values.profileImage) {
         formData.append("profileimageurl", values.profileImage);

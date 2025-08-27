@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Itable, complex } from "../../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { addField, deleteField, fieldList, updateField } from "../../../service/apis/field.api";
 import toast from "react-hot-toast";
 import { adminFieldsHeader } from "../../../constants/tables";
@@ -10,8 +10,9 @@ import CommonTable from "../../../components/tables/customTable/CommonTable";
 import dataTable from "../../../components/tables/DashboardTables.module.scss";
 import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
 import ModalForm from "../../../components/UI/modal/ModalForm";
+import del from "../../../assets/images/ic_outline-delete.png";
 import * as Yup from "yup";
-const Fields: React.FC<Itable> = () => {
+const Fields = () => {
   const [showModal, setShowModal] = useState(false);
   const [showQRModal, setQRShowModal] = useState(false);
   const [selectedData, setSelectedData] = useState<any>(null);
@@ -192,19 +193,19 @@ useEffect(() => {
               changePage={handlePageChange}
               totalData={totalResult}
               deleteMessage="Are you sure to delete this field?"
-              handleDelete={deleteField}
+              handleDelete={handleDelete}
               renderActions={(row: any) => (
                 <>
-                  <button
+                  <p
                     onClick={() => {
                       setEditData(row);       // set data to prefill form
                       setShowEditModal(true); // open modal
                     }}
                   >
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                  </button>
-                  <button onClick={() => { setQRShowModal(true); setSelectedData(row)}}>view</button>
-                  <button onClick={() => handleDelete(row?._id)}>Delete</button>
+                    <FontAwesomeIcon icon={faPencilAlt} className="icon-themes"/>
+                  </p>
+                  <p onClick={() => { setQRShowModal(true); setSelectedData(row)}}><FontAwesomeIcon icon={faEye} className="icon-themes" /></p>
+                  <p  data-title="delete" data-id={row._id}><img src={del} alt='Delete' /></p>
                 </>
               )}
             />

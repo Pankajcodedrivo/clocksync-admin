@@ -36,7 +36,10 @@ function Sidebar() {
   }
 
   useEffect(() => {
-    const curPath = window.location.pathname.split("/")[2] || ""; // Ensure curPath is a string
+    let curPath = window.location.pathname.split("/")[2] || ""; // Ensure curPath is a string
+    if(!curPath){
+      curPath = window.location.pathname.split("/")[1] || "";
+    }
     const activeItem = sidebarNav.findIndex((item) => item.section === curPath);
     setActiveIndex(activeItem !== -1 ? activeItem : 0); // Default to 0 if not found
   }, [location, sidebarNav]);

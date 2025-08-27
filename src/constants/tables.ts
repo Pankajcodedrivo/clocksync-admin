@@ -2,7 +2,7 @@ export const adminUsersHeader = [
   "Profile Image",
   "Name",
   "Email",
-  "Amount",
+  "Role",
   "Actions",
 ];
 
@@ -13,6 +13,15 @@ export const adminFieldsHeader  = [
       label: "Created At",
       render: (v:any) => new Date(v).toLocaleDateString(),
     },
+    { key: "actions", label: "Actions" },
+  ];
+
+export const adminGamesHeader  = [
+    { key: "homeTeamLogo", label: "" },
+    { key: "homeTeamName", label: "Home"},
+    { key: "awayTeamLogo", label: "" },
+    { key: "awayTeamName", label: "Away"},
+  
     { key: "actions", label: "Actions" },
   ];
 
