@@ -7,7 +7,10 @@
   font-size: 14px;
   margin-left: -2rem;
   margin-right: -2rem;
-
+  background: #181C2A;
+  box-shadow: 0px 2px 20px 0px #0C0F1B;
+  border-radius: 10px;
+  padding: 10px;
   &__child {
     padding: 0 1rem;
   }

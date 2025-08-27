@@ -7,13 +7,17 @@
   width: 100%;
   height: 100vh;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(9, 9, 25, 0.75);
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
   margin: 0 5%;
+     label {
+    margin-bottom: 5px;
+    display: block;
+}
 }
 .modal {
   position: fixed;
@@ -25,7 +29,7 @@
   z-index: 100;
   overflow: auto;
   border-radius: $largeBorderRadius;
-  background-color: var(--bgc);
+  background-color: var(--clr-body);
 }
 
 .header {
@@ -35,7 +39,9 @@
 
 .header h3 {
   margin: 0;
-  color: black;
+  color: #fff;
+  font-size: 30px;
+  font-family: var(--helveticacompressed);
   text-align: center;
 }
 
@@ -47,7 +53,7 @@
   padding: 1rem 2rem;
   display: flex;
   justify-content: flex-end;
-
+  gap: 15px;
   .delete {
     font: inherit;
     border-radius: $smallBorderRadius;

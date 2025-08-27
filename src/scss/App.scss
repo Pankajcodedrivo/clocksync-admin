@@ -6,7 +6,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --ff-primary: "Roboto", sans-serif;
+  --ff-primary: "Montserrat", sans-serif;
   --dark: #292c31;
   --white: #ffffff;
   --accent: #ff8400;
@@ -15,11 +15,11 @@
 }
 .btn,
 #btn {
-  font-family: var(--poppins);
+  font-family: var(--ff-primary);
   border: 0;
   display: inline-block;
   vertical-align: middle;
-  background: var(--accent) !important;
+  background: var(--clr-accent) !important;
   color: var(--white);
   border-radius: 50px !important;
   padding: 16px 39px;
@@ -452,10 +452,7 @@ p.w-100 {
 .support-page .MuiPaper-root {
   overflow-x: inherit;
 }
-input#email {
-  background: #fff !important;
-  color: #000 !important;
-}
+
 input#password_old,
 input#password_new,
 input#cpassword {
@@ -463,7 +460,7 @@ input#cpassword {
   background: #e9effd;
 }
 .css-1l5xwdx-MuiButtonBase-root-MuiPaginationItem-root:hover {
-  background-color: rgb(248, 151, 77) !important;
+  background-color: var(--accent)!important;
   color: #fff !important;
 }
 ._toggle_17zk4_23._darkMode_17zk4_33.theme-change .sun {
@@ -502,7 +499,7 @@ input#cpassword {
 #myprofilewrapper,
 #editprofile,
 #updatePage {
-  background-color: #2351a9;
+  background-color: var(--clr-body);
 }
 .login-form .passwordlabel div > span {
   position: absolute;
@@ -529,20 +526,22 @@ input#cpassword {
 .upload-setting-logo input[type="text"],
 .upload-setting-logo input[type="datetime-local"] {
   width: 50%;
-  background-color: #fff;
+  background-color: #374151;
+  border-color: #374151;
   border-radius: 10px;
   padding: 1rem 1.5rem;
-  color: #000;
+  color: #fff;
   border: 0 none;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 .upload-setting-logo textarea {
   width: 50%;
-  background-color: #fff;
+  background-color: #374151;
+  border-color: #374151;
   border-radius: 10px;
   padding: 1rem 1.5rem;
-  color: #000;
+  color: #fff;
   border: 0 none;
   margin-top: 10px;
   min-height: 180px;
@@ -797,11 +796,6 @@ ul.profilenavlist li:hover {
   padding-right: 0 !important;
 }
 
-.colorAction {
-  background-color: #131e33;
-  padding: 30px;
-  border-radius: 35px;
-}
 html[theme="dark"] .colorAction {
   background-color: #404548;
 }
@@ -879,8 +873,9 @@ table.featured_Profile_table {
   height: 20px;
 }
 .searchwrap input[type="text"] {
-  background: #fff;
-  color: #000;
+  background: var(--clr-secondary);
+  color: #fff;
+  border-color: var(--clr-secondary)!important;
 }
 .featured_Profile_table thead tr th:first-child {
   width: 100px !important;
@@ -935,8 +930,8 @@ input.swal2-input {
 }
 .formgrp input {
   width: 100%;
-  border: 1px solid #c7c7c7;
-  background-color: #fff !important;
+  border: 1px solid #374151;
+  background-color: #374151 !important;
   border-radius: 10px;
   box-shadow: none !important;
   // min-width: 300px;

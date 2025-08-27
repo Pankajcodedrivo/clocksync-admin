@@ -50,7 +50,7 @@
       background-color: transparent;
       top: 0;
       position: relative;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
       display: block;
       padding: 0.3rem;
       color: #fff;
@@ -58,11 +58,11 @@
 
     input,select {
       width: 100%;
-      border: 1px solid #c7c7c7;
-      background-color: #fff;
+      border: 1px solid #374151;
+      background-color: #374151;
       border-radius: 10px;
-      box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.05);
       padding: 1rem 1.5rem;
+      color: #fff;
       /*@media screen and (max-width: 1440px) {
         padding: 0.7rem 1.5rem;
       }*/

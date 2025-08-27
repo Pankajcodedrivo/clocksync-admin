@@ -115,3 +115,27 @@ This set of fonts are used in this project under the license: (.....)
     /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
       url("../fonts/ttf/iranyekanwebextrablack.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: 'helvetica';
+    src: url('../fonts/eot/helvetica-webfont.eot');
+    src: url('../fonts/eot/helvetica-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/woff/helvetica-webfont.woff') format('woff'),
+         url('../fonts/ttf/helvetica-webfont.ttf') format('truetype'),
+         url('../fonts/svg/helvetica-webfont.svg#helveticaregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'helveticacompressed';
+    src: url('../fonts/eot/helvetica-compressed-webfont.eot');
+    src: url('../fonts/eot/helvetica-compressed-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/woff/helvetica-compressed-webfont.woff') format('woff'),
+         url('../fonts/ttf/helvetica-compressed-webfont.ttf') format('truetype'),
+         url('../fonts/svg/helvetica-compressed-webfont.svg#helveticacompressed') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}

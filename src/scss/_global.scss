@@ -5,12 +5,12 @@
 
 html {
   /* ****Colors**** */
-  --clr-primary: #2351a9;
-  --clr-secondary: #ff8400;
+  --clr-primary: #3B82F6;
+  --clr-secondary: #F97316;
   //light theme
-  --bgc: #f2f2f2;
-  --card-bgc: #f9f9fa;
-  --text-color: #424750;
+  --bgc: #181935;
+  --card-bgc: #181935;
+  --text-color: #fff;
   //light theme status
   --approved-bgc: rgba(86, 240, 0, 0.3);
   --approved-textColor: #246500;
@@ -20,7 +20,7 @@ html {
   --rejected-textColor: #ff0000;
 
   /* ****Font family**** */
-  --fontFamily: "Roboto", sans-serif;
+  --fontFamily: $montserrat;
 }
 html[theme="dark"] {
   //dark theme
@@ -249,6 +249,8 @@ body,
   margin: 5rem 0 3rem;
   font-family: inherit;
   line-height: 70px;
+  margin-bottom: 30px!important;
+  font-family: var(--helveticacompressed);
   &_rtl {
     direction: rtl;
   }

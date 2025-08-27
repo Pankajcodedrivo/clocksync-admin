@@ -29,7 +29,7 @@ html {
   box-shadow: $mainBoxShadow;
 
   .logo {
-    width: 200px;
+    width: 150px;
     height: 75px;
     img {
       width: 100%;
@@ -40,11 +40,9 @@ html {
 
   .title {
     // font-size: $fontSizeHeadlineMedium;
-    font-size: 20px;
     line-height: normal;
     letter-spacing: 0;
     color: #ffffff;
-    font-weight: 400;
     margin-bottom: 30px !important;
   }
 

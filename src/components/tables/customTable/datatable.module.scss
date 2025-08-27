@@ -16,7 +16,7 @@
     align-items: center;
   }
   .edit {
-    background-color: #ff8400;
+    background-color: var(--clr-accent);
     width: 40px;
     height: 40px;
     padding: 9px;
@@ -26,6 +26,15 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    &:nth-child(2) {
+      background-color: var(--clr-green);
+    }
+    &:nth-child(3) {
+      background-color: red;
+    }
+    &:hover {
+      background: var(--clr-primary);
+    }
     @media screen and (max-width: 1440px) {
       width: 30px;
       height: 30px;
@@ -39,7 +48,7 @@
     }
   }
   .delete {
-    background-color: #ff0000;
+    background-color: red;
     width: 40px;
     height: 40px;
     padding: 9px;
@@ -55,22 +64,28 @@
     }
   }
 }
+table {
+  border-spacing: 0 5px!important;
+}
 .tbodymain {
   background-color: transparent !important;
   border: none;
   box-shadow: none !important;
   thead {
     tr {
-      box-shadow: 0px 2px 4px 0px #00000014;
-      overflow: hidden;
-      border-radius: 10px;
-      background-color: #fff;
+       &:hover {
+            td {
+                opacity: 0.7;
+            }
+        }
       th {
+        background: transparent;
+        border: 0;
+        color: #fff;
+        padding: 20px 40px;
         font-size: 16px;
-        color: #000;
-        font-weight: 700;
-        border: none;
-        background-color: #fff;
+        font-weight: 400;
+        font-family: var(--helvetica);
         @media screen and (max-width: 1440px) {
           font-size: 12px;
           font-weight: 500;
@@ -90,16 +105,14 @@
 .tbodymain {
   tbody {
     tr {
-      box-shadow: 0px 2px 4px 0px #00000014;
-      overflow: hidden;
-      border-radius: 10px;
-      background-color: #fff;
-      td {
-        font-size: 14px;
-        color: #000;
-        font-weight: 600;
-        border: none;
-        background-color: #fff;
+      td,th {
+          background: #374151;
+          border: 0;
+          color:#fff;
+          padding: 10px 40px;
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.4s;
         @media screen and (max-width: 1440px) {
           font-size: 12px;
           font-weight: 400;
@@ -107,11 +120,6 @@
       }
       th {
         border: none;
-        font-weight: 600;
-        background-color: #fff;
-        @media screen and (max-width: 1440px) {
-          font-weight: 400;
-        }
       }
     }
     tr td:first-child {
@@ -125,12 +133,12 @@
   }
 }
 .datatablemainwrap { 
-  padding: 30px;
-  border-radius: 35px;
-  @media screen and (max-width: 991px) {
-    padding: 20px 15px;
-    border-radius: 20px;
-  }
+  // padding: 30px;
+  // border-radius: 35px;
+  // @media screen and (max-width: 991px) {
+  //   padding: 20px 15px;
+  //   border-radius: 20px;
+  // }
   h2 {
     color: #000;
     font-size: 32px;
@@ -202,15 +210,7 @@
   margin: -100px auto 0px;
   background-color: #fff;
 }
-.datatablemainwrap {
-  background-color: var(--card-bg);
-  padding: 30px;
-  border-radius: 15px;
-  @media screen and (max-width: 991px) {
-    padding: 20px 15px;
-    border-radius: 20px;
-  }
-}
+
 .compheaderflex {
   display: flex;
   align-items: center;
