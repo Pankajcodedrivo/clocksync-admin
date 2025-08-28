@@ -15,6 +15,7 @@ function Sidebar() {
   const { isOpen } = useSelector((state: RootState) => state.sideBarSlice);
   const role = useSelector((state: RootState) => state.authSlice.user?.role);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [urlActive, setUrlActive] = useState("");
   const [openSubmenu, setOpenSubmenu] = useState(false);
   const { width } = useWindowSize();
   const location = useLocation();
@@ -40,6 +41,7 @@ function Sidebar() {
     if(!curPath){
       curPath = window.location.pathname.split("/")[1] || "";
     }
+    setUrlActive(curPath);
     const activeItem = sidebarNav.findIndex((item) => item.section === curPath);
     setActiveIndex(activeItem !== -1 ? activeItem : 0); // Default to 0 if not found
   }, [location, sidebarNav]);
@@ -60,7 +62,7 @@ function Sidebar() {
           <Link
             to={nav.link}
             key={`nav-${index}`}
-            className={`${classes.sidebar__menu__item} ${ activeIndex === index ? 'active' : '' } sidenav-li`}
+            className={`${classes.sidebar__menu__item} ${ (activeIndex === index || urlActive===nav.section) ? 'active' : '' } sidenav-li`}
             onClick={openSidebarHandler}
           >
             <div className={classes.sidebar__menu__item__icon}>
