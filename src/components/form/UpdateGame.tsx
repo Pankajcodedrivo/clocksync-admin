@@ -85,7 +85,7 @@ const UpdateGame = () => {
           <div className="profile-picture-upload">
             <div className="uploadimage center">
               <div className="upimg">
-                <img src={homeLogoPreview || images.noimage} alt="Home Logo" />
+                <img src={homeLogoPreview || images.homeNoImage} alt="Home Logo" />
                 <input
                   className="choosefile"
                   id="homeTeamLogo"
@@ -107,7 +107,7 @@ const UpdateGame = () => {
           <div className="profile-picture-upload">
             <div className="uploadimage center">
               <div className="upimg">
-                <img src={awayLogoPreview || images.noimage} alt="Away Logo" />
+                <img src={awayLogoPreview || images.awayNoImage} alt="Away Logo" />
                 <input
                   className="choosefile"
                   id="awayTeamLogo"

@@ -5,6 +5,8 @@ import noId from "../assets/images/no-id.png";
 import resetPassImg from "../assets/images/Reset_password_pana.svg";
 import dashboard from "../assets/images/Revenue-cuate.svg";
 import img404 from "../assets/images/Oops_404_Error_with_a_broken_robot_cuate.svg";
+import homeNoImage from "../assets/images/icon-ngo.svg";
+import awayNoImage from "../assets/images/icon-away.svg";
 
 const images = {
   logo: digiLogo,
@@ -14,6 +16,8 @@ const images = {
   logKey: resetPassImg,
   dashboard: dashboard,
   notFound: img404,
+  homeNoImage,
+  awayNoImage
 };
 
 export default images;
