@@ -346,4 +346,18 @@ input {
 }
 .upimg input[type="file"] {
   z-index: 1;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  margin: auto;
+  right: 0;
+}
+.profile-picture-upload-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px; 
+    .profile-picture-upload {
+        padding: 0 15px;
+        width: 50%;
+    }
 }

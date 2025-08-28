@@ -19,7 +19,7 @@ const UpdateGame = () => {
   const [awayLogoPreview, setAwayLogoPreview] = useState<string | null>(null);
 
   useEffect(() => {
-       // 🚨 if path is update but no ID, redirect to list
+    // 🚨 if path is update but no ID, redirect to list
     if (location.pathname.includes("/update") && !id) {
       navigate("/admin/games", { replace: true });
       return;
@@ -81,50 +81,52 @@ const UpdateGame = () => {
           autoComplete="off"
           className="formaddgame from-fix-global-wrap"
         >
-          {/* Home Team Logo */}
-          <div className="profile-picture-upload">
-            <div className="uploadimage center">
-              <div className="upimg">
-                <img src={homeLogoPreview || images.noimage} alt="Home Logo" />
-                <input
-                  className="choosefile"
-                  id="homeTeamLogo"
-                  name="homeTeamLogo"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, "homeTeamLogo")}
-                />
-                <div className="overlay">
-                  <span className="icon">
-                    <FontAwesomeIcon icon={faUpload} />
-                  </span>
+          <div className="profile-picture-upload-wrapper">
+            {/* Home Team Logo */}
+            <div className="profile-picture-upload">
+              <div className="uploadimage center">
+                <div className="upimg">
+                  <img src={homeLogoPreview || images.noimage} alt="Home Logo" />
+                  <input
+                    className="choosefile"
+                    id="homeTeamLogo"
+                    name="homeTeamLogo"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, "homeTeamLogo")}
+                  />
+                  <div className="overlay">
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faUpload} />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Away Team Logo */}
-          <div className="profile-picture-upload">
-            <div className="uploadimage center">
-              <div className="upimg">
-                <img src={awayLogoPreview || images.noimage} alt="Away Logo" />
-                <input
-                  className="choosefile"
-                  id="awayTeamLogo"
-                  name="awayTeamLogo"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, "awayTeamLogo")}
-                />
-                <div className="overlay">
-                  <span className="icon">
-                    <FontAwesomeIcon icon={faUpload} />
-                  </span>
+            {/* Away Team Logo */}
+            <div className="profile-picture-upload">
+              <div className="uploadimage center">
+                <div className="upimg">
+                  <img src={awayLogoPreview || images.noimage} alt="Away Logo" />
+                  <input
+                    className="choosefile"
+                    id="awayTeamLogo"
+                    name="awayTeamLogo"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, "awayTeamLogo")}
+                  />
+                  <div className="overlay">
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faUpload} />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
           <div className={`${form.profileform} from-fix-global`}>
             {/* Home Team Name */}
             <div className={form.profileformcol}>
