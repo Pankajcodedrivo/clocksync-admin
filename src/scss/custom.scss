@@ -270,7 +270,8 @@ input[disabled] {
 
 // poulami 27-8-2025
 body {
-    background: var(--bgc)!important;
+    background: url('../assets/images/background-score-keeper.jpg') no-repeat!important;
+    background-size: cover!important;
     font-family: var(--montserrat);
     font-weight: 400;
     font-size: 16px;
@@ -326,3 +327,23 @@ h2 {
     }
 }
 
+input {
+    -webkit-text-fill-color: #fff !important;    
+}
+.upimg .overlay  {
+    bottom: 15px;
+    .icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        cursor: pointer;
+    }
+}
+.upimg input[type="file"] {
+  z-index: 1;
+}
