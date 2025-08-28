@@ -25,14 +25,14 @@ export const getAdminGamesHeader = (role: any) => {
       render: (v:any) => new Date(v).toLocaleDateString(),
     },
     {
-      key: "fieldId.name",
+      key: "field.name",
       label: "Field",
     },
   ];
 
   if (role !== "scorekeeper") {
     baseHeaders.push({
-      key: "assignUserId.fullName",
+      key: "assignedUser.fullName",
       label: "ScoreKeeper",
     });
   }
