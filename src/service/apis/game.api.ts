@@ -11,7 +11,7 @@ export const gameList = catchAsync(
   }
 );
 export const gameDetails = catchAsync(async (uid) => {
-  const response = await httpsCall.get(`/admin/game/view-game/${uid}`);
+  const response = await httpsCall.get(`/admin/game/detail/${uid}`);
   return response;
 });
 
@@ -28,4 +28,14 @@ export const deleteGame = catchAsync(async (uid) => {
 export const updateGame = catchAsync(async (values, uid) => {
   const data = await httpsCall.patch(`/admin/game/update/${uid}`, values);
   return data;
+});
+
+export const getallfield = catchAsync(async (uid) => {
+  const response = await httpsCall.get(`/admin/game/getallfield`);
+  return response;
+});
+
+export const getallScorekeeper = catchAsync(async (uid) => {
+  const response = await httpsCall.get(`/admin/game/getallScorekeeper`);
+  return response;
 });

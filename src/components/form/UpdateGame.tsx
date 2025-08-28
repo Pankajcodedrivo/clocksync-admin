@@ -6,8 +6,18 @@ import LoadingSpinner from "../UI/loadingSpinner/LoadingSpinner";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
-import { gameDetails } from "../../service/apis/game.api";
+import { gameDetails, getallfield, getallScorekeeper } from "../../service/apis/game.api";
 import { images } from "../../constants";
+
+interface Field {
+  _id: string;
+  name: string;
+}
+
+interface Scorekeeper {
+  id: string;
+  fullName: string;
+}
 
 const UpdateGame = () => {
   const params = useParams();
@@ -15,30 +25,45 @@ const UpdateGame = () => {
   const navigate = useNavigate();
   const { id } = params;
   const { addGameFormik, loading } = useAddGame(id);
+
   const [homeLogoPreview, setHomeLogoPreview] = useState<string | null>(null);
   const [awayLogoPreview, setAwayLogoPreview] = useState<string | null>(null);
+  const [fields, setFields] = useState<Field[]>([]);
+  const [scorekeepers, setScorekeepers] = useState<Scorekeeper[]>([]);
 
+  // Redirect if /update but no ID
   useEffect(() => {
-       // 🚨 if path is update but no ID, redirect to list
     if (location.pathname.includes("/update") && !id) {
       navigate("/admin/games", { replace: true });
       return;
     }
+  }, [id, location.pathname, navigate]);
+
+  const formatDateForInput = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const offset = date.getTimezoneOffset();
+    const localDate = new Date(date.getTime() - offset * 60000); // adjust timezone
+    return localDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm"
+  };
+
+  // Fetch game details if update
+  useEffect(() => {
     if (id) {
       const fetchData = async () => {
         try {
           const gameData = await gameDetails(id);
-          if (gameData.status === 200) {
-            const data = gameData.gameData;
+          if (gameData.game) {
+            const data = gameData.game;
             addGameFormik.setValues({
               homeTeamLogo: null,
               homeTeamName: data?.homeTeamName || "",
               awayTeamLogo: null,
               awayTeamName: data?.awayTeamName || "",
-              fieldId: data?.fieldId || "",
-              assignUserId: data?.assignUserId || "",
-              startDateTime: data?.startDateTime || "",
-              endDateTime: data?.endDateTime || "",
+              fieldId: data?.fieldId?._id || "",
+              assignUserId: data?.assignUserId?.id || "",
+              startDateTime: formatDateForInput(data?.startDateTime),
+  endDateTime: formatDateForInput(data?.endDateTime),
             });
             setHomeLogoPreview(data?.homeTeamLogo || "");
             setAwayLogoPreview(data?.awayTeamLogo || "");
@@ -50,6 +75,22 @@ const UpdateGame = () => {
       fetchData();
     }
   }, [id]);
+
+  // Fetch dropdown data (fields + scorekeepers)
+  useEffect(() => {
+    const fetchDropdowns = async () => {
+      try {
+        const fieldRes = await getallfield();
+        const scorekeeperRes = await getallScorekeeper();
+
+        if (fieldRes.field) setFields(fieldRes.field);
+        if (scorekeeperRes.scoreKeeper) setScorekeepers(scorekeeperRes.scoreKeeper);
+      } catch (error) {
+        console.error("Error fetching dropdown data:", error);
+      }
+    };
+    fetchDropdowns();
+  }, []);
 
   const handleImageChange = (e: any, field: "homeTeamLogo" | "awayTeamLogo") => {
     const file = e.target.files[0];
@@ -81,45 +122,47 @@ const UpdateGame = () => {
           autoComplete="off"
           className="formaddgame from-fix-global-wrap"
         >
-          {/* Home Team Logo */}
-          <div className="profile-picture-upload">
-            <div className="uploadimage center">
-              <div className="upimg">
-                <img src={homeLogoPreview || images.homeNoImage} alt="Home Logo" />
-                <input
-                  className="choosefile"
-                  id="homeTeamLogo"
-                  name="homeTeamLogo"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, "homeTeamLogo")}
-                />
-                <div className="overlay">
-                  <span className="icon">
-                    <FontAwesomeIcon icon={faUpload} />
-                  </span>
+          <div className="profile-picture-upload-wrapper">
+            {/* Home Team Logo */}
+            <div className="profile-picture-upload">
+              <div className="uploadimage center">
+                <div className="upimg">
+                  <img src={homeLogoPreview || images.homeNoImage} alt="Home Logo" />
+                  <input
+                    className="choosefile"
+                    id="homeTeamLogo"
+                    name="homeTeamLogo"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, "homeTeamLogo")}
+                  />
+                  <div className="overlay">
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faUpload} />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Away Team Logo */}
-          <div className="profile-picture-upload">
-            <div className="uploadimage center">
-              <div className="upimg">
-                <img src={awayLogoPreview || images.awayNoImage} alt="Away Logo" />
-                <input
-                  className="choosefile"
-                  id="awayTeamLogo"
-                  name="awayTeamLogo"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, "awayTeamLogo")}
-                />
-                <div className="overlay">
-                  <span className="icon">
-                    <FontAwesomeIcon icon={faUpload} />
-                  </span>
+            {/* Away Team Logo */}
+            <div className="profile-picture-upload">
+              <div className="uploadimage center">
+                <div className="upimg">
+                  <img src={awayLogoPreview || images.awayNoImage} alt="Away Logo" />
+                  <input
+                    className="choosefile"
+                    id="awayTeamLogo"
+                    name="awayTeamLogo"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, "awayTeamLogo")}
+                  />
+                  <div className="overlay">
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faUpload} />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -168,45 +211,49 @@ const UpdateGame = () => {
               </div>
             </div>
 
-            {/* Field */}
+            {/* Field (Dropdown) */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <Input
-                  type="text"
-                  title="Field"
+                <label htmlFor="fieldId">Field</label>
+                <select
                   id="fieldId"
-                  placeholder="Enter field id"
                   name="fieldId"
-                  onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.fieldId}
-                  required
-                  errorMsg={
-                    addGameFormik.touched.fieldId && addGameFormik.errors.fieldId
-                      ? addGameFormik.errors.fieldId
-                      : ""
-                  }
-                />
+                  onChange={addGameFormik.handleChange}
+                >
+                  <option value="">-- Select Field --</option>
+                  {fields.map((field) => (
+                    <option key={field._id} value={field._id}>
+                      {field.name}
+                    </option>
+                  ))}
+                </select>
+                {addGameFormik.touched.fieldId && addGameFormik.errors.fieldId && (
+                  <div className="error">{addGameFormik.errors.fieldId}</div>
+                )}
               </div>
             </div>
 
-            {/* Assign User */}
+            {/* Scorekeeper (Dropdown) */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <Input
-                  type="text"
-                  title="Scorekeeper"
+                <label htmlFor="assignUserId">Scorekeeper</label>
+                <select
                   id="assignUserId"
-                  placeholder="Enter scorekeeper ID"
                   name="assignUserId"
-                  onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.assignUserId}
-                  required
-                  errorMsg={
-                    addGameFormik.touched.assignUserId && addGameFormik.errors.assignUserId
-                      ? addGameFormik.errors.assignUserId
-                      : ""
-                  }
-                />
+                  onChange={addGameFormik.handleChange}
+                >
+                  <option value="">-- Select Scorekeeper --</option>
+                  {scorekeepers.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.fullName}
+                    </option>
+                  ))}
+                </select>
+                {addGameFormik.touched.assignUserId && addGameFormik.errors.assignUserId && (
+                  <div className="error">{addGameFormik.errors.assignUserId}</div>
+                )}
               </div>
             </div>
 
@@ -255,7 +302,9 @@ const UpdateGame = () => {
             <LoadingSpinner />
           ) : (
             <div className={`${form.profileformcol} submit-btn-wrap`}>
-              <button className="custom-button submit-btn">Save</button>
+              <button className="custom-button submit-btn">
+                {id ? "Update Game" : "Add Game"}
+              </button>
             </div>
           )}
         </form>

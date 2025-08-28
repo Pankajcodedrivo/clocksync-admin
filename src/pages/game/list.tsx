@@ -12,6 +12,7 @@ import LoadingSpinner from "../../components/UI/loadingSpinner/LoadingSpinner";
 import del from "../../assets/images/ic_outline-delete.png";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import { environment } from "../../config/environment";
 const Games = () => {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.authSlice.user);
@@ -94,7 +95,9 @@ useEffect(() => {
       >
         <div className="search-wrap">
           <div className="button-holder-wrap">
+            {(user?.role==='admin')?
             <Link to="/game/add"><button className="custom-button">Add Game</button></Link>
+            :""}
               
           </div>
 
@@ -159,16 +162,34 @@ useEffect(() => {
               totalData={totalResult}
               deleteMessage="Are you sure to delete this field?"
               handleDelete={handleDelete}
-              renderActions={(row: any) => (
-                <>
-                  <p
-                  >
-                    <FontAwesomeIcon icon={faPencilAlt} className="icon-themes"/>
-                  </p>
-                  <p ><FontAwesomeIcon icon={faEye} className="icon-themes" /></p>
-                  <p  data-title="delete" data-id={row._id}><img src={del} alt='Delete' /></p>
-                </>
-              )}
+             renderActions={(row: any) => (
+  user?.role === "admin" ? (
+    <>
+      <p>
+        <Link to={`/game/update/${row._id}`}>
+          <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
+        </Link>
+      </p>
+      <p>
+        <span data-title="delete" data-id={row._id}>
+          <img src={del} alt="Delete" />
+        </span>
+      </p>
+      
+    </>
+  ) : (
+    <p>
+     <Link 
+  to={environment.forntend_url} 
+  target="_blank" 
+  rel="noopener noreferrer"
+>
+      <FontAwesomeIcon icon={faEye} className="icon-themes" />
+      </Link>
+    </p>
+  )
+)}
+
             />
           )}
         </div>

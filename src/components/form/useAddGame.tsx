@@ -22,29 +22,38 @@ export const useAddGame = (id?: string) => {
   const [loading, setLoading] = useState(false);
 
   // ✅ Validation schema for game form
-  const validationSchema = yup.object({
-    homeTeamName: yup.string().required("Home team name is required"),
-    awayTeamName: yup.string().required("Away team name is required"),
-    fieldId: yup.string().required("Field is required"),
-    assignUserId: yup.string().required("Scorekeeper is required"),
+const validationSchema = yup.object({
+  homeTeamName: yup.string().required("Home team name is required"),
+  awayTeamName: yup.string().required("Away team name is required"),
+  fieldId: yup.string().required("Field is required"),
+  assignUserId: yup.string().required("Scorekeeper is required"),
 
-    startDateTime: yup
-      .date()
-      .typeError("Invalid start date")
-      .min(new Date(), "Start date must be in the future")
-      .required("Start date is required"),
+  startDateTime: yup
+    .date()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue === "" || originalValue === undefined ? null : value
+    )
+    .typeError("Invalid start date")
+    .min(new Date(), "Start date must be in the future")
+    .required("Start date is required"),
 
-    endDateTime: yup
-      .date()
-      .typeError("Invalid end date")
-      .min(new Date(), "End date must be in the future")
-      .when("startDateTime", (startDateTime: Date, schema: any) =>
-        startDateTime
-          ? schema.min(startDateTime, "End date must be after start date")
-          : schema
-      )
-      .required("End date is required"),
-  });
+  endDateTime: yup
+    .date()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue === "" || originalValue === undefined ? null : value
+    )
+    .typeError("Invalid end date")
+    .when("startDateTime", {
+      is: (val: Date | null) => val != null,
+      then: (schema) =>
+        schema.min(yup.ref("startDateTime"), "End date must be after start date"),
+      otherwise: (schema) => schema,
+    })
+    .required("End date is required"),
+});
+
 
   // ✅ Formik setup
   const addGameFormik = useFormik<FormValues>({
@@ -61,7 +70,6 @@ export const useAddGame = (id?: string) => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       setLoading(true);
-
       const formData = new FormData();
       formData.append("homeTeamName", values.homeTeamName);
       formData.append("awayTeamName", values.awayTeamName);
@@ -79,17 +87,17 @@ export const useAddGame = (id?: string) => {
 
       try {
         if (id) {
-          const response = await updateGame(id, formData);
-          if (response.status === 200) {
+          const response = await updateGame( formData,id);
+          if (response.game) {
             toast.success(response.message);
-            navigate("/admin/games");
+            navigate("/game");
           }
         } else {
           const response = await addGame(formData);
-          if (response.status === 200) {
+          if (response.game) {
             toast.success(response.message);
             resetForm();
-            navigate("/admin/games");
+            navigate("/game");
           }
         }
       } catch (error) {

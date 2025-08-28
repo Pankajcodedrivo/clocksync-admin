@@ -1,6 +1,7 @@
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
   readonly VITE_APP_SOCKET_URL: string;
+  readonly VITE_FORNTEND_URL: string;
   // add other environment variables here if needed
 }
 
