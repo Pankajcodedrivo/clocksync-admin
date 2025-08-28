@@ -5,13 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import {  deleteGame, gameList } from "../../service/apis/game.api";
 import toast from "react-hot-toast";
-import { adminGamesHeader } from "../../constants/tables";
+import { getAdminGamesHeader } from "../../constants/tables";
 import CommonTable from "../../components/tables/customTable/CommonTable";
 import dataTable from "../../components/tables/DashboardTables.module.scss";
 import LoadingSpinner from "../../components/UI/loadingSpinner/LoadingSpinner";
 import del from "../../assets/images/ic_outline-delete.png";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 const Games = () => {
   const location = useLocation();
+  const user = useSelector((state: RootState) => state.authSlice.user);
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
   const [sortOrderData, setSortOrderData] = useState<complex[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -19,7 +22,7 @@ const Games = () => {
   const [loading, setLoading] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
   const rowsPerPage = 10;
-
+  const adminGamesHeader = getAdminGamesHeader(user?.role);
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
 const fetchData = async (page = currentPage, term = searchTerm) => {

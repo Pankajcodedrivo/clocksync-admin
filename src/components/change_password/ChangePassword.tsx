@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import classes from "./Change.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { useChange } from "./useCHange";
+import { useChange } from "./useChange";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

@@ -16,14 +16,26 @@ export const adminFieldsHeader  = [
     { key: "actions", label: "Actions" },
   ];
 
-export const adminGamesHeader  = [
-    { key: "homeTeamLogo", label: "" },
-    { key: "homeTeamName", label: "Home"},
+export const getAdminGamesHeader = (role:any) => {
+  const baseHeaders = [
+    { key: "homeTeamLogo",  label: "" },
+    { key: "homeTeamName", label: "Home" },
     { key: "awayTeamLogo", label: "" },
-    { key: "awayTeamName", label: "Away"},
-  
-    { key: "actions", label: "Actions" },
+    { key: "awayTeamName", label: "Away" },
+    { key: "startDateTime", label: "Start Time" },
+    { key: "endDateTime", label: "End Time" },
   ];
+
+  // Only include assignedUser column if role is NOT scorekeeper
+  if (role !== "scorekeeper") {
+    baseHeaders.push({ key: "assignUserId", label: "ScoreKeeper" });
+  }
+
+  baseHeaders.push({ key: "actions", label: "Actions" });
+
+  return baseHeaders;
+};
+
 
 export const pagesHeader = {
   title: "Title",
