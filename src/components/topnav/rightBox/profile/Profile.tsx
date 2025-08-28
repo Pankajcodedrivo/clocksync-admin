@@ -131,7 +131,7 @@ function Profile() {
                   >
                     <MenuItem onClick={handleClose}>
                       <Link
-                        to='/admin/profile'
+                        to='/profile'
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <FontAwesomeIcon
@@ -144,7 +144,7 @@ function Profile() {
 
                     <MenuItem onClick={handleClose}>
                       <Link
-                        to='/admin/changePassword'
+                        to='/changePassword'
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <FontAwesomeIcon
