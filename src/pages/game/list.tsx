@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
@@ -94,7 +94,8 @@ useEffect(() => {
       >
         <div className="search-wrap">
           <div className="button-holder-wrap">
-              <button className="custom-button">Add Game</button>
+            <Link to="/game/add"><button className="custom-button">Add Game</button></Link>
+              
           </div>
 
           {/* Search bar */}

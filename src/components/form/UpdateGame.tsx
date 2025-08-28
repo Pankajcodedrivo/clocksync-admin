@@ -5,19 +5,25 @@ import { useAddGame } from "./useAddGame";
 import LoadingSpinner from "../UI/loadingSpinner/LoadingSpinner";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { gameDetails } from "../../service/apis/game.api";
 import { images } from "../../constants";
 
 const UpdateGame = () => {
   const params = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = params;
   const { addGameFormik, loading } = useAddGame(id);
   const [homeLogoPreview, setHomeLogoPreview] = useState<string | null>(null);
   const [awayLogoPreview, setAwayLogoPreview] = useState<string | null>(null);
 
   useEffect(() => {
+       // 🚨 if path is update but no ID, redirect to list
+    if (location.pathname.includes("/update") && !id) {
+      navigate("/admin/games", { replace: true });
+      return;
+    }
     if (id) {
       const fetchData = async () => {
         try {
@@ -123,123 +129,124 @@ const UpdateGame = () => {
             {/* Home Team Name */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="homeTeamName">
-                  Home Team <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="text"
+                  title="Home Team"
                   id="homeTeamName"
                   placeholder="Enter home team name"
                   name="homeTeamName"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.homeTeamName}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.homeTeamName && addGameFormik.errors.homeTeamName
+                      ? addGameFormik.errors.homeTeamName
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.homeTeamName &&
-                  addGameFormik.errors.homeTeamName && (
-                    <div className="error">{addGameFormik.errors.homeTeamName}</div>
-                  )}
               </div>
             </div>
 
             {/* Away Team Name */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="awayTeamName">
-                  Away Team <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="text"
+                  title="Away Team"
                   id="awayTeamName"
                   placeholder="Enter away team name"
                   name="awayTeamName"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.awayTeamName}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.awayTeamName && addGameFormik.errors.awayTeamName
+                      ? addGameFormik.errors.awayTeamName
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.awayTeamName &&
-                  addGameFormik.errors.awayTeamName && (
-                    <div className="error">{addGameFormik.errors.awayTeamName}</div>
-                  )}
               </div>
             </div>
 
             {/* Field */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="fieldId">
-                  Field <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="text"
+                  title="Field"
                   id="fieldId"
                   placeholder="Enter field id"
                   name="fieldId"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.fieldId}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.fieldId && addGameFormik.errors.fieldId
+                      ? addGameFormik.errors.fieldId
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.fieldId && addGameFormik.errors.fieldId && (
-                  <div className="error">{addGameFormik.errors.fieldId}</div>
-                )}
               </div>
             </div>
 
             {/* Assign User */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="assignUserId">
-                  Scorekeeper <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="text"
+                  title="Scorekeeper"
                   id="assignUserId"
                   placeholder="Enter scorekeeper ID"
                   name="assignUserId"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.assignUserId}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.assignUserId && addGameFormik.errors.assignUserId
+                      ? addGameFormik.errors.assignUserId
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.assignUserId &&
-                  addGameFormik.errors.assignUserId && (
-                    <div className="error">{addGameFormik.errors.assignUserId}</div>
-                  )}
               </div>
             </div>
 
             {/* Start Date */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="startDateTime">
-                  Start Date <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="datetime-local"
+                  title="Start Date"
                   id="startDateTime"
                   name="startDateTime"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.startDateTime}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.startDateTime && addGameFormik.errors.startDateTime
+                      ? addGameFormik.errors.startDateTime
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.startDateTime &&
-                  addGameFormik.errors.startDateTime && (
-                    <div className="error">{addGameFormik.errors.startDateTime}</div>
-                  )}
               </div>
             </div>
 
             {/* End Date */}
             <div className={form.profileformcol}>
               <div className="formgrp">
-                <label htmlFor="endDateTime">
-                  End Date <span style={{ color: "red" }}>*</span>
-                </label>
                 <Input
                   type="datetime-local"
+                  title="End Date"
                   id="endDateTime"
                   name="endDateTime"
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.endDateTime}
+                  required
+                  errorMsg={
+                    addGameFormik.touched.endDateTime && addGameFormik.errors.endDateTime
+                      ? addGameFormik.errors.endDateTime
+                      : ""
+                  }
                 />
-                {addGameFormik.touched.endDateTime &&
-                  addGameFormik.errors.endDateTime && (
-                    <div className="error">{addGameFormik.errors.endDateTime}</div>
-                  )}
               </div>
             </div>
           </div>

@@ -23,6 +23,7 @@ const UpdateUser = React.lazy(() => import("./pages/admin/UpdateUser"));
 const Users = React.lazy(() => import("./pages/admin/Users"));
 const Fileds = React.lazy(() => import("./pages/admin/field/list"));
 const Games = React.lazy(() => import("./pages/game/list"));
+const UpdateGame = React.lazy(() => import("./pages/game/UpdateGame"));
 // const Pages = React.lazy(() => import("./pages/admin/Pages"));
 
 // const AddPage = React.lazy(() => import("./pages/admin/AddPage"));
@@ -47,7 +48,8 @@ function App() {
               
               <Route path='/admin/field' element={<Fileds />} />
               <Route path='/game' element={<Games />} />
-              
+              <Route path='/game/add' element={<UpdateGame />} />
+              <Route path='/game/update/:id?' element={<UpdateGame />} />
               {/* <Route path='/admin/pages' element={<Pages />} />
               <Route path='/admin/page/edit/:id?' element={<AddPage />} /> */}
             </Route>
