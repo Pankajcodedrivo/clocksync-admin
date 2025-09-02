@@ -13,6 +13,7 @@ import del from "../../assets/images/ic_outline-delete.png";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { environment } from "../../config/environment";
+import { getScoreKeeperCode } from "../../service/apis/scoreKeeper.api";
 const Games = () => {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.authSlice.user);
@@ -24,6 +25,18 @@ const Games = () => {
   const [addClass, setAddClass] = useState<string>("");
   const rowsPerPage = 10;
   const adminGamesHeader = getAdminGamesHeader(user?.role);
+
+  // inside your component
+  const handleOpenScoreKeeper = async (gameId: string) => {
+    try {
+      const data = await getScoreKeeperCode(gameId);
+      const url = `${environment.forntend_url}/score-keeper?code=${data.code}`;
+      window.open(url, "_blank");
+    } catch (err: any) {
+      console.error("Error opening ScoreKeeper:", err);
+    }
+  };
+
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
 const fetchData = async (page = currentPage, term = searchTerm) => {
@@ -162,34 +175,39 @@ useEffect(() => {
               totalData={totalResult}
               deleteMessage="Are you sure to delete this field?"
               handleDelete={handleDelete}
-             renderActions={(row: any) => (
-  user?.role === "admin" ? (
-    <>
-      <p>
-        <Link to={`/game/update/${row._id}`}>
-          <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
-        </Link>
-      </p>
-      <p>
-        <span data-title="delete" data-id={row._id}>
-          <img src={del} alt="Delete" />
-        </span>
-      </p>
-      
-    </>
-  ) : (
-    <p>
-     <Link 
-  to={environment.forntend_url} 
-  target="_blank" 
-  rel="noopener noreferrer"
->
-      <FontAwesomeIcon icon={faEye} className="icon-themes" />
-      </Link>
-    </p>
-  )
-)}
-
+              renderActions={(row: any) => {
+                if (user?.role === "admin") {
+                  return (
+                    <>
+                      <p>
+                        <Link to={`/game/update/${row._id}`}>
+                          <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
+                        </Link>
+                      </p>
+                      <p>
+                        <span data-title="delete" data-id={row._id}>
+                          <img src={del} alt="Delete" />
+                        </span>
+                      </p>
+                    </>
+                  );
+                } else {
+                  // 👇 non-admin (scorekeeper view)
+                  return (
+                    <p>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault(); // prevent default navigation
+                            handleOpenScoreKeeper(row._id);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faEye} className="icon-themes" />
+                        </a>
+                    </p>
+                  );
+                }
+              }}
             />
           )}
         </div>
