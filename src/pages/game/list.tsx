@@ -29,10 +29,16 @@ const Games = () => {
   // inside your component
   const handleOpenScoreKeeper = async (gameId: string) => {
     try {
+      setLoading(true);
+      setAddClass("add_blur");
       const data = await getScoreKeeperCode(gameId);
       const url = `${environment.forntend_url}/score-keeper?code=${data.code}`;
+      setLoading(false);
+      setAddClass("");
       window.open(url, "_blank");
     } catch (err: any) {
+      setLoading(false);
+      setAddClass("");
       console.error("Error opening ScoreKeeper:", err);
     }
   };
@@ -109,7 +115,7 @@ useEffect(() => {
         <div className="search-wrap">
           <div className="button-holder-wrap">
             {(user?.role==='admin')?
-            <Link to="/game/add"><button className="custom-button">Add Game</button></Link>
+            <Link to="/games/add"><button className="custom-button">Add Game</button></Link>
             :""}
               
           </div>
@@ -180,7 +186,7 @@ useEffect(() => {
                   return (
                     <>
                       <p>
-                        <Link to={`/game/update/${row._id}`}>
+                        <Link to={`/games/update/${row._id}`}>
                           <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
                         </Link>
                       </p>

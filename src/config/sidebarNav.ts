@@ -7,17 +7,17 @@ const sidebarNav = [
     role: ["admin"],
   },
   {
-    link: "/admin/field",
-    section: "field",
+    link: "/admin/fields",
+    section: "fields",
     icon: "mdi:stadium", //width:"20"
-    text: "Field",
+    text: "Fields",
     role: ["admin"],
   },
   {
-    link: "/game",
-    section: "game",
+    link: "/games",
+    section: "games",
     icon: "mdi:gamepad", //width:"20"
-    text: "Game",
+    text: "Games",
     role: ["admin","scorekeeper"],
   },
   {

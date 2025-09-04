@@ -38,10 +38,11 @@ function Sidebar() {
 
   useEffect(() => {
     let curPath = window.location.pathname.split("/")[2] || ""; // Ensure curPath is a string
-    if(!curPath){
-      curPath = window.location.pathname.split("/")[1] || "";
+    const newCurPath = window.location.pathname.split("/")[1] || "";
+    if(newCurPath ==='games'){
+       setUrlActive(newCurPath);
+       curPath =newCurPath;
     }
-    setUrlActive(curPath);
     const activeItem = sidebarNav.findIndex((item) => item.section === curPath);
     setActiveIndex(activeItem !== -1 ? activeItem : 0); // Default to 0 if not found
   }, [location, sidebarNav]);
@@ -58,6 +59,7 @@ function Sidebar() {
       </div>
 
       <div className={classes.sidebar__menu}>
+        {urlActive}
         {filteredNav.map((nav, index) => (
           <Link
             to={nav.link}

@@ -112,7 +112,7 @@ const UpdateGame = () => {
       <div className="profile-card">
         <div className={form.profile_flex}>
           <h2>{id ? "Update Game" : "Add Game"}</h2>
-          <Link to="/admin/games" state={{ fromPage: location.state?.fromPage }}>
+          <Link to="/games" state={{ fromPage: location.state?.fromPage }}>
             <button className="custom-button">Back</button>
           </Link>
         </div>

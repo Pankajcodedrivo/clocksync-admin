@@ -46,10 +46,10 @@ function App() {
               <Route path='/admin/users' element={<Users />} />
               <Route path='/admin/users/update-user/:id?'element={<UpdateUser />}/>
               
-              <Route path='/admin/field' element={<Fileds />} />
-              <Route path='/game' element={<Games />} />
-              <Route path='/game/add' element={<UpdateGame />} />
-              <Route path='/game/update/:id?' element={<UpdateGame />} />
+              <Route path='/admin/fields' element={<Fileds />} />
+              <Route path='/games' element={<Games />} />
+              <Route path='/games/add' element={<UpdateGame />} />
+              <Route path='/games/update/:id?' element={<UpdateGame />} />
               {/* <Route path='/admin/pages' element={<Pages />} />
               <Route path='/admin/page/edit/:id?' element={<AddPage />} /> */}
             </Route>
