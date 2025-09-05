@@ -40,9 +40,9 @@ function Sidebar() {
     let curPath = window.location.pathname.split("/")[2] || ""; // Ensure curPath is a string
     const newCurPath = window.location.pathname.split("/")[1] || "";
     if(newCurPath ==='games'){
-       setUrlActive(newCurPath);
        curPath =newCurPath;
     }
+    setUrlActive(curPath);
     const activeItem = sidebarNav.findIndex((item) => item.section === curPath);
     setActiveIndex(activeItem !== -1 ? activeItem : 0); // Default to 0 if not found
   }, [location, sidebarNav]);
@@ -64,7 +64,7 @@ function Sidebar() {
           <Link
             to={nav.link}
             key={`nav-${index}`}
-            className={`${classes.sidebar__menu__item} ${ (activeIndex === index || urlActive===nav.section) ? 'active' : '' } sidenav-li`}
+            className={`${classes.sidebar__menu__item} ${ ( urlActive===nav.section) ? 'active' : '' } sidenav-li`}
             onClick={openSidebarHandler}
           >
             <div className={classes.sidebar__menu__item__icon}>

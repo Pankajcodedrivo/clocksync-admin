@@ -90,14 +90,14 @@ const validationSchema = yup.object({
           const response = await updateGame( formData,id);
           if (response.game) {
             toast.success(response.message);
-            navigate("/game");
+            navigate("/games");
           }
         } else {
           const response = await addGame(formData);
           if (response.game) {
             toast.success(response.message);
             resetForm();
-            navigate("/game");
+            navigate("/games");
           }
         }
       } catch (error) {
