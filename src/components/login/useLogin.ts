@@ -46,7 +46,7 @@ export const useLogin = () => {
         if (role === "admin" ) {
           navigate("/admin/dashboard");
         }else if(role==="scorekeeper"){
-          navigate("/game");
+          navigate("/games");
         } else {
           navigate("/login");
         }
