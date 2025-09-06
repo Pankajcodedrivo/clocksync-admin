@@ -416,3 +416,45 @@ input {
         width: 50%;
     }
 }
+// 6-9-2025
+.MuiPagination-ul li button {
+  color: #fff;
+}
+.upload-logo {
+    border: 1px solid #fff;
+    img {
+        filter: invert(56%) sepia(22%) saturate(2261%) hue-rotate(357deg) brightness(96%) contrast(102%);
+        object-fit: contain;
+        border: 0;
+        padding: 30px;
+    }
+}
+.dashboard-card-otr {
+    margin: 0 -12px;
+}
+.dashboard-card-innr {
+    padding: 0 12px;
+    width: calc(100% / 3);
+    .dashboard-card-box {
+        display: block;
+        background: #374151;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .dashboard-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        margin-bottom: 20px;
+        background: var(--accent);
+        font-size: 30px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+._sidebar__menu_p2jax_71 {
+    text-transform: capitalize;
+}

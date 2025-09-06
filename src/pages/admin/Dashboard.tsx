@@ -42,11 +42,34 @@ function Dashboard() {
   // }
 
   return (
-    <>
-      <div className="dashboard-card">
-      <h1>Coming Soon...</h1>
+    <div className="dashboard-card">
+      <div className="row dashboard-card-otr">
+        <div className="col-md-4 dashboard-card-innr">
+          <a href="#" className="dashboard-card-box">
+              <span className="dashboard-icon">
+               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" className="iconify iconify--ph" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path fill="currentColor" d="M125.18 156.94a64 64 0 1 0-82.36 0a100.23 100.23 0 0 0-39.49 32a12 12 0 0 0 19.35 14.2a76 76 0 0 1 122.64 0a12 12 0 0 0 19.36-14.2a100.33 100.33 0 0 0-39.5-32M44 108a40 40 0 1 1 40 40a40 40 0 0 1-40-40m206.1 97.67a12 12 0 0 1-16.78-2.57A76.31 76.31 0 0 0 172 172a12 12 0 0 1 0-24a40 40 0 1 0-10.3-78.67a12 12 0 1 1-6.16-23.19a64 64 0 0 1 57.64 110.8a100.23 100.23 0 0 1 39.49 32a12 12 0 0 1-2.57 16.73"></path></svg>
+              </span>
+              <h3>Total scorekeepers</h3>
+          </a>
+        </div>
+        <div className="col-md-4 dashboard-card-innr">
+          <a href="#" className="dashboard-card-box">
+              <span className="dashboard-icon">
+               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" className="iconify iconify--mdi" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5L3 7V3zm11-2v4l4-2zm-7-1v4l4-2zm-6 8c1.4.5 3.8 1 7 1s5.6-.5 7-1c0-.2-2.8-1-7-1s-7 .9-7 1m10 7H9v4.9c-4.1-.4-7-1.5-7-2.9v-9c0-1.7 4.5-3 10-3s10 1.3 10 3v9c0 1.3-2.9 2.5-7 2.9z"></path></svg>
+              </span>
+              <h3>Total fields</h3>
+          </a>
+        </div>
+        <div className="col-md-4 dashboard-card-innr">
+          <a href="#" className="dashboard-card-box">
+              <span className="dashboard-icon">
+               <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" className="iconify iconify--mdi" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m16.5 9l-3 3l3 3H22V9M9 16.5V22h6v-5.5l-3-3M7.5 9H2v6h5.5l3-3M15 7.5V2H9v5.5l3 3z"></path></svg>
+              </span>
+              <h3>Total games</h3>
+          </a>
+        </div>
       </div>
-    </>
+    </div>
     // <section className="dashboard-holder">
     //   <h1 className='title'>{t("Welcome to your dashboard")}</h1>
     //   <div className="dashboard-menu-wrapper">
