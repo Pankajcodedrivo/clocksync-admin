@@ -7,10 +7,12 @@ import dashboard from "../assets/images/Revenue-cuate.svg";
 import img404 from "../assets/images/Oops_404_Error_with_a_broken_robot_cuate.svg";
 import homeNoImage from "../assets/images/icon-ngo.svg";
 import awayNoImage from "../assets/images/icon-away.svg";
+import noImageData from "../assets/images/no-image-found.svg";
 
 const images = {
   logo: digiLogo,
   avt: avatar,
+  noImageData:noImageData,
   noimage: noImage,
   noid: noId,
   logKey: resetPassImg,

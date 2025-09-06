@@ -253,10 +253,7 @@ useEffect(() => {
         label: "Download",
         type: "primary",
         onClick: () => {
-          const link = document.createElement("a");
-            link.href = selectedData.qrCodeUrl; // fixed
-          link.download = `qr-${selectedData._id}.png`;
-          link.click();
+           window.open(selectedData.qrCodeUrl, "_blank");
         },
       },
       { label: "Close", type: "secondary", onClick: () => setQRShowModal(false) },

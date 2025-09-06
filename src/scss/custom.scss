@@ -17,6 +17,31 @@
     --helvetica:'helvetica';
     --helveticacompressed:'helveticacompressed';
 }
+/* Works in Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;              /* width of vertical scrollbar */
+  height: 8px;             /* height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;     /* scrollbar track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4cafef; /* scrollbar handle color */
+  border-radius: 10px;
+  border: 2px solid #1e1e1e; /* gives space around handle */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #1da1f2; /* hover color */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;            /* auto | thin */
+  scrollbar-color: #4cafef #1e1e1e; /* thumb | track */
+}
 
 .mt-20 {
     margin-top: 20px;
@@ -95,7 +120,34 @@ input {
     outline:none;
   }  
 }
+.settings .upbtn{
+    position: absolute;
+}
+.settings .upbtn input {
+    opacity: 0;
+    width: 350px;
+    height: 200px;
+}
 
+.settings .upbtn .overlay{
+    width: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    padding: 0 10px 40px 0;
+}
+.settings .upbtn .overlay .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+}
 .custom-input-field label {
     margin-bottom: 10px;
     display: inline-block;
