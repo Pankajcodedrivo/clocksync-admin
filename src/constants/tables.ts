@@ -1,9 +1,26 @@
+import React from "react";
+import  images  from "../constants/images";
 export const adminUsersHeader = [
   "Profile Image",
   "Name",
   "Email",
   "Role",
   "Actions",
+];
+
+export const adminScorekeeperHeader = [
+  {
+    key: "profileimageurl",
+    label: "Profile Image",
+    render: (url: string) =>
+      React.createElement("img", {
+        src: url || images.noimage,
+        alt: "Profile",
+        style: { width: "40px", height: "40px", borderRadius: "50%" },
+      }),
+  },
+  { key: "fullName", label: "Name" },
+  { key: "email", label: "Email" },
 ];
 
 export const adminFieldsHeader  = [

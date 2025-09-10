@@ -176,7 +176,7 @@ function CommonTable<T extends { _id: string }>({
           onChange={(_, page) => changePage?.(page)}
           sx={{
             ".MuiPaginationItem-page": {
-              backgroundColor: "#fff",
+              backgroundColor: "#374151",
               color: "#414141",
               width: "44px",
               height: "44px",

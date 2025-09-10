@@ -7,6 +7,20 @@ const sidebarNav = [
     role: ["admin"],
   },
   {
+    link: "/admin/users",
+    section: "users",
+    icon: "ph:users-bold", //width:"20"
+    text: "Users",
+    role: ["admin"],
+  },
+  {
+    link: "/admin/scorekeeper",
+    section: "scorekeeper",
+    icon: "ph:users-bold", //width:"20"
+    text: "Subcribe Scorekeeper",
+    role: ["admin"],
+  },
+  {
     link: "/admin/fields",
     section: "fields",
     icon: "mdi:stadium", //width:"20"
@@ -20,13 +34,7 @@ const sidebarNav = [
     text: "Games",
     role: ["admin","scorekeeper"],
   },
-  {
-    link: "/admin/users",
-    section: "users",
-    icon: "ph:users-bold", //width:"20"
-    text: "Users",
-    role: ["admin"],
-  },
+  
   // {
   //   link: "/admin/pages",
   //   section: "pages",

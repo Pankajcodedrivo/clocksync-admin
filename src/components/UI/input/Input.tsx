@@ -22,7 +22,9 @@ interface Props {
   title?: string;
   autoComplete?: string;
   rightIcon?: React.ReactNode; // Add this line to define the rightIcon prop
-  width?:string
+  width?:string,
+  labelAfter?:string
+  checked?: boolean; 
 }
 
 interface IImperativeHandler {
@@ -58,10 +60,12 @@ const Input = React.forwardRef<IImperativeHandler, Props>((props, ref) => {
       : "" // 👈 if width is not set
   }`}
     >
-      <label htmlFor={props.title ?? props.id}>
-        {props.title ?? t(`${props.id}`)}{" "}
-        {props.required ? <span style={{ color: "red" }}>*</span> : null}
-      </label>
+      {props.title && (
+        <label htmlFor={props.title}>
+          {props.title}
+          {props.required && <span style={{ color: "red" }}>*</span>}
+        </label>
+      )}
       <div className={classes.inputContainer}>
         {" "}
         {/* Wrap input and icon */}
@@ -76,11 +80,18 @@ const Input = React.forwardRef<IImperativeHandler, Props>((props, ref) => {
           value={props.value}
           readOnly={props.readonly || false}
           disabled={props.disabled || false}
+           checked={props.checked} 
           onChange={props.onChange}
           onBlur={props.onChange}
           autoComplete={props.autocomplete || "off"}
           className={classes.input} // Apply any specific styles for input
         />
+         {(props.type === "checkbox" || props.type === "radio") && props.labelAfter && (
+            <label htmlFor={props.id} className={classes.inlineLabel}>
+              {props.labelAfter}
+             
+            </label>
+          )}
         {props.rightIcon && (
           <span className={classes.rightIcon}>{props.rightIcon}</span> // Render right icon
         )}

@@ -19,7 +19,7 @@
 }
 /* Works in Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 8px;              /* width of vertical scrollbar */
+  width: 2px;              /* width of vertical scrollbar */
   height: 8px;             /* height of horizontal scrollbar */
 }
 
@@ -50,8 +50,21 @@
 .mt-30 {
     margin-top: 30px;
 }
-
-
+.full-width{
+    min-width: 600px;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+      margin-top: 20px;
+}
+.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
 .table-btn, .custom-button {
     padding: 15px 25px;
     background: var(--clr-accent);
@@ -120,24 +133,40 @@ input {
     outline:none;
   }  
 }
-.settings .upbtn{
-    position: absolute;
-}
-.settings .upbtn input {
-    opacity: 0;
-    width: 350px;
+
+.settings .uploadimage input {
+   width: 350px;
     height: 200px;
+     position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  opacity: 0;
+  bottom: 0;
+  top: 0;
+}
+.settings textarea{
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 1px solid #374151;
+    outline: none;
+    color: #fff;
+    background-color: #374151 !important;
+    border-radius: 8px;
+}
+.settings .MuiSwitch-track{
+    background-color: #ff8400;  
 }
 
-.settings .upbtn .overlay{
-    width: 100%;
+.settings .uploadimage .overlay{
+    width: 350px;
     border-radius: 50%;
     display: flex;
     align-items: end;
     justify-content: end;
-    padding: 0 10px 40px 0;
+    position: relative;
 }
-.settings .upbtn .overlay .icon {
+.settings .uploadimage .overlay .icon {
     width: 30px;
     height: 30px;
     border-radius: 100%;
@@ -147,6 +176,8 @@ input {
     justify-content: center;
     color: #fff;
     cursor: pointer;
+    position: absolute;
+    margin: 10px;
 }
 .custom-input-field label {
     margin-bottom: 10px;
@@ -423,11 +454,15 @@ input {
 .upload-logo {
     border: 1px solid #fff;
     img {
-        filter: invert(56%) sepia(22%) saturate(2261%) hue-rotate(357deg) brightness(96%) contrast(102%);
+        
         object-fit: contain;
         border: 0;
         padding: 30px;
     }
+    .no-image{
+        filter: invert(56%) sepia(22%) saturate(2261%) hue-rotate(357deg) brightness(96%) contrast(102%);   
+    }
+    
 }
 .dashboard-card-otr {
     margin: 0 -12px;

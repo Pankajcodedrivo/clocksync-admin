@@ -1,36 +1,35 @@
 import React from "react";
-
 import SummaryBox from "./SummaryBox";
-import { useTranslation } from "react-i18next";
 import classes from "./Summary.module.scss";
 import { IsummData } from "../../interfaces/IsummData";
 
-const summaryData: IsummData[] = [
-  {
-    icon: "akar-icons:shopping-bag",
-    text: "thisMonthSales",
-    amount: "salesAmount",
-    currency: "currency",
-  },
-  {
-    icon: "icon-park-outline:transaction-order",
-    text: "thisMonthOrders",
-    amount: "orderAmount",
-    currency: "",
-  },
-  {
-    icon: "jam:coin",
-    text: "thisMonthRevenue",
-    amount: "revenueAmount",
-    currency: "currency",
-  },
-];
+function Summary(props: any) {
+  const { data } = props; // destructure your incoming data
 
-function Summary() {
-  const { t } = useTranslation();
+  // Build dynamic summaryData from props
+  const summaryData: IsummData[] = [
+    {
+      icon: "ph:users-bold",
+      text: "Total Scorekeepers",
+      amount: data?.totalUsers?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "mdi:stadium",
+      text: "Total Fields",
+      amount: data?.totalFields?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "mdi:gamepad",
+      text: "Total Games",
+      amount: data?.totalGames?.toString() || "0",
+      currency: "",
+    },
+  ];
+
   return (
     <section className={classes.summary}>
-      <p className='subTitle'>{t("summary")}</p>
       <div className={classes.summary__box}>
         {summaryData.map((item) => (
           <SummaryBox key={item.text} item={item} />

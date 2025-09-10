@@ -1,6 +1,8 @@
 @use "../../../scss/abstracts/" as *;
+
+/* Responsive widths */
 .full {
-  width:100%; // takes full row
+  width: 100%; // full row
 }
 
 .half {
@@ -10,30 +12,29 @@
 .third {
   width: calc(33.333% - 16px); // 3 per row
 }
+
+/* Main form control */
 .form__control {
   position: relative;
   margin-bottom: 1rem;
+
   @media screen and (max-width: 600px) {
     margin-bottom: 20px;
   }
-  // label {
-  //   position: absolute;
-  //   top: -30%;
-  //   left: 10px;
-  //   background-color: var(--bgc);
-  //   padding: 0.3rem;
-  //   white-space: nowrap;
-  // }
 
-  input {
-        width: 100%;
+  /* Standard input fields */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"] {
+    width: 100%;
     padding: 1rem 1.5rem;
     border: 1px solid #374151;
-    outline: #fff;
+    outline: none;
     color: #fff;
-    background-color: #374151!important;
+    background-color: #374151 !important;
     border-radius: $smallBorderRadius;
-    //min-width: 300px;
+
     @media screen and (max-width: 1440px) {
       padding: 11px 1.5rem;
     }
@@ -41,13 +42,40 @@
       min-width: auto;
     }
   }
+  input[type="checkbox"],
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #CAA348;
+      margin: 0px 10px 0px 18px;
+    }
+
+  /* Inline label for checkbox/radio */
+  .inlineLabel {
+        font-size: 16px;
+
+    
+
+    label {
+      margin: 0;
+      cursor: pointer;
+    }
+  }
 }
 
+/* RTL support */
 html[dir="rtl"] {
   .form__control {
     label {
       left: auto;
       right: 10px;
+    }
+    .inlineLabel {
+      flex-direction: row-reverse;
+      label {
+        text-align: right;
+      }
     }
   }
 }

@@ -395,7 +395,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             onChange={handlePageChange}
             sx={{
               ".MuiPaginationItem-page": {
-                backgroundColor: "#fff",
+                backgroundColor: "#374151",
                 color: "#414141",
                 width: "44px",
                 height: "44px",

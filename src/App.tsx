@@ -16,7 +16,9 @@ const ForgotPassword = React.lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const FirstTimeChangePassword = React.lazy(() => import("./pages/FirstTimeChangePassword"));
-const DashboardPage = React.lazy(() => import("./pages/admin/Dashboard"));
+const ScoreKeeperList = React.lazy(() => import("./pages/scorekeeper/list"));
+
+
 
 const UpdateUser = React.lazy(() => import("./pages/admin/UpdateUser"));
 
@@ -41,8 +43,9 @@ function App() {
               <Route path='/profile' element={<FormCus />} />
               <Route path='/changePassword' element={<ChangePass />} />
               <Route path='/admin/settings' element={<Settings />} />
+              <Route path='/admin/scorekeeper' element={<ScoreKeeperList />} />
 
-              <Route path='/admin/dashboard' element={<DashboardPage />} />
+              <Route path='/admin/dashboard' element={<Dashboard />} />
               <Route path='/admin/users' element={<Users />} />
               <Route path='/admin/users/update-user/:id?'element={<UpdateUser />}/>
               

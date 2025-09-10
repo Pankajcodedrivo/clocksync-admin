@@ -11,6 +11,7 @@ interface FormValues {
   password?: string;
   profileImage: string | null;
   role: string ;
+  isSubscribedByAdmin:boolean
 }
 export const useAddUser = (id?: string) => {
   const navigate = useNavigate();
@@ -40,14 +41,15 @@ export const useAddUser = (id?: string) => {
       email: "",
       password: "",
       profileImage: null,
-      role:"admin"
+      role:"admin",
+      isSubscribedByAdmin:false
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log(values);
       setLoading(true);
       const formData = new FormData();
       formData.append("role", values.role);
+      formData.append("isSubscribedByAdmin", String(values.isSubscribedByAdmin));
       formData.append("fullName", values.fullName);
       if (values.profileImage) {
         formData.append("profileimageurl", values.profileImage);

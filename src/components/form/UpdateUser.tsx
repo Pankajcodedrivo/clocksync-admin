@@ -28,16 +28,18 @@ const UpdateUser = () => {
         try {
           const userData = await userDetails(id);
           if (userData.status === 200) {
-            //console.log(userData);
+            console.log(userData);
             addUserFormik.setValues({
               fullName: userData.userData?.fullName || "",
               email: userData.userData?.email || "",
               profileImage: userData.userData?.profileimageurl || "",
               password: "",
-              role: userData.userData?.role || "admin"
+              role: userData?.userData?.role || "admin",
+              isSubscribedByAdmin:userData?.userData?.isSubscribedByAdmin
             });
             setImagePreview(userData.userData?.profileimageurl || "");
           }
+          console.log(addUserFormik);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -196,12 +198,32 @@ const UpdateUser = () => {
               <div className='formgrp'>
                 <label htmlFor='profileImage'>Role</label>
                 <select id='role'
-                    name='role'  onChange={addUserFormik.handleChange}>
+                    name='role'  
+                    value={addUserFormik.values.role} // ✅ bind Formik value
+                    onChange={addUserFormik.handleChange} // Formik change handler
+                    onBlur={addUserFormik.handleBlur} // optional for touched/validation
+                    >
                   <option value="admin">Admin</option>
                   <option value="scorekeeper">Score Keeper</option>
                 </select>
               </div>
             </div>
+            <div>
+              <div className='checkbox full-width'>
+                <Input 
+                  type={"checkbox"}
+                  width="full"
+                  id='isSubscribedByAdmin'
+                  name='isSubscribedByAdmin'
+                  labelAfter="Subscribe By Admin"
+                  onChange={addUserFormik.handleChange}
+                   checked={addUserFormik.values.isSubscribedByAdmin}
+                  onBlur={addUserFormik.handleBlur}
+                   />
+                
+              </div>
+            </div>
+            
             
           </div>
 
