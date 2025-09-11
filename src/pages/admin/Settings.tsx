@@ -246,7 +246,7 @@ function Settings() {
                 title="Ad Slot"
                 id="Ad_Slot"
                 placeholder="Enter Ad Slot ID"
-                value={placement.googleAdSense.slot || ""}
+                value={placement?.googleAdSense?.slot || ""}
                 onChange={(e: any) => handleGoogleAdChange(device, pos, "slot", e.target.value)}
               />
               <Input
@@ -254,7 +254,7 @@ function Settings() {
                 title="Width"
                 id="Width"
                 placeholder="Enter width (px)"
-                value={placement.googleAdSense.width || ""}
+                value={placement?.googleAdSense?.width || ""}
                 onChange={(e: any) => handleGoogleAdChange(device, pos, "width", e.target.value)}
               />
               <Input
@@ -262,7 +262,7 @@ function Settings() {
                 title="Height"
                 id="Height"
                 placeholder="Enter height (px)"
-                value={placement.googleAdSense.height || ""}
+                value={placement?.googleAdSense?.height || ""}
                 onChange={(e: any) => handleGoogleAdChange(device, pos, "height", e.target.value)}
               />
             </>
