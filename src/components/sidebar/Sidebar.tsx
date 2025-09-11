@@ -59,7 +59,7 @@ function Sidebar() {
       </div>
 
       <div className={classes.sidebar__menu}>
-        {urlActive}
+        
         {filteredNav.map((nav, index) => (
           <Link
             to={nav.link}

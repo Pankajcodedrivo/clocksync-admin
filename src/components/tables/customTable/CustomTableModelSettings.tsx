@@ -307,7 +307,7 @@ const CustomTableModelSettings: React.FC<ICustomModelSettingstable> = ({
             sx={{
               ".MuiPaginationItem-page": {
                 backgroundColor: "#374151",
-                color: "#414141",
+                color: "#fff",
                 width: "44px",
                 height: "44px",
                 borderRadius: "50%",
