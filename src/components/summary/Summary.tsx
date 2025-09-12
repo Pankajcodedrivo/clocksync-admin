@@ -10,8 +10,26 @@ function Summary(props: any) {
   const summaryData: IsummData[] = [
     {
       icon: "ph:users-bold",
-      text: "Total Scorekeepers",
+      text: "Total User",
       amount: data?.totalUsers?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "ph:users-bold",
+      text: "Total Admin",
+      amount: data?.totalAdmin?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "ph:users-bold",
+      text: "Total ScoreKeeper",
+      amount: data?.totalScorekeeper?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "ph:users-bold",
+      text: "Total Subscriber",
+      amount: data?.totalSubscribeUser?.toString() || "0",
       currency: "",
     },
     {
@@ -26,6 +44,7 @@ function Summary(props: any) {
       amount: data?.totalGames?.toString() || "0",
       currency: "",
     },
+    
   ];
 
   return (

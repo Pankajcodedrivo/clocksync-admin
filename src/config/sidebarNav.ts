@@ -13,13 +13,7 @@ const sidebarNav = [
     text: "Users",
     role: ["admin"],
   },
-  {
-    link: "/admin/scorekeeper",
-    section: "scorekeeper",
-    icon: "ph:users-bold", //width:"20"
-    text: "Subcribe Scorekeeper",
-    role: ["admin"],
-  },
+  
   {
     link: "/admin/fields",
     section: "fields",
@@ -42,6 +36,13 @@ const sidebarNav = [
   //   text: "Pages",
   //   role: ["admin"],
   // },
+  {
+    link: "/admin/scorekeeper",
+    section: "scorekeeper",
+    icon: "ph:users-bold", //width:"20"
+    text: "Subcribe Scorekeeper",
+    role: ["admin"],
+  },
   {
     link: "/admin/settings",
     section: "settings",

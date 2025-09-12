@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import Card from "../UI/card/Card";
 import classes from "./SummaryBox.module.scss";
 const SummaryBox: React.FC<{ item: Props }> = (props) => {
-  console.log(props.item.amount);
+
   const { t } = useTranslation();
   return (
     <div className={classes.summary__box}>
