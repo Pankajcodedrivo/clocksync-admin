@@ -69,7 +69,7 @@ function CommonTable<T extends { _id: string }>({
       {/* 📊 Table */}
       <TableContainer className={dataTable.tbodymain} component={Paper}>
         <Table
-          sx={{ minWidth: 1000 }}
+          sx={{ minWidth: 850 }}
           aria-label="dynamic table"
           style={{
             borderCollapse: "separate",
