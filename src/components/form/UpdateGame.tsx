@@ -39,12 +39,19 @@ const UpdateGame = () => {
     }
   }, [id, location.pathname, navigate]);
 
+  const utcToLocalString = (utcString:any) => {
+    const date = new Date(utcString);       // UTC string from server
+    const tzOffset = date.getTimezoneOffset(); // in minutes
+
+    // Optional: get local YYYY-MM-DDTHH:mm format for input fields
+    const localDate = new Date(date.getTime() - tzOffset * 60 * 1000);
+    return localDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm" for <input type="datetime-local">
+  };
+
   const formatDateForInput = (dateString: string) => {
     if (!dateString) return "";
-    const date = new Date(dateString);
-    const offset = date.getTimezoneOffset();
-    const localDate = new Date(date.getTime() - offset * 60000); // adjust timezone
-    return localDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm"
+    const date = utcToLocalString(dateString);
+    return date; // "YYYY-MM-DDTHH:mm"
   };
 
   // Fetch game details if update

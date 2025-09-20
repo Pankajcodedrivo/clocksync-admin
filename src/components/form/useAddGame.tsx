@@ -21,6 +21,12 @@ export const useAddGame = (id?: string) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const localToUTCString = (localDateTime:any) => {
+  // localDateTime is a string like "2025-09-20T14:33"
+  const date = new Date(localDateTime); // JS treats it as local
+  return date.toISOString(); // Converts to UTC automatically
+};
+
   // ✅ Validation schema for game form
 const validationSchema = yup.object({
   homeTeamName: yup.string().required("Home team name is required"),
@@ -75,8 +81,9 @@ const validationSchema = yup.object({
       formData.append("awayTeamName", values.awayTeamName);
       formData.append("fieldId", values.fieldId);
       formData.append("assignUserId", values.assignUserId);
-      formData.append("startDateTime", values.startDateTime);
-      formData.append("endDateTime", values.endDateTime);
+      formData.append("startDateTime", localToUTCString(values.startDateTime));
+      formData.append("endDateTime", localToUTCString(values.endDateTime));
+      formData.append("userTimezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
       if (values.homeTeamLogo) {
         formData.append("homeTeamLogo", values.homeTeamLogo);
@@ -108,7 +115,7 @@ const validationSchema = yup.object({
       }
     },
   });
-
+  
   return {
     addGameFormik,
     loading,

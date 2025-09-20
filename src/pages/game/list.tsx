@@ -77,6 +77,15 @@ useEffect(() => {
     setCurrentPage(1); // reset to first page on new search
   };
 
+  const isGameActive = (game: any) => {
+    const now = new Date(); // local browser time
+    const start = new Date(game.startDateTime); // UTC → local
+    const end = new Date(game.endDateTime);     // UTC → local
+
+    return start.getTime() <= now.getTime() &&
+          now.getTime() <= end.getTime() &&
+          game.endGame === false;
+  };
   // 🔹 Clear search
   const clearSearch = () => {
     setSearchTerm("");
@@ -173,16 +182,16 @@ useEffect(() => {
             <LoadingSpinner />
           ) : (
             <CommonTable
-              title="Fields"
+              title="Game"
               columns={adminGamesHeader}
               bodyData={sortOrderData}
               dataCurrentPage={currentPage}
               changePage={handlePageChange}
               totalData={totalResult}
-              deleteMessage="Are you sure to delete this field?"
+              deleteMessage="Are you sure to delete this game?"
               handleDelete={handleDelete}
               renderActions={(row: any) => {
-                if (user?.role === "admin") {
+                if (user?.role === "admin") {    
                   return (
                     <>
                       <p>
@@ -190,8 +199,8 @@ useEffect(() => {
                           <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
                         </Link>
                       </p>
-                      <p>
-                        <span data-title="delete" data-id={row._id}>
+                      <p data-title="delete" data-id={row._id}>
+                        <span>
                           <img src={del} alt="Delete" />
                         </span>
                       </p>
@@ -205,8 +214,29 @@ useEffect(() => {
                           href="#"
                           onClick={(e) => {
                             e.preventDefault(); // prevent default navigation
+                            const active = isGameActive(row);
+                            if (!active) {
+                              if(!row.endGame){
+                                toast.error(
+                                  `This game will start on ${new Date(row.startDateTime).toLocaleDateString(undefined, {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })} at ${new Date(row.startDateTime).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}`
+                                );
+                                return;
+                              }else{
+                                toast.error("This game is ended.");
+                                return;
+                              }
+                              
+                            }
                             handleOpenScoreKeeper(row._id);
                           }}
+                          className="action-anch"
                         >
                           <FontAwesomeIcon icon={faEye} className="icon-themes" />
                         </a>

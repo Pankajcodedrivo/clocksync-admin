@@ -118,7 +118,6 @@ function CommonTable<T extends { _id: string }>({
                                       [key: string]: any;
                                     };
                                     let extraProps: any = {};
-
                                     if (
                                       props["data-title"] === "delete" ||
                                       props["data-id"]
@@ -127,7 +126,7 @@ function CommonTable<T extends { _id: string }>({
                                       extraProps.onClick = () =>
                                         handleClickOpen(id);
                                     }
-
+                                    
                                     return React.cloneElement(child, {
                                       ...props,
                                       ...extraProps,

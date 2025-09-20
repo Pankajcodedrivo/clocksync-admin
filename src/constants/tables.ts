@@ -39,7 +39,7 @@ export const getAdminGamesHeader = (role: any) => {
     {
       key: "startDateTime",
       label: "Start Time",
-      render: (v:any) => new Date(v).toLocaleDateString(),
+      render: (v:any) => new Date(v).toLocaleString(),
     },
     {
       key: "field.name",
