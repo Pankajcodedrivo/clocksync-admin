@@ -109,7 +109,7 @@ const validationSchema = yup.object({
         }
       } catch (error) {
         console.error("An error occurred while saving the game.", error);
-        toast.error("Failed to save game. Please try again.");
+        //toast.error("Failed to save game. Please try again.");
       } finally {
         setLoading(false);
       }

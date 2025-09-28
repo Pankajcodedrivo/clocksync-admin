@@ -28,20 +28,34 @@ const Games = () => {
 
   // inside your component
   const handleOpenScoreKeeper = async (gameId: string) => {
-    try {
-      setLoading(true);
-      setAddClass("add_blur");
-      const data = await getScoreKeeperCode(gameId);
-      const url = `${environment.forntend_url}/score-keeper?code=${data.code}`;
-      setLoading(false);
-      setAddClass("");
-      window.open(url, "_blank");
-    } catch (err: any) {
-      setLoading(false);
-      setAddClass("");
-      console.error("Error opening ScoreKeeper:", err);
-    }
-  };
+  // 1️⃣ Open a blank window immediately (Safari requires this!)
+  const newWindow = window.open("", "_blank");
+  if (!newWindow) {
+    alert("Please enable pop-ups for this website.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+    setAddClass("add_blur");
+
+    // 2️⃣ Await your API call
+    const data = await getScoreKeeperCode(gameId);
+
+    // 3️⃣ Update the new window's location
+    const url = `${environment.forntend_url}/score-keeper?code=${data.code}`;
+    newWindow.location.href = url;
+  } catch (err: any) {
+    toast.error("Error opening ScoreKeeper:", err);
+
+    // Close the blank window if something failed
+    newWindow.close();
+  } finally {
+    setLoading(false);
+    setAddClass("");
+  }
+};
+
 
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
