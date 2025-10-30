@@ -509,7 +509,7 @@ input#cpassword {
   color: #000000;
 }
 .upload-logo img {
-  width: 350px;
+  width: 100%;
   height: 200px;
   object-fit: cover;
   border: solid 2px #fff;
@@ -1064,6 +1064,9 @@ input[type="number"] {
   }
   .dashboard-menu-card {
     width: calc(100% - 25px);
+  }
+  .ad-section{
+    margin: 3px !important;
   }
 }
 .disabled-input {

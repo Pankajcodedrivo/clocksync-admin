@@ -123,7 +123,8 @@
     justify-content: center;
     font-size: 20px;
 }
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* makes it white */
   cursor: pointer;
 }
@@ -134,8 +135,33 @@ input {
   }  
 }
 
+.ad-section {
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    margin: 32px;
+}
+.no-ads {
+    margin: 10px 0;
+}
+.ad-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.tab-list {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.tab-list button{
+    background: var(--clr-primary);
+}
+.tab-list button:hover,.tab-list button.active{
+    background: var(--clr-accent);
+}
 .settings .uploadimage input {
-   width: 350px;
+   width: 100%;
     height: 200px;
      position: absolute;
   left: 0;
@@ -159,7 +185,7 @@ input {
 }
 
 .settings .uploadimage .overlay{
-    width: 350px;
+    width: 100%;
     border-radius: 50%;
     display: flex;
     align-items: end;
@@ -453,6 +479,7 @@ input {
 }
 .upload-logo {
     border: 1px solid #fff;
+    width: 100%;
     img {
         
         object-fit: contain;
@@ -498,4 +525,7 @@ input {
 }
 ._sidebar__menu_p2jax_71 {
     text-transform: capitalize;
+}
+.ml-1{
+    margin-left: 10px;
 }

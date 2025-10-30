@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link,useLocation, useNavigate, useParams } from "react-router-dom";
 import { Itable, complex, IUsersRoleTable } from "../../../interfaces/Itable";
 import { useTranslation } from "react-i18next";
 import noImage from "../../../assets/images/dummy.jpg";
@@ -31,9 +31,14 @@ import { faCircleDollarToSlot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
-    const location = useLocation();
+  const user = useSelector((state: RootState) => state.authSlice.user);
+  const location = useLocation();
+  const { currentRole } = useParams<{ currentRole: string }>(); // ✅ proper typing
+   const role = currentRole && currentRole.trim() ? currentRole : 'scorekeeper';
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
@@ -47,6 +52,11 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
   const [amount, setAmount] = useState("");
 
   const rowsPerPage = 10;
+  const navigate = useNavigate();
+
+  const handleNavigation = (path:any) => {
+    navigate(path);
+  };
 
   const handleOpenDialog = (id: string) => {
     setSelectedUserId(id);
@@ -76,6 +86,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         currentPage: currentPage,
         limit: rowsPerPage,
         search: searchQuery,
+        role:role
       };
       setLoading(true);
 
@@ -103,6 +114,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
           currentPage: currentPage,
           limit: rowsPerPage,
           search: searchTerm,
+          role:role
         };
         const refreshResponse = await userApi(bodyData);
         if (refreshResponse?.status === 200) {
@@ -123,6 +135,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         currentPage: currentPage,
         limit: rowsPerPage,
         search: searchTerm,
+        role:role
       };
       const response = await userApi(bodyData);
       if (response?.status === 200) {
@@ -142,6 +155,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         limit: rowsPerPage,
         currentPage: 1,
         search: "",
+        role:role
       };
       setLoading(true);
       const response = await userApi(bodyData);
@@ -170,6 +184,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         currentPage: page,
         limit: rowsPerPage,
         search: searchTerm,
+        role:role
       };
 
       const response = await userApi(bodyData);
@@ -242,6 +257,19 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
           addClass ? dataTable[addClass] : ""
         } colorAction`}
       >
+        {user?.role==='admin'?
+        <div className="tab-list">
+            <button className={`table-btn ${role === 'scorekeeper' ? 'active' : ''}`} onClick={() => handleNavigation('/admin/users/scorekeeper')}>
+              ScoreKepper
+            </button>
+            <button className={`table-btn ${role === 'event-director' ? 'active' : ''}`} onClick={() => handleNavigation('/admin/users/event-director')}>
+             Event Director
+            </button>
+            <button className={`table-btn ${role === 'admin' ? 'active' : ''}`} onClick={() => handleNavigation('/admin/users/admin')}>
+              Admin
+            </button>
+        </div>
+          :null }
         {/* Add User Button */}
         <div className='search-wrap'>
           <Link to='/admin/users/update-user/'>
@@ -302,15 +330,18 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             >
               <TableHead>
                 <TableRow>
-                  {headData.map((item, index) => (
-                    <TableCell
-                      align='left'
-                      key={index}
-                      onClick={() => handleSort(item)}
-                    >
-                      {ucwords(item)}
-                    </TableCell>
-                  ))}
+                  {headData.map((item, index) =>
+                    // If the item is 'CreatedBy' and the user is NOT admin, skip rendering
+                    item === 'CreatedBy' && user?.role !== 'admin' ? null : (
+                      <TableCell
+                        align="left"
+                        key={index}
+                        onClick={() => handleSort(item)}
+                      >
+                        {ucwords(item)}
+                      </TableCell>
+                    )
+                  )}
                 </TableRow>
               </TableHead>
 
@@ -344,8 +375,13 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         </TableCell>
                         <TableCell align='left'>{row?.email}</TableCell>
                         <TableCell align='left'>
-                          {row.role}
+                         {row.role?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) ?? ''}
                         </TableCell>
+                        {( user?.role !== 'admin')?null:
+                          <TableCell align='left'>
+                            {row?.createdBy?.fullName || 'Admin'}
+                          </TableCell>
+                        }
                         <TableCell align='left'>
                           <div className={dataTable.actionwrap}>
                             <Link to={`/admin/users/update-user/${row.id}`}state={{ fromPage: currentPage }}>

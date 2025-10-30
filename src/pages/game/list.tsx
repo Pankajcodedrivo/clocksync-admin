@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import {  deleteGame, gameList } from "../../service/apis/game.api";
+import { faEye, faPencilAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {  deleteGame, gameList, importGame } from "../../service/apis/game.api";
 import toast from "react-hot-toast";
 import { getAdminGamesHeader } from "../../constants/tables";
 import CommonTable from "../../components/tables/customTable/CommonTable";
@@ -14,7 +14,12 @@ import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import { environment } from "../../config/environment";
 import { getScoreKeeperCode } from "../../service/apis/scoreKeeper.api";
+import ModalForm from "../../components/UI/modal/ModalForm";
+import { images } from "../../constants";
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const Games = () => {
+  const sampleFile = "/sample_games.xlsx";
+  const sampleFileName = "sample_games.xlsx";
   const location = useLocation();
   const user = useSelector((state: RootState) => state.authSlice.user);
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
@@ -22,10 +27,13 @@ const Games = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [totalResult, setTotalResult] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
   const rowsPerPage = 10;
   const adminGamesHeader = getAdminGamesHeader(user?.role);
-
+  const [uploadFile, setUploadFile] = useState(null);
+  const [previewType, setPreviewType] = useState("document"); // 'document' | 'excel' | 'csv'
+  const [fileName, setFileName] = useState("");
   // inside your component
   const handleOpenScoreKeeper = async (gameId: string) => {
   // 1️⃣ Open a blank window immediately (Safari requires this!)
@@ -56,6 +64,63 @@ const Games = () => {
   }
 };
 
+const handleFileChange = (e:any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
+      "text/csv",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error("Invalid file type! Please upload an Excel or CSV file.");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error("File size exceeds 5 MB limit!");
+      return;
+    }
+
+    // 🔍 Detect file type for icon
+    const ext = file.name.split(".").pop().toLowerCase();
+    if (["xlsx", "xls"].includes(ext)) {
+      setPreviewType("excel");
+    } else if (ext === "csv") {
+      setPreviewType("csv");
+    } else {
+      setPreviewType("document");
+    }
+
+    setUploadFile(file);
+    setFileName(file.name);
+  };
+
+  const handleUpload = async () => {
+    if (!uploadFile) {
+      toast.error("Please select a file first!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", uploadFile);
+
+    try {
+      const response = await importGame(formData);
+      if (!response.success) throw new Error("Upload failed");
+      toast.success("File uploaded successfully!");
+      setShowUploadModal(false);
+      setUploadFile(null);
+      setPreviewType("document");
+      setFileName("");
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      toast.error("Error uploading file");
+    }
+  };
 
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
@@ -137,12 +202,14 @@ useEffect(() => {
       >
         <div className="search-wrap">
           <div className="button-holder-wrap">
-            {(user?.role==='admin')?
+            {(user?.role!=='scorekeeper')?
+            <>
             <Link to="/games/add"><button className="custom-button">Add Game</button></Link>
+            <button className="custom-button ml-1" onClick={() => setShowUploadModal(true)}>Upload File</button>
+            </>
             :""}
               
           </div>
-
           {/* Search bar */}
           <div
             className="searchwrap"
@@ -154,6 +221,7 @@ useEffect(() => {
               marginTop: "20px",
             }}
           >
+            
             <input
               type="text"
               placeholder="Search..."
@@ -205,7 +273,7 @@ useEffect(() => {
               deleteMessage="Are you sure to delete this game?"
               handleDelete={handleDelete}
               renderActions={(row: any) => {
-                if (user?.role === "admin") {    
+                if (user?.role !== "scorekeeper") {    
                   return (
                     <>
                       <p>
@@ -262,7 +330,64 @@ useEffect(() => {
           )}
         </div>
       </div>
-   
+      {showUploadModal && (
+        <ModalForm
+          title="Upload File"
+          message={
+            <>
+              <div style={{ textAlign: "center" }} className="settings">
+                <div className="upload-logo-file">
+                <div className="uploadimage">
+                  <div className="upload-logo">
+                    <img
+                        src={
+                          previewType === 'excel'
+                            ? images.xlsxfile
+                            : previewType === 'csv'
+                            ? images.csvfile
+                            : images.documentIcon
+                        }
+                        alt="upload preview"
+                      />
+                      {fileName?fileName:"Upload xlsx or csv file"}
+                      
+                    <input
+                      type="file"
+                      accept=".xlsx, .csv" 
+                      onChange={handleFileChange}
+                    />
+                    <div className="overlay">
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faUpload} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </>
+          }
+          actions={[
+            { 
+              label: "Download sample file", 
+              type: "primary", 
+              onClick:() => {
+                const link = document.createElement("a");
+                link.href = sampleFile; // your file path
+                link.download = sampleFileName; // optional: specify filename
+                link.click();
+              }
+            },
+            { label: "Cancel", type: "secondary", onClick: () => setShowUploadModal(false) },
+            { 
+              label: "Upload", 
+              type: "primary", 
+              onClick: handleUpload
+            },
+          ]}
+          onClose={() => setShowUploadModal(false)}
+        />
+      )}
     </div>
      
   );

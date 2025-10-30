@@ -34,7 +34,7 @@ const UpdateGame = () => {
   // Redirect if /update but no ID
   useEffect(() => {
     if (location.pathname.includes("/update") && !id) {
-      navigate("/admin/games", { replace: true });
+      navigate("/games", { replace: true });
       return;
     }
   }, [id, location.pathname, navigate]);
@@ -70,7 +70,7 @@ const UpdateGame = () => {
               fieldId: data?.fieldId?._id || "",
               assignUserId: data?.assignUserId?.id || "",
               startDateTime: formatDateForInput(data?.startDateTime),
-  endDateTime: formatDateForInput(data?.endDateTime),
+              endDateTime: formatDateForInput(data?.endDateTime),
             });
             setHomeLogoPreview(data?.homeTeamLogo || "");
             setAwayLogoPreview(data?.awayTeamLogo || "");

@@ -17,15 +17,16 @@ const ResetPassword = React.lazy(() => import("./pages/ResetPassword"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const FirstTimeChangePassword = React.lazy(() => import("./pages/FirstTimeChangePassword"));
 const ScoreKeeperList = React.lazy(() => import("./pages/scorekeeper/list"));
-
-
-
 const UpdateUser = React.lazy(() => import("./pages/admin/UpdateUser"));
-
 const Users = React.lazy(() => import("./pages/admin/Users"));
-const Fileds = React.lazy(() => import("./pages/admin/field/list"));
+const Fileds = React.lazy(() => import("./pages/field/list"));
+const UpdateField = React.lazy(() => import("./pages//field/UpdateField"));
 const Games = React.lazy(() => import("./pages/game/list"));
 const UpdateGame = React.lazy(() => import("./pages/game/UpdateGame"));
+const ClockSetting = React.lazy(() => import("./pages/universalClock/clockSetting"));
+
+const Events = React.lazy(() => import("./pages/event/list"));
+const UpdateEvent = React.lazy(() => import("./pages/event/UpdateEvent"));
 // const Pages = React.lazy(() => import("./pages/admin/Pages"));
 
 // const AddPage = React.lazy(() => import("./pages/admin/AddPage"));
@@ -43,16 +44,26 @@ function App() {
               <Route path='/profile' element={<FormCus />} />
               <Route path='/changePassword' element={<ChangePass />} />
               <Route path='/admin/settings' element={<Settings />} />
-              <Route path='/admin/scorekeeper' element={<ScoreKeeperList />} />
+              <Route path='/admin/subcribescorekeeper' element={<ScoreKeeperList />} />
 
               <Route path='/admin/dashboard' element={<Dashboard />} />
               <Route path='/admin/users' element={<Users />} />
+              <Route path='/admin/users/scorekeeper' element={<Users />} />
+              <Route path='/admin/users/:currentRole' element={<Users />} />
               <Route path='/admin/users/update-user/:id?'element={<UpdateUser />}/>
               
-              <Route path='/admin/fields' element={<Fileds />} />
+              <Route path='/fields' element={<Fileds />} />
+              <Route path='/field/add' element={<UpdateField />} />
+              <Route path='/field/update/:id?' element={<UpdateField />} />
               <Route path='/games' element={<Games />} />
               <Route path='/games/add' element={<UpdateGame />} />
               <Route path='/games/update/:id?' element={<UpdateGame />} />
+
+              <Route path='/events' element={<Events />} />
+              <Route path='/event/add' element={<UpdateEvent />} />
+              <Route path='/event/update/:id?' element={<UpdateEvent />} />
+              
+              <Route path='/universal-clock' element={<ClockSetting />} />
               {/* <Route path='/admin/pages' element={<Pages />} />
               <Route path='/admin/page/edit/:id?' element={<AddPage />} /> */}
             </Route>

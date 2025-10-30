@@ -9,8 +9,11 @@ import { Link } from "react-router-dom";
 import { useParams,useLocation } from "react-router-dom";
 import { userDetails } from "../../service/apis/user.api";
 import { images } from "../../constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const UpdateUser = () => {
+  const user = useSelector((state: RootState) => state.authSlice.user);
   const params = useParams();
   const location = useLocation();
   const { id } = params;
@@ -28,7 +31,6 @@ const UpdateUser = () => {
         try {
           const userData = await userDetails(id);
           if (userData.status === 200) {
-            console.log(userData);
             addUserFormik.setValues({
               fullName: userData.userData?.fullName || "",
               email: userData.userData?.email || "",
@@ -39,7 +41,6 @@ const UpdateUser = () => {
             });
             setImagePreview(userData.userData?.profileimageurl || "");
           }
-          console.log(addUserFormik);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -193,7 +194,6 @@ const UpdateUser = () => {
                 </div>
               </div>
             )}
-
             <div className={form.profileformcol}>
               <div className='formgrp'>
                 <label htmlFor='profileImage'>Role</label>
@@ -203,11 +203,18 @@ const UpdateUser = () => {
                     onChange={addUserFormik.handleChange} // Formik change handler
                     onBlur={addUserFormik.handleBlur} // optional for touched/validation
                     >
-                  <option value="admin">Admin</option>
-                  <option value="scorekeeper">Score Keeper</option>
+                    {user?.role === 'admin' ? (
+                        <>
+                          <option value="admin">Admin</option>
+                          <option value="event-director">Event Director</option>
+                        </>
+                      ) : null}
+                    <option value="scorekeeper">Score Keeper</option>
+                  
                 </select>
               </div>
             </div>
+            {(addUserFormik.values.role ==='scorekeeper')?
             <div>
               <div className='checkbox full-width'>
                 <Input 
@@ -223,6 +230,7 @@ const UpdateUser = () => {
                 
               </div>
             </div>
+            :null}
             
             
           </div>

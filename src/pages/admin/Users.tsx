@@ -5,9 +5,13 @@ import { IUsersRoleTable } from "../../interfaces/Itable";
 import { adminUsersHeader } from "../../constants/tables";
 import { userApi } from "../../service/apis/user.api";
 import withRole from "../withRole";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 
 function Customers() {
+   const { currentRole } = useParams<{ currentRole?: string }>();
+
+  // Set default role if empty or undefined
+  const role = currentRole && currentRole.trim() ? currentRole : 'scorekeeper';
   const [data, setData] = useState<IUsersRoleTable[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalUser, setTotalUser] = useState<number>(0);
@@ -23,6 +27,7 @@ function Customers() {
       const bodyData = {
         currentPage: location.state?.fromPage||1,
         limit: limit,
+        role:role
       };
       const response = await userApi(bodyData);
       if (response?.status === 200) {
@@ -41,7 +46,7 @@ function Customers() {
 
   useEffect(() => {
     getCustomer();
-  }, []);
+  }, [role]);
 
   return (
     <section className='users-pages'>
@@ -61,4 +66,4 @@ function Customers() {
   );
 }
 
-export default withRole(Customers, ["admin"]);
+export default withRole(Customers, ["admin","event-director"]);

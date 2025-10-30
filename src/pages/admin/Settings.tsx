@@ -7,7 +7,6 @@ import TabPanel from "@mui/lab/TabPanel";
 import Switch from "@mui/material/Switch";
 import { images } from "../../constants";
 import toast from "react-hot-toast";
-
 import { getsettings, savesettings } from "../../service/apis/setting.api";
 import Input from "../../components/UI/input/Input"; // custom Input component
 import classes from "../../components/edit/editCustomer/EditCustomer.module.scss";
@@ -320,11 +319,15 @@ function Settings() {
                       onChange={handleChange}
                       aria-label="settings tabs"
                       className="settingTab"
+                        variant="scrollable"      // ✅ Enables horizontal scroll
+      scrollButtons="auto"      // ✅ Shows scroll buttons when needed
+      allowScrollButtonsMobile // ✅ Shows scroll buttons on mobile
                     >
                       <Tab label="Site Logo" value="1" />
                       <Tab label="Footer Content" value="2" />
-                      <Tab label="Desktop Ads" value="3" />
+                      {/* <Tab label="Desktop Ads" value="3" />
                       <Tab label="Mobile Ads" value="4" />
+                      */ }
                     </TabList>
                   </Box>
 

@@ -4,20 +4,21 @@ import classes from "./Summary.module.scss";
 import { IsummData } from "../../interfaces/IsummData";
 
 function Summary(props: any) {
-  const { data } = props; // destructure your incoming data
+  const { data,role } = props; // destructure your incoming data
 
   // Build dynamic summaryData from props
-  const summaryData: IsummData[] = [
-    {
-      icon: "ph:users-bold",
-      text: "Total User",
-      amount: data?.totalUsers?.toString() || "0",
-      currency: "",
-    },
+  let summaryData: IsummData[] = [
+    
     {
       icon: "ph:users-bold",
       text: "Total Admin",
       amount: data?.totalAdmin?.toString() || "0",
+      currency: "",
+    },
+    {
+      icon: "ph:users-bold",
+      text: "Total Event Director",
+      amount: data?.totalEventDirector?.toString() || "0",
       currency: "",
     },
     {
@@ -46,6 +47,13 @@ function Summary(props: any) {
     },
     
   ];
+
+  if (role !== "admin") {
+    summaryData = summaryData.filter(
+      (item) =>
+        !["Total Admin", "Total Event Director"].includes(item.text)
+    );
+  }
 
   return (
     <section className={classes.summary}>

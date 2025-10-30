@@ -8,6 +8,7 @@ export interface IUsersRoleTable {
   role: string | null;
   isVerfied: any;
   isActive: any;
+  createdBy?:any,
   createdAt: string;
   status: string;
   isSetupDone: any;

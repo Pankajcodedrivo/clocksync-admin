@@ -89,84 +89,112 @@ const ModalOverlay: React.FC<IModal> = ({
 
         <div className={classes.content}>
          {message && <div className={classes.message}>{message}</div>}
+          {fields.length > 0 ? (
+            <form onSubmit={formik.handleSubmit} className={classes.form}>
+              {fields.map((field) => (
+                <div key={field.name} className={classes.formGroup}>
+                  {field.type === "textarea" ? (
+                    <textarea
+                      name={field.name}
+                      placeholder={field.placeholder}
+                      className={classes.textarea}
+                      value={formik.values[field.name]}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  ) : field.type === "select" ? (
+                    <select
+                      name={field.name}
+                      className={classes.select}
+                      value={formik.values[field.name]}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="">Select...</option>
+                      {field.options?.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      type={field.type}
+                      title={field.label}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      width="full"
+                      value={formik.values[field.name]}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  )}
+                  {formik.touched[field.name] && formik.errors[field.name] && (
+                    <div className={classes.error}>
+                      {formik.errors[field.name] as string}
+                    </div>
+                  )}
+                </div>
+              ))}
 
-          <form onSubmit={formik.handleSubmit} className={classes.form}>
-            {fields.map((field) => (
-              <div key={field.name} className={classes.formGroup}>
-                {field.type === "textarea" ? (
-                  <textarea
-                    name={field.name}
-                    placeholder={field.placeholder}
-                    className={classes.textarea}
-                    value={formik.values[field.name]}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                ) : field.type === "select" ? (
-                  <select
-                    name={field.name}
-                    className={classes.select}
-                    value={formik.values[field.name]}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="">Select...</option>
-                    {field.options?.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    type={field.type}
-                    title={field.label}
-                    placeholder={field.placeholder}
-                    required={field.required}
-                    width="full"
-                    value={formik.values[field.name]}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
+              <footer className={classes.actions}>
+                {actions.map((action, i) =>
+                  action.submit ? (
+                    <button
+                      key={i}
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      className={
+                        action.type === "delete" ? classes.delete : "custom-button"
+                      }
+                    >
+                      {t(action.label)}
+                    </button>
+                  ) : (
+                    <button
+                      key={i}
+                      type="button"
+                      className={
+                        action.type === "delete" ? classes.delete : "custom-button"
+                      }
+                      onClick={() => action.onClick && action.onClick()}
+                    >
+                      {t(action.label)}
+                    </button>
+                  )
                 )}
-                {formik.touched[field.name] && formik.errors[field.name] && (
-                  <div className={classes.error}>
-                    {formik.errors[field.name] as string}
-                  </div>
+              </footer>
+            </form>
+          ) : <footer className={classes.actions}>
+                {actions.map((action, i) =>
+                  action.submit ? (
+                    <button
+                      key={i}
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      className={
+                        action.type === "delete" ? classes.delete : "custom-button"
+                      }
+                    >
+                      {t(action.label)}
+                    </button>
+                  ) : (
+                    <button
+                      key={i}
+                      type="button"
+                      className={
+                        action.type === "delete" ? classes.delete : "custom-button"
+                      }
+                      onClick={() => action.onClick && action.onClick()}
+                    >
+                      {t(action.label)}
+                    </button>
+                  )
                 )}
-              </div>
-            ))}
+              </footer>}
 
-            <footer className={classes.actions}>
-              {actions.map((action, i) =>
-                action.submit ? (
-                  <button
-                    key={i}
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                    className={
-                      action.type === "delete" ? classes.delete : "custom-button"
-                    }
-                  >
-                    {t(action.label)}
-                  </button>
-                ) : (
-                  <button
-                    key={i}
-                    type="button"
-                    className={
-                      action.type === "delete" ? classes.delete : "custom-button"
-                    }
-                    onClick={() => action.onClick && action.onClick()}
-                  >
-                    {t(action.label)}
-                  </button>
-                )
-              )}
-            </footer>
-          </form>
         </div>
       </div>
     </Card>

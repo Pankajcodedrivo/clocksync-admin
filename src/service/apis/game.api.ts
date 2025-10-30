@@ -39,3 +39,7 @@ export const getallScorekeeper = catchAsync(async (uid) => {
   const response = await httpsCall.get(`/admin/game/getallScorekeeper`);
   return response;
 });
+export const importGame = catchAsync(async (values) => {
+  const data = await httpsCall.post(`/admin/game/import`, values);
+  return data;
+});

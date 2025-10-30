@@ -1,4 +1,5 @@
 import Userupdate from "../../components/form/UpdateUser";
+import withRole from "../withRole";
 
 function UpdateUser() {
   return (
@@ -8,4 +9,4 @@ function UpdateUser() {
   );
 }
 
-export default UpdateUser;
+export default withRole(UpdateUser, ["admin","event-director"]);

@@ -38,8 +38,17 @@ function Sidebar() {
 
   useEffect(() => {
     let curPath = window.location.pathname.split("/")[2] || ""; // Ensure curPath is a string
-    const newCurPath = window.location.pathname.split("/")[1] || "";
-    if(newCurPath ==='games'){
+    let newCurPath = window.location.pathname.split("/")[1] || "";
+    if(newCurPath ==='game'){
+      newCurPath='games'
+    }
+    if(newCurPath ==='event'){
+      newCurPath='events'
+    }
+     if(newCurPath ==='field'){
+      newCurPath='fields'
+    }
+    if(newCurPath ==='games' || newCurPath==='events' || newCurPath ==='fields' || newCurPath ==='universal-clock'){
        curPath =newCurPath;
     }
     setUrlActive(curPath);

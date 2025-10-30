@@ -10,6 +10,7 @@ export type User = {
   isAccountVerified: boolean;
   profileimageurl: string;
   about: any;
+  id:any
 };
 
 export type AuthState = {

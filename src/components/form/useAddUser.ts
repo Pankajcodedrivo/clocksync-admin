@@ -41,7 +41,7 @@ export const useAddUser = (id?: string) => {
       email: "",
       password: "",
       profileImage: null,
-      role:"admin",
+      role:"scorekeeper",
       isSubscribedByAdmin:false
     },
     validationSchema,

@@ -1,10 +1,13 @@
 import React from "react";
-import  images  from "../constants/images";
+import  images  from "./images";
+import Switch from "@mui/material/Switch";
+
 export const adminUsersHeader = [
   "Profile Image",
   "Name",
   "Email",
   "Role",
+  "CreatedBy",
   "Actions",
 ];
 
@@ -23,15 +26,43 @@ export const adminScorekeeperHeader = [
   { key: "email", label: "Email" },
 ];
 
-export const adminFieldsHeader  = [
+export const adminFieldsHeader = (
+  onToggle: (id: string, val: boolean) => void,
+  role: string
+) => {
+  const columns = [
     { key: "name", label: "Name" },
+    {
+      key: "unviseralClock",
+      label: "Universal Clock",
+      render: (_: any, row: any) => (
+        <Switch
+          checked={row.unviseralClock}
+          onChange={(e) => onToggle(row._id, e.target.checked)}
+        />
+      ),
+    },
     {
       key: "createdAt",
       label: "Created At",
-      render: (v:any) => new Date(v).toLocaleDateString(),
+      render: (v: any) => new Date(v).toLocaleDateString(),
     },
     { key: "actions", label: "Actions" },
   ];
+
+  // ✅ Conditionally add a new column immediately after "Name"
+  if (role === "admin") {
+    columns.splice(1, 0, {
+      key: "createdBy.fullName",
+      label: "Created By",
+    
+    });
+  }
+
+  return columns;
+};
+
+
 export const getAdminGamesHeader = (role: any) => {
   const baseHeaders = [
     { key: "homeTeamName", label: "Home" },
@@ -54,11 +85,39 @@ export const getAdminGamesHeader = (role: any) => {
     });
   }
 
+  if (role === "admin") {
+    baseHeaders.push({
+      key: "createdBy.fullName",
+      label: "CreatedBy",
+    });
+  }
+
   baseHeaders.push({ key: "actions", label: "Actions" });
 
   return baseHeaders;
 };
 
+export const getAdminEventsHeader = (role: any) => {
+  const baseHeaders = [
+    { key: "eventName", label: "Name" },
+    {
+      key: "startDate",
+      label: "Start Date",
+      render: (v:any) => new Date(v).toLocaleString(),
+    },
+  ];
+
+  if (role === "admin") {
+    baseHeaders.push({
+      key: "assignedUser.fullName",
+      label: "Event Director",
+    });
+  }
+
+  baseHeaders.push({ key: "actions", label: "Actions" });
+
+  return baseHeaders;
+};
 
 
 export const pagesHeader = {

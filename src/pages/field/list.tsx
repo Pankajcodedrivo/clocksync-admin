@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Itable, complex } from "../../../interfaces/Itable";
+import {  complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import { addField, deleteField, fieldList, updateField } from "../../../service/apis/field.api";
+import { deleteField, fieldList, updateUniversalClock } from "../../service/apis/field.api";
 import toast from "react-hot-toast";
-import { adminFieldsHeader } from "../../../constants/tables";
-import CommonTable from "../../../components/tables/customTable/CommonTable";
-import dataTable from "../../../components/tables/DashboardTables.module.scss";
-import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
-import ModalForm from "../../../components/UI/modal/ModalForm";
-import del from "../../../assets/images/ic_outline-delete.png";
-import * as Yup from "yup";
+import { adminFieldsHeader } from "../../constants/tables";
+import CommonTable from "../../components/tables/customTable/CommonTable";
+import dataTable from "../../components/tables/DashboardTables.module.scss";
+import LoadingSpinner from "../../components/UI/loadingSpinner/LoadingSpinner";
+import del from "../../assets/images/ic_outline-delete.png";
+
+import withRole from "../withRole";
+import ModalForm from "../../components/UI/modal/ModalForm";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 const Fields = () => {
+   const user = useSelector((state: RootState) => state.authSlice.user);
   const [showModal, setShowModal] = useState(false);
   const [showQRModal, setQRShowModal] = useState(false);
   const [selectedData, setSelectedData] = useState<any>(null);
@@ -23,12 +27,19 @@ const Fields = () => {
   const [totalResult, setTotalResult] = useState(0);
   const [loading, setLoading] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editData, setEditData] = useState<any>(null);
   const rowsPerPage = 10;
 
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
+
+const handleToggleClock = async (id: string, value: boolean) => {
+  try {
+    const data = await updateUniversalClock({ unviseralClock: value }, id);
+    fetchData();
+  } catch {
+    
+  }
+};
 const fetchData = async (page = currentPage, term = searchTerm) => {
   try {
     setLoading(true);
@@ -67,38 +78,7 @@ useEffect(() => {
     setCurrentPage(1);
   };
 
-  // 🔹 Add Field
-  const  addFieldFrom= async(data:any) => {
-    try {
-      setLoading(true);
-      setShowModal(false);
-      setAddClass("add_blur");
-      await addField(data);
-      setLoading(false);
-      fetchData(1);
-      toast.success("Field add successfully");
-    } catch (err:any) {
-      toast.error(err.message);
-      console.error("Failed to fetch data", err);
-    } finally {
-      setLoading(false);
-      setAddClass("");
-    }
-};
-  const  updateFormData = async(data:any) => {
-          try {
-            setLoading(true);
-            setShowEditModal(false);
-            await updateField(data,editData._id); // call your update API
-            fetchData(currentPage, searchTerm);      // refresh table
-            toast.success("Field updated successfully");
-          } catch (err: any) {
-            toast.error(err.message);
-            console.error("Failed to update field", err);
-          } finally {
-            setLoading(false);
-          }
-        }
+
   // 🔹 Pagination
   const handlePageChange = async (
     page: number
@@ -130,7 +110,7 @@ useEffect(() => {
       >
         <div className="search-wrap">
           <div className="button-holder-wrap">
-              <button className="custom-button" onClick={() => setShowModal(true)}>Add Field</button>
+              <a className="custom-button" href='/field/add'>Add Field</a>
           </div>
 
           {/* Search bar */}
@@ -187,7 +167,7 @@ useEffect(() => {
           ) : (
             <CommonTable
               title="Fields"
-              columns={adminFieldsHeader}
+              columns={adminFieldsHeader(handleToggleClock,user.role)}
               bodyData={sortOrderData}
               dataCurrentPage={currentPage}
               changePage={handlePageChange}
@@ -197,12 +177,11 @@ useEffect(() => {
               renderActions={(row: any) => (
                 <>
                   <p
-                    onClick={() => {
-                      setEditData(row);       // set data to prefill form
-                      setShowEditModal(true); // open modal
-                    }}
+                    
                   >
-                    <FontAwesomeIcon icon={faPencilAlt} className="icon-themes"/>
+                     <Link to={`/field/update/${row._id}`}>
+                                              <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
+                                            </Link>
                   </p>
                   <p onClick={() => { setQRShowModal(true); setSelectedData(row)}}><FontAwesomeIcon icon={faEye} className="icon-themes" /></p>
                   <p  data-title="delete" data-id={row._id}><img src={del} alt='Delete' /></p>
@@ -212,28 +191,7 @@ useEffect(() => {
           )}
         </div>
       </div>
-       {showModal ? (
-        <ModalForm
-  title="Add New Field"
-  fields={[
-    {
-      name: "name",
-      label: "Field Name",
-      type: "text",
-      placeholder: "Enter field name",
-      validation: Yup.string().required("Field name is required"),
-    },
-  ]}
-  actions={[
-    { label: "cancel", type: "secondary", onClick: () =>setShowModal(false) },
-    { label: "save", type: "primary", submit: true, onClick: (values) => addFieldFrom(values) },
-  ]}
-  onClose={() => setShowModal(false)}
-/>
-
-      ) : null}
-
-      {showQRModal  && selectedData && (
+              {showQRModal  && selectedData && (
   <ModalForm
     title="Scan this QR Code"
     message={
@@ -261,35 +219,9 @@ useEffect(() => {
     onClose={() => setQRShowModal(false)}
   />
 )}
-{showEditModal && editData && (
-  <ModalForm
-    title="Edit Field"
-    fields={[
-      {
-        name: "name",
-        label: "Field Name",
-        type: "text",
-        placeholder: "Enter field name",
-        defaultValue: editData.name, // prefill existing value
-        validation: Yup.string().required("Field name is required"),
-      },
-      // add other fields here if needed
-    ]}
-    actions={[
-      { label: "Cancel", type: "secondary", onClick: () => setShowEditModal(false) },
-      { 
-        label: "Save", 
-        type: "primary", 
-        submit: true, 
-        onClick: async (values) => updateFormData(values) 
-      },
-    ]}
-    onClose={() => setShowEditModal(false)}
-  />
-)}
     </div>
      
   );
 };
 
-export default Fields;
+export default withRole(Fields, ["admin","event-director"]);

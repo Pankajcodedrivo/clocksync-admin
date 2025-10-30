@@ -13,7 +13,7 @@ export const fieldList = catchAsync(
 
 
 export const fieldDetails = catchAsync(async (uid) => {
-  const response = await httpsCall.get(`/admin/field/view-field/${uid}`);
+  const response = await httpsCall.get(`/admin/field/detail/${uid}`);
   return response;
 });
 
@@ -29,5 +29,10 @@ export const deleteField = catchAsync(async (uid) => {
 
 export const updateField = catchAsync(async (values, uid) => {
   const data = await httpsCall.patch(`/admin/field/update/${uid}`, values);
+  return data;
+});
+
+export const updateUniversalClock = catchAsync(async (values, uid) => {
+  const data = await httpsCall.patch(`/admin/field/update-universal-clock/${uid}`, values);
   return data;
 });

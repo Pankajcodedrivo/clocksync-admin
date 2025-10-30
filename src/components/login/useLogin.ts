@@ -43,7 +43,7 @@ export const useLogin = () => {
         localStorage.setItem("access_token", response.tokens.access);
         localStorage.setItem("refresh_token", response.tokens.refresh);
         const role = response?.user?.role;
-        if (role === "admin" ) {
+        if (role === "admin" || role ==='event-director' ) {
           navigate("/admin/dashboard");
         }else if(role==="scorekeeper"){
           navigate("/games");

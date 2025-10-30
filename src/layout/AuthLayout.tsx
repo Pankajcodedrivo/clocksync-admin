@@ -12,6 +12,7 @@ const AuthLayout = () => {
   // Redirect paths based on role
   const roleBasedRedirects: Record<string, string> = {
     admin: "/admin/dashboard",
+    'event-director' :'/admin/dashboard',
     scorekeeper: "/games",
   };
 
@@ -19,7 +20,7 @@ const AuthLayout = () => {
   if (isLoggedIn) {
     if (role && roleBasedRedirects[role]) {
       // Redirect to role-specific default page if user tries to access the root `/`
-      if (role === "scorekeeper" && user?.firstTimeLogin === true) {
+      if ((role === "scorekeeper" || role ==="event-director") && user?.firstTimeLogin === true) {
           // ✅ don't redirect if already on /change-password
           if (location.pathname !== "/change-password") {
             return <Navigate to="/change-password" replace />;
