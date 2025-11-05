@@ -13,52 +13,57 @@ interface FormValues {
   awayTeamName: string;
   fieldId: string;
   assignUserId: string; // scorekeeper
+  eventId: string; // ✅ added
   startDateTime: string;
-  endDateTime: string;
+ // endDateTime: string;
 }
 
-export const useAddGame = (id?: string) => {
+export const useAddGame = (id?: string,user?:any) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const localToUTCString = (localDateTime:any) => {
-  // localDateTime is a string like "2025-09-20T14:33"
-  const date = new Date(localDateTime); // JS treats it as local
-  return date.toISOString(); // Converts to UTC automatically
-};
+    // localDateTime is a string like "2025-09-20T14:33"
+    const date = new Date(localDateTime); // JS treats it as local
+    return date.toISOString(); // Converts to UTC automatically
+  };
 
   // ✅ Validation schema for game form
-const validationSchema = yup.object({
-  homeTeamName: yup.string().required("Home team name is required"),
-  awayTeamName: yup.string().required("Away team name is required"),
-  fieldId: yup.string().required("Field is required"),
-  assignUserId: yup.string().required("Scorekeeper is required"),
+  const validationSchema = yup.object({
+    homeTeamName: yup.string().required("Home team name is required"),
+    awayTeamName: yup.string().required("Away team name is required"),
+    fieldId: yup.string().required("Field is required"),
+    assignUserId: yup.string().required("Scorekeeper is required"),
+    eventId: yup.string().when([], {
+      is: () => user?.role === "event-director", // you’ll pass this as param
+      then: (schema) => schema.required("Event is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    startDateTime: yup
+      .date()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" || originalValue === undefined ? null : value
+      )
+      .typeError("Invalid start date")
+      .min(new Date(), "Start date must be in the future")
+      .required("Start date is required"),
 
-  startDateTime: yup
-    .date()
-    .nullable()
-    .transform((value, originalValue) =>
-      originalValue === "" || originalValue === undefined ? null : value
-    )
-    .typeError("Invalid start date")
-    .min(new Date(), "Start date must be in the future")
-    .required("Start date is required"),
-
-  endDateTime: yup
-    .date()
-    .nullable()
-    .transform((value, originalValue) =>
-      originalValue === "" || originalValue === undefined ? null : value
-    )
-    .typeError("Invalid end date")
-    .when("startDateTime", {
-      is: (val: Date | null) => val != null,
-      then: (schema) =>
-        schema.min(yup.ref("startDateTime"), "End date must be after start date"),
-      otherwise: (schema) => schema,
-    })
-    .required("End date is required"),
-});
+    /*endDateTime: yup
+      .date()
+      .nullable()
+      .transform((value, originalValue) =>
+        originalValue === "" || originalValue === undefined ? null : value
+      )
+      .typeError("Invalid end date")
+      .when("startDateTime", {
+        is: (val: Date | null) => val != null,
+        then: (schema) =>
+          schema.min(yup.ref("startDateTime"), "End date must be after start date"),
+        otherwise: (schema) => schema,
+      })
+      .required("End date is required"), */
+  });
 
 
   // ✅ Formik setup
@@ -70,8 +75,9 @@ const validationSchema = yup.object({
       awayTeamName: "",
       fieldId: "",
       assignUserId: "",
+      eventId: "", // ✅ added
       startDateTime: "",
-      endDateTime: "",
+      //endDateTime: "",
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -82,8 +88,9 @@ const validationSchema = yup.object({
       formData.append("fieldId", values.fieldId);
       formData.append("assignUserId", values.assignUserId);
       formData.append("startDateTime", localToUTCString(values.startDateTime));
-      formData.append("endDateTime", localToUTCString(values.endDateTime));
-      formData.append("userTimezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+      formData.append("eventId", values.eventId);
+      //formData.append("endDateTime", localToUTCString(values.endDateTime));
+      //formData.append("userTimezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
       if (values.homeTeamLogo) {
         formData.append("homeTeamLogo", values.homeTeamLogo);

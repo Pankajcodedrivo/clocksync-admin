@@ -87,7 +87,7 @@ export const getAdminGamesHeader = (role: any) => {
 
   if (role === "admin") {
     baseHeaders.push({
-      key: "createdBy.fullName",
+      key: "createdByUser.fullName",
       label: "CreatedBy",
     });
   }

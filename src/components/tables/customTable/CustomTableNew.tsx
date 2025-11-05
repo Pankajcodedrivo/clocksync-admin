@@ -379,7 +379,9 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         </TableCell>
                         {( user?.role !== 'admin')?null:
                           <TableCell align='left'>
-                            {row?.createdBy?.fullName || 'Admin'}
+                             {row?.createdBy?.length
+                                ? row.createdBy.map((d) => d.fullName).join(', ')
+                                : 'Admin'}
                           </TableCell>
                         }
                         <TableCell align='left'>

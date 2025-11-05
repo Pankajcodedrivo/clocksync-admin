@@ -16,6 +16,7 @@ import { environment } from "../../config/environment";
 import { getScoreKeeperCode } from "../../service/apis/scoreKeeper.api";
 import ModalForm from "../../components/UI/modal/ModalForm";
 import { images } from "../../constants";
+import { getUpcomingEvent } from "../../service/apis/event.api";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const Games = () => {
   const sampleFile = "/sample_games.xlsx";
@@ -24,6 +25,7 @@ const Games = () => {
   const user = useSelector((state: RootState) => state.authSlice.user);
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
   const [sortOrderData, setSortOrderData] = useState<complex[]>([]);
+  const [eventData, setEventData] = useState<complex[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [totalResult, setTotalResult] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -34,6 +36,7 @@ const Games = () => {
   const [uploadFile, setUploadFile] = useState(null);
   const [previewType, setPreviewType] = useState("document"); // 'document' | 'excel' | 'csv'
   const [fileName, setFileName] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState<string>("");
   // inside your component
   const handleOpenScoreKeeper = async (gameId: string) => {
   // 1️⃣ Open a blank window immediately (Safari requires this!)
@@ -105,8 +108,11 @@ const handleFileChange = (e:any) => {
     }
 
     const formData = new FormData();
+    // Get the user's current timezone
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     formData.append("file", uploadFile);
-
+    formData.append("eventId", selectedEvent);
+    formData.append("timeZone", userTimeZone);
     try {
       const response = await importGame(formData);
       if (!response.success) throw new Error("Upload failed");
@@ -124,12 +130,15 @@ const handleFileChange = (e:any) => {
 
   // 🔹 Fetch data on mount & when currentPage/searchTerm changes
   // 🔹 Fetch data function
-const fetchData = async (page = currentPage, term = searchTerm) => {
+const fetchData = async (page = currentPage, term = searchTerm, eventId = selectedEvent) => {
   try {
     setLoading(true);
     setAddClass("add_blur");
 
-    const searchParams = term ? { search: term } : {};
+     const searchParams: any = {};
+    if (term) searchParams.search = term;
+    if (user?.role === "event-director" && eventId) searchParams.eventId = eventId; // filter by event only for admin
+
     const response = await gameList(page, rowsPerPage, searchParams);
 
     if (response) {
@@ -145,10 +154,32 @@ const fetchData = async (page = currentPage, term = searchTerm) => {
   }
 };
 
+const fetchEvent = async () => {
+  try {
+    const response = await getUpcomingEvent();
+
+    if (response) {
+      setEventData(response.events);
+      if(response.events.length>0 && response?.events[0]?._id) setSelectedEvent(response?.events[0]?._id)
+    }
+  } catch (err:any) {
+    toast.error(err.message);
+    console.error("Failed to fetch data", err);
+  } finally {
+  }
+};
+const handleEventChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const eventId = e.target.value;
+  setSelectedEvent(eventId);
+  setCurrentPage(1);
+  fetchData(1, searchTerm, eventId); // reload list with selected event
+};
+
 // 🔹 Use in useEffect
 useEffect(() => {
   fetchData(currentPage, searchTerm);
-}, [currentPage, searchTerm]);
+  fetchEvent();
+}, [currentPage, searchTerm, selectedEvent]);
 
   // 🔹 Handle search
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,6 +226,47 @@ useEffect(() => {
 
   return (
     <div style={{ position: "relative" }} className="dsp">
+      {user?.role === "event-director" && (
+      <div
+        className={`${dataTable.datatablemainwrap} ${
+          addClass ? dataTable[addClass] : ""
+        } colorAction`}
+      >
+        <div className="search-wrap">
+            <div
+            className="searchwrap"
+            style={{
+              marginBottom: "20px",
+              display: "flex",
+              justifyContent: "flex-start",
+              position: "relative",
+              marginTop: "20px",
+            }}
+          >
+            <select
+              value={selectedEvent}
+              onChange={handleEventChange}
+              style={{
+                padding: "8px 12px",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                maxWidth: "350px",
+                height: "50px",
+                width: "100%",
+                marginLeft: "auto",
+              }}
+            >
+              <option value="">Please select the event</option>
+              {eventData.map((event: any) => (
+                <option key={event._id} value={event._id}>
+                  {event.eventName}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+       )}
       <div
         className={`${dataTable.datatablemainwrap} ${
           addClass ? dataTable[addClass] : ""
@@ -204,7 +276,7 @@ useEffect(() => {
           <div className="button-holder-wrap">
             {(user?.role!=='scorekeeper')?
             <>
-            <Link to="/games/add"><button className="custom-button">Add Game</button></Link>
+            <Link to="/games/add"  state={{ eventId: selectedEvent }} ><button className="custom-button">Add Game</button></Link>
             <button className="custom-button ml-1" onClick={() => setShowUploadModal(true)}>Upload File</button>
             </>
             :""}

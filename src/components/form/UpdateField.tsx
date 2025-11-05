@@ -99,6 +99,22 @@ const UpdateField: React.FC = () => {
                 </select>
               </div>
             </div>
+
+            <div className={`${form.profileformcol} fullWidth`}>
+              <div className="formgrp">
+                <label htmlFor="unviseralClock">Ads Time(sec)</label>
+                <input
+                  id="adsTime"
+                  name="adsTime"
+                  type="number"
+                  placeholder="Enter Ads Time"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.adsTime}
+                />
+                {formik.touched.adsTime && formik.errors.adsTime && <div className="error">{formik.errors.adsTime}</div>}
+              </div>
+            </div>
           </div>
 
           {/* Ads sections */}

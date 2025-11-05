@@ -8,7 +8,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { gameDetails, getallfield, getallScorekeeper } from "../../service/apis/game.api";
 import { images } from "../../constants";
-
+import { getUpcomingEvent } from "../../service/apis/event.api";
+import { complex } from "../../interfaces/Itable";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 interface Field {
   _id: string;
   name: string;
@@ -22,9 +25,15 @@ interface Scorekeeper {
 const UpdateGame = () => {
   const params = useParams();
   const location = useLocation();
+  const user = useSelector((state: RootState) => state.authSlice.user);
+  const preselectedEventId = location.state?.eventId || "";
+  // You can now use `preselectedEventId` to prefill your event dropdown
+  // Example:
+  const [eventData, setEventData] = useState<complex[]>([]);
+  const [eventId, setEventId] = useState(preselectedEventId);
   const navigate = useNavigate();
   const { id } = params;
-  const { addGameFormik, loading } = useAddGame(id);
+  const { addGameFormik, loading } = useAddGame(id,user);
 
   const [homeLogoPreview, setHomeLogoPreview] = useState<string | null>(null);
   const [awayLogoPreview, setAwayLogoPreview] = useState<string | null>(null);
@@ -70,8 +79,10 @@ const UpdateGame = () => {
               fieldId: data?.fieldId?._id || "",
               assignUserId: data?.assignUserId?.id || "",
               startDateTime: formatDateForInput(data?.startDateTime),
-              endDateTime: formatDateForInput(data?.endDateTime),
+              eventId:data?.eventId || ""
+              /*endDateTime: formatDateForInput(data?.endDateTime),*/
             });
+            setEventId(data?.eventId || "");
             setHomeLogoPreview(data?.homeTeamLogo || "");
             setAwayLogoPreview(data?.awayTeamLogo || "");
           }
@@ -82,6 +93,22 @@ const UpdateGame = () => {
       fetchData();
     }
   }, [id]);
+  useEffect(() => {
+    if (preselectedEventId) {
+      addGameFormik.setFieldValue("eventId", preselectedEventId);
+    }
+  }, [preselectedEventId]);
+  const fetchEvent = async () => {
+  try {
+    const response = await getUpcomingEvent();
+
+    if (response) {
+      setEventData(response.events);
+    }
+  } catch (err:any) {
+  } finally {
+  }
+};
 
   // Fetch dropdown data (fields + scorekeepers)
   useEffect(() => {
@@ -97,6 +124,7 @@ const UpdateGame = () => {
       }
     };
     fetchDropdowns();
+    fetchEvent();
   }, []);
 
   const handleImageChange = (e: any, field: "homeTeamLogo" | "awayTeamLogo") => {
@@ -263,6 +291,30 @@ const UpdateGame = () => {
                 )}
               </div>
             </div>
+            {user?.role === "event-director" && (
+                <div className={form.profileformcol}>
+                  <div className="formgrp">
+                    <label htmlFor="eventId">Event</label>
+                    <select
+                      id="eventId"
+                      name="eventId"
+                      value={addGameFormik.values.eventId || eventId} // ✅ use preselectedEventId if passed
+                      onChange={addGameFormik.handleChange}
+                      required
+                    >
+                      <option value="">-- Select Event --</option>
+                      {eventData.map((ev) => (
+                        <option key={ev._id} value={ev._id}>
+                          {ev.eventName}
+                        </option>
+                      ))}
+                    </select>
+                    {addGameFormik.touched.eventId && addGameFormik.errors.eventId && (
+                      <div className="error">{addGameFormik.errors.eventId}</div>
+                    )}
+                  </div>
+                </div>
+              )}
 
             {/* Start Date */}
             <div className={form.profileformcol}>
@@ -284,7 +336,7 @@ const UpdateGame = () => {
               </div>
             </div>
 
-            {/* End Date */}
+            {/* End Date
             <div className={form.profileformcol}>
               <div className="formgrp">
                 <Input
@@ -302,9 +354,9 @@ const UpdateGame = () => {
                   }
                 />
               </div>
-            </div>
+            </div>*/}
           </div>
-
+               
           {loading ? (
             <LoadingSpinner />
           ) : (

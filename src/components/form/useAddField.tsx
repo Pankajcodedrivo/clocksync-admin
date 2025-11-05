@@ -42,6 +42,7 @@ type AdValue = {
 type FormValues = {
   name: string;
   unviseralClock: boolean;
+  adsTime:string;
   ads: {
     desktop: { top: AdValue[]; left: AdValue[]; right: AdValue[] };
     mobile: { top: AdValue[]; middle: AdValue[]; bottom: AdValue[] };
@@ -64,6 +65,7 @@ const useAddField = (id?: string) => {
   const initialValues: FormValues = {
     name: "",
     unviseralClock: true,
+    adsTime:30,
     ads: {
       desktop: {
         top: [ /* default empty */ ],
@@ -126,6 +128,7 @@ const useAddField = (id?: string) => {
           const mapped: FormValues = {
             name: f.name || "",
             unviseralClock: typeof f.unviseralClock === "boolean" ? f.unviseralClock : true,
+            adsTime:f.adsTime||30,
             ads: {
               desktop: {
                 top: (f.ads?.desktop?.top || []).map((a: any) => ({
@@ -192,7 +195,9 @@ const useAddField = (id?: string) => {
  */
 function buildFormDataFromValues(values: FormValues) {
   const formData = new FormData();
+  
   formData.append("name", values.name);
+  formData.append("adsTime", values.adsTime);
   formData.append("unviseralClock", String(values.unviseralClock));
 
   const adsPayload: any = {

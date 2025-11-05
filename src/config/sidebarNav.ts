@@ -14,7 +14,7 @@ const sidebarNav = [
     role: ["admin"],
   },
   {
-    link: "/admin/events",
+    link: "/events",
     section: "events",
     icon: "ph:calendar-bold", //width:"20"
     text: "Events",

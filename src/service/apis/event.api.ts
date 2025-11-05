@@ -29,3 +29,8 @@ export const updateEvent = catchAsync(async (values, uid) => {
   const data = await httpsCall.patch(`/admin/event/update/${uid}`, values);
   return data;
 });
+
+export const getUpcomingEvent = catchAsync(async () => {
+  const data = await httpsCall.get(`/admin/event/list-current-event`);
+  return data;
+});

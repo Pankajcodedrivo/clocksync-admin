@@ -230,43 +230,6 @@ function Settings() {
         <div key={pos} className="ad-placement">
           <h4 style={{ color: "#fff" }}>{pos.toUpperCase()} Ad</h4>
 
-          <Switch
-            checked={placement.useGoogleAd || false}
-            onChange={(e) => handlePlacementChange(device, pos, "useGoogleAd", e.target.checked)}
-          />
-          <span style={{ marginLeft: 8 }}>
-            {placement.useGoogleAd ? "Google AdSense" : "Custom Ad"}
-          </span>
-
-          {placement.useGoogleAd ? (
-            <>
-              <Input
-                type="text"
-                title="Ad Slot"
-                id="Ad_Slot"
-                placeholder="Enter Ad Slot ID"
-                value={placement?.googleAdSense?.slot || ""}
-                onChange={(e: any) => handleGoogleAdChange(device, pos, "slot", e.target.value)}
-              />
-              <Input
-                type="number"
-                title="Width"
-                id="Width"
-                placeholder="Enter width (px)"
-                value={placement?.googleAdSense?.width || ""}
-                onChange={(e: any) => handleGoogleAdChange(device, pos, "width", e.target.value)}
-              />
-              <Input
-                type="number"
-                title="Height"
-                id="Height"
-                placeholder="Enter height (px)"
-                value={placement?.googleAdSense?.height || ""}
-                onChange={(e: any) => handleGoogleAdChange(device, pos, "height", e.target.value)}
-              />
-            </>
-          ) : (
-            <>
               <div className="upload-logo-file">
                 <div className="uploadimage">
                   <div className="upload-logo">
@@ -299,8 +262,6 @@ function Settings() {
                 value={placement.link || ""}
                 onChange={(e: any) => handlePlacementChange(device, pos, "link", e.target.value)}
               />
-            </>
-          )}
         </div>
       );
     });
@@ -325,9 +286,9 @@ function Settings() {
                     >
                       <Tab label="Site Logo" value="1" />
                       <Tab label="Footer Content" value="2" />
-                      {/* <Tab label="Desktop Ads" value="3" />
+                       <Tab label="Desktop Ads" value="3" />
                       <Tab label="Mobile Ads" value="4" />
-                      */ }
+                      
                     </TabList>
                   </Box>
 
@@ -382,16 +343,6 @@ function Settings() {
                         value={copyright2}
                         onChange={(e: any) => setCopyright2(e.target.value)}
                         required
-                      />
-                      <Input
-                        type="text"
-                        title="Google Ads Client Id"
-                        id="googleAdClient"
-                        placeholder="Enter Google Ads Client Id"
-                        name="googleAdClient"
-                        value={googleAdClient}
-                        onChange={(e: any) => setGoogleAdClient(e.target.value)}
-                        
                       />
                       <button type="submit" className="custom-button submit-btn">
                         Save

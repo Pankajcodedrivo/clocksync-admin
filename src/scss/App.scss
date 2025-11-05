@@ -871,7 +871,7 @@ table.featured_Profile_table {
   width: 20px;
   height: 20px;
 }
-.searchwrap input[type="text"] {
+.searchwrap input[type="text"],.searchwrap select {
   background: var(--clr-secondary);
   color: #fff;
   border-color: var(--clr-secondary)!important;
