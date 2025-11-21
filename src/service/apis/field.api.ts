@@ -36,3 +36,8 @@ export const updateUniversalClock = catchAsync(async (values, uid) => {
   const data = await httpsCall.patch(`/admin/field/update-universal-clock/${uid}`, values);
   return data;
 });
+
+export const updateFieldStatus = catchAsync(async(id,values)=>{
+  const data = await httpsCall.patch(`/admin/field/update-status/${id}`,values);
+  return data;
+})

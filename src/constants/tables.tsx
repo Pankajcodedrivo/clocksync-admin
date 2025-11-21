@@ -6,7 +6,6 @@ export const adminUsersHeader = [
   "Profile Image",
   "Name",
   "Email",
-  "Role",
   "CreatedBy",
   "Actions",
 ];
@@ -58,6 +57,12 @@ export const adminFieldsHeader = (
     
     });
   }
+    columns.splice(2, 0, {
+      key: "status",
+      label: "Status",
+      render: (v: any) => v==="approve"?"Approved":v==="pending"?"Pending":"Rejected",
+    });
+  
 
   return columns;
 };

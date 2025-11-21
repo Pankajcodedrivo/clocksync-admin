@@ -124,7 +124,7 @@ const UpdateGame = () => {
       }
     };
     fetchDropdowns();
-    fetchEvent();
+    if(user?.role === "event-director") fetchEvent();
   }, []);
 
   const handleImageChange = (e: any, field: "homeTeamLogo" | "awayTeamLogo") => {

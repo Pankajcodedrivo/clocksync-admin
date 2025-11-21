@@ -106,7 +106,6 @@ const handleFileChange = (e:any) => {
       toast.error("Please select a file first!");
       return;
     }
-
     const formData = new FormData();
     // Get the user's current timezone
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -134,8 +133,7 @@ const fetchData = async (page = currentPage, term = searchTerm, eventId = select
   try {
     setLoading(true);
     setAddClass("add_blur");
-
-     const searchParams: any = {};
+    const searchParams: any = {};
     if (term) searchParams.search = term;
     if (user?.role === "event-director" && eventId) searchParams.eventId = eventId; // filter by event only for admin
 
@@ -174,11 +172,12 @@ const handleEventChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   setCurrentPage(1);
   fetchData(1, searchTerm, eventId); // reload list with selected event
 };
-
+ 
 // 🔹 Use in useEffect
 useEffect(() => {
   fetchData(currentPage, searchTerm);
-  fetchEvent();
+  if (user?.role === "event-director") fetchEvent();
+ 
 }, [currentPage, searchTerm, selectedEvent]);
 
   // 🔹 Handle search
@@ -193,7 +192,6 @@ useEffect(() => {
     const end = new Date(game.endDateTime);     // UTC → local
 
     return start.getTime() <= now.getTime() &&
-          now.getTime() <= end.getTime() &&
           game.endGame === false;
   };
   // 🔹 Clear search
@@ -369,6 +367,7 @@ useEffect(() => {
                           onClick={(e) => {
                             e.preventDefault(); // prevent default navigation
                             const active = isGameActive(row);
+                            
                             if (!active) {
                               if(!row.endGame){
                                 toast.error(

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {  complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import { deleteField, fieldList, updateUniversalClock } from "../../service/apis/field.api";
+import { faEye, faPencilAlt, faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
+import { deleteField, fieldList, updateUniversalClock, updateFieldStatus } from "../../service/apis/field.api";
 import toast from "react-hot-toast";
 import { adminFieldsHeader } from "../../constants/tables";
 import CommonTable from "../../components/tables/customTable/CommonTable";
@@ -101,6 +101,19 @@ useEffect(() => {
     }
   };
 
+  const fieldStatusUpdate= async(id:any,status:any)=>{
+    try {
+      const response = await updateFieldStatus(id,{status});
+      toast.success(response?.message);
+        // refresh list after delete
+      await fetchData(currentPage, searchTerm);
+      
+    } catch (error:any) {
+      toast.error(error.message);
+      console.error("Error deleting field:", error);
+    }
+  }
+
   return (
     <div style={{ position: "relative" }} className="dsp">
       <div
@@ -167,7 +180,7 @@ useEffect(() => {
           ) : (
             <CommonTable
               title="Fields"
-              columns={adminFieldsHeader(handleToggleClock,user.role)}
+              columns={adminFieldsHeader(handleToggleClock,user?.role)}
               bodyData={sortOrderData}
               dataCurrentPage={currentPage}
               changePage={handlePageChange}
@@ -176,15 +189,26 @@ useEffect(() => {
               handleDelete={handleDelete}
               renderActions={(row: any) => (
                 <>
-                  <p
-                    
-                  >
+                  {(user && user.role==='admin' && row.status==='pending')?
+                    <p onClick={()=>fieldStatusUpdate(row._id,'approve')} className="edit">
+                      <FontAwesomeIcon icon={faCheck} className="icon-themes" />
+                    </p>
+                   :null }
+                   {(user && user.role==='admin' && row.status==='pending')?
+                    <p onClick={()=>fieldStatusUpdate(row._id,'reject')} className="edit">
+                      <FontAwesomeIcon icon={faClose} className="icon-themes" />
+                    </p>
+                    :null }
+                 
+                  <p>
                      <Link to={`/field/update/${row._id}`}>
-                                              <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
-                                            </Link>
+                        <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
+                      </Link>
                   </p>
+                  {row.status==='approve'?
                   <p onClick={() => { setQRShowModal(true); setSelectedData(row)}}><FontAwesomeIcon icon={faEye} className="icon-themes" /></p>
-                  <p  data-title="delete" data-id={row._id}><img src={del} alt='Delete' /></p>
+                  :null}
+                  <p data-title="delete" data-id={row._id}><img src={del} alt='Delete' /></p>
                 </>
               )}
             />

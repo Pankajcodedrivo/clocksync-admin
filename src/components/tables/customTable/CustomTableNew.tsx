@@ -377,13 +377,6 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         <TableCell align='left'>
                          {row.role?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) ?? ''}
                         </TableCell>
-                        {( user?.role !== 'admin')?null:
-                          <TableCell align='left'>
-                             {row?.createdBy?.length
-                                ? row.createdBy.map((d) => d.fullName).join(', ')
-                                : 'Admin'}
-                          </TableCell>
-                        }
                         <TableCell align='left'>
                           <div className={dataTable.actionwrap}>
                             <Link to={`/admin/users/update-user/${row.id}`}state={{ fromPage: currentPage }}>
