@@ -181,44 +181,48 @@ const formatDateForInput = (dateString: string) => {
             </div>
 
             {/* Start Date */}
-            <div className={form.profileformcol}>
-              <div className="formgrp">
-                <Input
-                  type="date"
-                  title="Start Date"
-                  id="startDate"
-                  name="startDate"
-                  onChange={addEventFormik.handleChange}
-                  value={addEventFormik.values.startDate}
-                  required
-                  errorMsg={
-                    addEventFormik.touched.startDate && addEventFormik.errors.startDate
-                      ? addEventFormik.errors.startDate
-                      : ""
-                  }
-                />
-              </div>
-            </div>
+<div className={form.profileformcol}>
+  <div className="formgrp">
+    <Input
+      type="date"
+      title="Start Date"
+      id="startDate"
+      name="startDate"
+      min={new Date().toISOString().split("T")[0]}   // disable past dates
+      onChange={addEventFormik.handleChange}
+      value={addEventFormik.values.startDate}
+      required
+      errorMsg={
+        addEventFormik.touched.startDate && addEventFormik.errors.startDate
+          ? addEventFormik.errors.startDate
+          : ""
+      }
+    />
+  </div>
+</div>
 
-            {/* End Date */}
-            <div className={form.profileformcol}>
-              <div className="formgrp">
-                <Input
-                  type="date"
-                  title="End Date"
-                  id="endDate"
-                  name="endDate"
-                  onChange={addEventFormik.handleChange}
-                  value={addEventFormik.values.endDate}
-                  required
-                  errorMsg={
-                    addEventFormik.touched.endDate && addEventFormik.errors.endDate
-                      ? addEventFormik.errors.endDate
-                      : ""
-                  }
-                />
-              </div>
-            </div>
+{/* End Date */}
+<div className={form.profileformcol}>
+  <div className="formgrp">
+    <Input
+      type="date"
+      title="End Date"
+      id="endDate"
+      name="endDate"
+      min={addEventFormik.values.startDate || new Date().toISOString().split("T")[0]} 
+      // disable before start date OR past dates
+      onChange={addEventFormik.handleChange}
+      value={addEventFormik.values.endDate}
+      required
+      errorMsg={
+        addEventFormik.touched.endDate && addEventFormik.errors.endDate
+          ? addEventFormik.errors.endDate
+          : ""
+      }
+    />
+  </div>
+</div>
+
           </div>
 
           {loading ? (

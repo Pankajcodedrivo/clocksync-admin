@@ -83,7 +83,7 @@ export const getAdminGamesHeader = (role: any) => {
     },
   ];
 
-  if (role !== "scorekeeper") {
+  if (role === "event-director") {
     baseHeaders.push({
       key: "assignedUser.fullName",
       label: "ScoreKeeper",
@@ -108,7 +108,7 @@ export const getAdminEventsHeader = (role: any) => {
     {
       key: "startDate",
       label: "Start Date",
-      render: (v:any) => new Date(v).toLocaleString(),
+      render: (v:any) => new Date(v).toLocaleDateString(),
     },
   ];
 
@@ -124,12 +124,12 @@ export const getAdminEventsHeader = (role: any) => {
   return baseHeaders;
 };
 
-
 export const pagesHeader = {
   title: "Title",
   createdAt: "Date",
   actions: "Actions",
 };
+
 export const teamsHeader = [
   "Logo",
   "Team Name",
@@ -137,5 +137,3 @@ export const teamsHeader = [
   "Status",
   "Actions",
 ];
-export const MatchHeader = ["Team", "Zone", "Round", "Scores", "Actions"];
-export const RoundSchuduleHeader = ["Round", "Round Schedule Date","Actions"];

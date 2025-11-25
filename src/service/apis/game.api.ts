@@ -43,3 +43,13 @@ export const importGame = catchAsync(async (values) => {
   const data = await httpsCall.post(`/admin/game/import`, values);
   return data;
 });
+export const downloadGameStatistics = catchAsync(async (gameId: string) => {
+  const response = await httpsCall.get(
+    `/admin/game/download/statistics/${gameId}`,
+    {
+      responseType: "blob", // IMPORTANT: Excel file
+    }
+  );
+
+  return response;
+})

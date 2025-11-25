@@ -25,6 +25,8 @@ interface Props {
   width?:string,
   labelAfter?:string
   checked?: boolean; 
+  min?:any;
+  max?:any;
 }
 
 interface IImperativeHandler {
@@ -81,6 +83,7 @@ const Input = React.forwardRef<IImperativeHandler, Props>((props, ref) => {
           readOnly={props.readonly || false}
           disabled={props.disabled || false}
            checked={props.checked} 
+           min={props.min}
           onChange={props.onChange}
           onBlur={props.onChange}
           autoComplete={props.autocomplete || "off"}

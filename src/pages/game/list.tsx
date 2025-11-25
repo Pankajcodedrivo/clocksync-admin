@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencilAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
-import {  deleteGame, gameList, importGame } from "../../service/apis/game.api";
+import { faDownload, faEye, faPencilAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {  deleteGame, downloadGameStatistics, gameList, importGame } from "../../service/apis/game.api";
 import toast from "react-hot-toast";
 import { getAdminGamesHeader } from "../../constants/tables";
 import CommonTable from "../../components/tables/customTable/CommonTable";
@@ -343,60 +343,95 @@ useEffect(() => {
               deleteMessage="Are you sure to delete this game?"
               handleDelete={handleDelete}
               renderActions={(row: any) => {
-                if (user?.role !== "scorekeeper") {    
-                  return (
-                    <>
-                      <p>
-                        <Link to={`/games/update/${row._id}`}>
-                          <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
-                        </Link>
-                      </p>
-                      <p data-title="delete" data-id={row._id}>
-                        <span>
-                          <img src={del} alt="Delete" />
-                        </span>
-                      </p>
-                    </>
-                  );
-                } else {
-                  // 👇 non-admin (scorekeeper view)
+                  // 🔹 SCOREKEEPER VIEW
+                if (user?.role === "scorekeeper") {
                   return (
                     <p>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault(); // prevent default navigation
-                            const active = isGameActive(row);
-                            
-                            if (!active) {
-                              if(!row.endGame){
-                                toast.error(
-                                  `This game will start on ${new Date(row.startDateTime).toLocaleDateString(undefined, {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  })} at ${new Date(row.startDateTime).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}`
-                                );
-                                return;
-                              }else{
-                                toast.error("This game is ended.");
-                                return;
-                              }
-                              
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const active = isGameActive(row);
+
+                          if (!active) {
+                            if (!row.endGame) {
+                              toast.error(
+                                `This game will start on ${new Date(row.startDateTime).toLocaleDateString(undefined, {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })} at ${new Date(row.startDateTime).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}`
+                              );
+                            } else {
+                              toast.error("This game has ended.");
                             }
-                            handleOpenScoreKeeper(row._id);
-                          }}
-                          className="action-anch"
-                        >
-                          <FontAwesomeIcon icon={faEye} className="icon-themes" />
-                        </a>
+                            return;
+                          }
+
+                          handleOpenScoreKeeper(row._id);
+                        }}
+                        className="action-anch"
+                      >
+                        <FontAwesomeIcon icon={faEye} className="icon-themes" />
+                      </a>
                     </p>
                   );
                 }
+
+                // 🔹 ADMIN + EVENT DIRECTOR VIEW
+                return (
+                  <>
+                    {/* Edit */}
+                    <p>
+                      <Link to={`/games/update/${row._id}`}>
+                        <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
+                      </Link>
+                    </p>
+
+                    {/* Delete */}
+                    <p data-title="delete" data-id={row._id}>
+                      <span>
+                        <img src={del} alt="Delete" />
+                      </span>
+                    </p>
+
+                    {/* Excel Download (Admins only) */}
+                    {user?.role === "admin" && (
+                      <p>
+                        <a
+                          href="#"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            try {
+                              const file = await downloadGameStatistics(row._id);
+
+                              const blob = new Blob([file], {
+                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              });
+
+                              const url = window.URL.createObjectURL(blob);
+                              const link = document.createElement("a");
+                              link.href = url;
+                              link.download = `game_statistics_${row._id}.xlsx`;
+                              link.click();
+                              window.URL.revokeObjectURL(url);
+                            } catch (error) {
+                              toast.error("Failed to download Excel file");
+                            }
+                          }}
+                          className="action-anch"
+                        >
+                          <FontAwesomeIcon icon={faDownload} className="icon-themes" />
+                        </a>
+                      </p>
+                    )}
+                  </>
+                );
               }}
+
             />
           )}
         </div>

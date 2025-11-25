@@ -17,12 +17,14 @@ interface FormValues {
 export const useAddEvent = (id?: string) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const localToUTCString = (localDateTime:any) => {
-  // localDateTime is a string like "2025-09-20T14:33"
-  const date = new Date(localDateTime); // JS treats it as local
-  return date.toISOString(); // Converts to UTC automatically
-};
+    // localDateTime is a string like "2025-09-20T14:33"
+    const date = new Date(localDateTime); // JS treats it as local
+    return date.toISOString(); // Converts to UTC automatically
+  };
   // ✅ Validation schema for event form
 const validationSchema = yup.object({
   eventName: yup.string().required("Event name is required"),
@@ -35,7 +37,7 @@ const validationSchema = yup.object({
       originalValue === "" || originalValue === undefined ? null : value
     )
     .typeError("Invalid start date")
-    .min(new Date(), "Start date must be in the future")
+    .min(today, "Start date must be in the future")
     .required("Start date is required"),
 
   endDate: yup

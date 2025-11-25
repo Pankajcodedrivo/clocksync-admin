@@ -62,6 +62,7 @@ const UpdateGame = () => {
     const date = utcToLocalString(dateString);
     return date; // "YYYY-MM-DDTHH:mm"
   };
+  
 
   // Fetch game details if update
   useEffect(() => {
@@ -141,6 +142,55 @@ const UpdateGame = () => {
       reader.readAsDataURL(file);
     }
   };
+
+    // Convert date → valid datetime-local format
+  const formatDateTime = (date: Date) => {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return (
+      date.getFullYear() +
+      "-" +
+      pad(date.getMonth() + 1) +
+      "-" +
+      pad(date.getDate()) +
+      "T" +
+      pad(date.getHours()) +
+      ":" +
+      pad(date.getMinutes())
+    );
+  };
+
+  const toLocalDateTime = (value: string) => {
+    const date = new Date(value);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return formatDateTime(date);
+  };
+
+  const selectedEvent = eventData.find(
+    (ev) => ev._id === addGameFormik.values.eventId
+  );
+
+  const now = new Date();
+  now.setSeconds(0, 0);
+
+  let minDateTime = formatDateTime(now);
+  let maxDateTime: string | undefined = undefined;
+
+  if (selectedEvent) {
+    const eventStart = new Date(selectedEvent.startDate);
+    const eventEnd = new Date(selectedEvent.endDate);
+
+    // If event.startDate is in the past → use today
+    if (eventStart < now) {
+      minDateTime = formatDateTime(now);
+    } else {
+      minDateTime = toLocalDateTime(selectedEvent.startDate);
+    }
+
+    // optional: if event.endDate is already past, skip max
+    if (eventEnd > now) {
+      maxDateTime = toLocalDateTime(selectedEvent.endDate);
+    }
+  }
 
   return (
     <div id="editgame" className={`${form.myprofilewrapper} dashboard-card-global`}>
@@ -324,6 +374,8 @@ const UpdateGame = () => {
                   title="Start Date"
                   id="startDateTime"
                   name="startDateTime"
+                  min={minDateTime}   // ✔ Dynamic minimum
+                  max={maxDateTime}  
                   onChange={addGameFormik.handleChange}
                   value={addGameFormik.values.startDateTime}
                   required
