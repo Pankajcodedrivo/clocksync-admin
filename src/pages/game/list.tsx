@@ -29,6 +29,7 @@ const Games = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [totalResult, setTotalResult] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [importLoading, setImportLoading] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
   const rowsPerPage = 10;
@@ -106,6 +107,7 @@ const handleFileChange = (e:any) => {
       toast.error("Please select a file first!");
       return;
     }
+    setImportLoading(true);
     const formData = new FormData();
     // Get the user's current timezone
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -121,7 +123,9 @@ const handleFileChange = (e:any) => {
       setPreviewType("document");
       setFileName("");
       fetchData();
+      setImportLoading(false);
     } catch (err) {
+      setImportLoading(false);
       console.error(err);
       toast.error("Error uploading file");
     }
@@ -329,6 +333,7 @@ useEffect(() => {
         </div>
 
         {/* Table */}
+        
         <div className="usertabledata">
           {loading ? (
             <LoadingSpinner />
@@ -441,7 +446,10 @@ useEffect(() => {
           title="Upload File"
           message={
             <>
+              {importLoading?
+              <LoadingSpinner /> :null}
               <div style={{ textAlign: "center" }} className="settings">
+                 
                 <div className="upload-logo-file">
                 <div className="uploadimage">
                   <div className="upload-logo">

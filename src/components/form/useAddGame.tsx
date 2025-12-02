@@ -88,7 +88,9 @@ export const useAddGame = (id?: string,user?:any) => {
       formData.append("fieldId", values.fieldId);
       formData.append("assignUserId", values.assignUserId);
       formData.append("startDateTime", localToUTCString(values.startDateTime));
-      formData.append("eventId", values.eventId);
+      if(values.eventId){
+        formData.append("eventId", values.eventId);
+      }
       //formData.append("endDateTime", localToUTCString(values.endDateTime));
       //formData.append("userTimezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 

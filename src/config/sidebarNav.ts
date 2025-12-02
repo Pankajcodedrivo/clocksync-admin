@@ -49,13 +49,6 @@ const sidebarNav = [
   //   text: "Pages",
   //   role: ["admin"],
   // },
-  {
-    link: "/admin/subcribescorekeeper",
-    section: "subcribescorekeeper",
-    icon: "ph:users-bold", //width:"20"
-    text: "Subcribe Scorekeeper",
-    role: ["admin","event-director"],
-  },
    {
     link: "/universal-clock",
     section: "universal-clock",

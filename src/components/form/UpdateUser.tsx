@@ -214,25 +214,6 @@ const UpdateUser = () => {
                 </select>
               </div>
             </div>
-            {(addUserFormik.values.role ==='scorekeeper')?
-            <div>
-              <div className='checkbox full-width'>
-                <Input 
-                  type={"checkbox"}
-                  width="full"
-                  id='isSubscribedByAdmin'
-                  name='isSubscribedByAdmin'
-                  labelAfter="Subscribe By Admin"
-                  onChange={addUserFormik.handleChange}
-                   checked={addUserFormik.values.isSubscribedByAdmin}
-                  onBlur={addUserFormik.handleBlur}
-                   />
-                
-              </div>
-            </div>
-            :null}
-            
-            
           </div>
 
           {loading ? (
