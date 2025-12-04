@@ -50,7 +50,7 @@ const fetchData = async (page = currentPage, term = searchTerm) => {
 
     if (response) {
       setSortOrderData(response.fields);
-      setTotalResult(response.totalResults);
+      setTotalResult(response.total);
     }
   } catch (err:any) {
     toast.error(err.message);
@@ -189,12 +189,12 @@ useEffect(() => {
               handleDelete={handleDelete}
               renderActions={(row: any) => (
                 <>
-                  {(user && user.role==='admin' && row.status==='pending')?
+                  {(user && user.role==='admin' && (row.status==='pending' || !row.status))?
                     <p onClick={()=>fieldStatusUpdate(row._id,'approve')} className="edit">
                       <FontAwesomeIcon icon={faCheck} className="icon-themes" />
                     </p>
                    :null }
-                   {(user && user.role==='admin' && row.status==='pending')?
+                   {(user && user.role==='admin' && row.status==='pending' || !row.status)?
                     <p onClick={()=>fieldStatusUpdate(row._id,'reject')} className="edit">
                       <FontAwesomeIcon icon={faClose} className="icon-themes" />
                     </p>

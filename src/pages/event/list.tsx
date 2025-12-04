@@ -39,7 +39,7 @@ const fetchData = async (page = currentPage, term = searchTerm) => {
 
     if (response) {
       setSortOrderData(response.events);
-      setTotalResult(response.totalResults);
+      setTotalResult(response.total);
     }
   } catch (err:any) {
     toast.error(err.message);

@@ -145,7 +145,7 @@ const fetchData = async (page = currentPage, term = searchTerm, eventId = select
 
     if (response) {
       setSortOrderData(response.games);
-      setTotalResult(response.totalResults);
+      setTotalResult(response.total);
     }
   } catch (err:any) {
     toast.error(err.message);
