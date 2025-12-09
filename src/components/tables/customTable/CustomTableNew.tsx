@@ -260,7 +260,7 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         {user?.role==='admin'?
         <div className="tab-list">
             <button className={`table-btn ${role === 'scorekeeper' ? 'active' : ''}`} onClick={() => handleNavigation('/admin/users/scorekeeper')}>
-              ScoreKepper
+              ScoreKeeper
             </button>
             <button className={`table-btn ${role === 'event-director' ? 'active' : ''}`} onClick={() => handleNavigation('/admin/users/event-director')}>
              Event Director

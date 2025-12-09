@@ -12,6 +12,15 @@ import Input from "../UI/input/Input";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
+const adDimensions: Record<string, string> = {
+  "ads.desktop.top": "728 × 90 px",
+  "ads.desktop.left": "970 × 90 px",
+  "ads.desktop.right": "970 × 90 px",
+
+  "ads.mobile.top": "300 × 100 px",
+  "ads.mobile.middle": "300 × 250 px",
+  "ads.mobile.bottom": "350 × 50 px",
+};
 /**
  * UI for adding/updating a Field
  *
@@ -116,7 +125,6 @@ const UpdateField: React.FC = () => {
               </div>
             </div>
           </div>
-
           {/* Ads sections */}
           <FormikProvider value={formik}>
             <div className="ads-sections">
@@ -342,6 +350,9 @@ const AdSection: React.FC<AdSectionProps> = ({
   {/* Upload + Preview */}
    <div className={form.profileformcol}>
   <div className="upload-logo-file formgrp">
+     <div className="required-dimensions">
+        Required: {adDimensions[namePrefix]}
+      </div>
     <div className="uploadimage">
       <div className="upload-logo">
         <img

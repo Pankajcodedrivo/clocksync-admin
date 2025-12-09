@@ -50,16 +50,13 @@ const Games = () => {
   try {
     setLoading(true);
     setAddClass("add_blur");
-
     // 2️⃣ Await your API call
     const data = await getScoreKeeperCode(gameId);
-
     // 3️⃣ Update the new window's location
     const url = `${environment.forntend_url}/score-keeper?code=${data.code}`;
     newWindow.location.href = url;
   } catch (err: any) {
     toast.error("Error opening ScoreKeeper:", err);
-
     // Close the blank window if something failed
     newWindow.close();
   } finally {
@@ -71,7 +68,6 @@ const Games = () => {
 const handleFileChange = (e:any) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const allowedTypes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "application/vnd.ms-excel",
@@ -87,7 +83,6 @@ const handleFileChange = (e:any) => {
       toast.error("File size exceeds 5 MB limit!");
       return;
     }
-
     // 🔍 Detect file type for icon
     const ext = file.name.split(".").pop().toLowerCase();
     if (["xlsx", "xls"].includes(ext)) {
@@ -97,7 +92,6 @@ const handleFileChange = (e:any) => {
     } else {
       setPreviewType("document");
     }
-
     setUploadFile(file);
     setFileName(file.name);
   };
@@ -162,7 +156,10 @@ const fetchEvent = async () => {
 
     if (response) {
       setEventData(response.events);
-      if(response.events.length>0 && response?.events[0]?._id) setSelectedEvent(response?.events[0]?._id)
+      if(response.events.length>0 && response?.events[0]?._id){
+        setSelectedEvent(response?.events[0]?._id);
+        fetchData(currentPage, searchTerm,response?.events[0]?._id);
+      } 
     }
   } catch (err:any) {
     toast.error(err.message);
@@ -174,15 +171,17 @@ const handleEventChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const eventId = e.target.value;
   setSelectedEvent(eventId);
   setCurrentPage(1);
-  fetchData(1, searchTerm, eventId); // reload list with selected event
+  fetchData(1, '', eventId); // reload list with selected event
 };
  
 // 🔹 Use in useEffect
 useEffect(() => {
   fetchData(currentPage, searchTerm);
-  if (user?.role === "event-director") fetchEvent();
- 
-}, [currentPage, searchTerm, selectedEvent]);
+  console.log(eventData);
+  if (user?.role === "event-director" && eventData.length===0) {
+    fetchEvent();
+  }
+}, [currentPage, searchTerm]);
 
   // 🔹 Handle search
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

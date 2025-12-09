@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { complex } from "../../interfaces/Itable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-import {  deleteEvent, eventList } from "../../service/apis/event.api";
+import { faDownload, faEye, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import {  deleteEvent, downloadEventData, eventList } from "../../service/apis/event.api";
 import toast from "react-hot-toast";
 import { getAdminEventsHeader } from "../../constants/tables";
 import CommonTable from "../../components/tables/customTable/CommonTable";
@@ -174,6 +174,33 @@ useEffect(() => {
                         <Link to={`/event/update/${row._id}`}>
                           <FontAwesomeIcon icon={faPencilAlt} className="icon-themes" />
                         </Link>
+                      </p>
+                      <p>
+                        <a
+                          href="#"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            try {
+                              const file = await downloadEventData(row._id);
+
+                              const blob = new Blob([file], {
+                                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                              });
+
+                              const url = window.URL.createObjectURL(blob);
+                              const link = document.createElement("a");
+                              link.href = url;
+                              link.download = `game_statistics_${row._id}.xlsx`;
+                              link.click();
+                              window.URL.revokeObjectURL(url);
+                            } catch (error) {
+                              toast.error("Failed to download Excel file");
+                            }
+                          }}
+                          className="action-anch"
+                        >
+                          <FontAwesomeIcon icon={faDownload} className="icon-themes" />
+                        </a>
                       </p>
                       <p data-title="delete" data-id={row._id}>
                         <span>

@@ -34,3 +34,13 @@ export const getUpcomingEvent = catchAsync(async () => {
   const data = await httpsCall.get(`/admin/event/list-current-event`);
   return data;
 });
+export const downloadEventData = catchAsync(async (eventId: string) => {
+  const response = await httpsCall.get(
+    `/admin/event/export/${eventId}`,
+    {
+      responseType: "blob", // IMPORTANT: Excel file
+    }
+  );
+
+  return response;
+})

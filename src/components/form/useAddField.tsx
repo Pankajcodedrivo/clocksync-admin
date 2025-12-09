@@ -1,4 +1,3 @@
-// useAddField.ts
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,31 +6,33 @@ import { useNavigate } from "react-router-dom";
 import { addField, updateField, fieldDetails } from "../../service/apis/field.api";
 
 /**
- * Hook to create/update Field objects with nested ads and image uploads.
- *
- * Formik values structure:
- * {
- *   name: string,
- *   unviseralClock: boolean,
- *   ads: {
- *     desktop: { top: Array<Ad>, left: Array<Ad>, right: Array<Ad> },
- *     mobile: { top: Array<Ad>, middle: Array<Ad>, bottom: Array<Ad> }
- *   }
- * }
- *
- * Each Ad: { imageFile?: File | null, imageUrl?: string, link?: string }
- *
- * Submission strategy:
- * - Build an `adsPayload` where each ad's `imageUrl` is either:
- *    - existing URL (string) if no new file, OR
- *    - a unique file key (e.g. 'file_desktop_top_0') if a new File is attached.
- * - Append JSON.stringify(adsPayload) to FormData under key 'ads'
- * - Append each File to FormData with its unique file key
- *
- * Backend must accept a multipart/form-data request and:
- * - parse the 'ads' JSON
- * - locate file keys and replace placeholders with uploaded file URLs after storing them
+ * IMAGE VALIDATION HELPERS
+ * -------------------------------------
  */
+
+// Validate image file size + dimensions
+const validateImage = (requiredWidth: number, requiredHeight: number) =>
+  yup
+    .mixed()
+    .test(
+      "file-validation",
+      `Image must be ${requiredWidth}×${requiredHeight}px and not exceed 150KB`,
+      (file: any) => {
+        if (!file || !(file instanceof File)) return true; // skip if no new upload
+
+        // file size
+        if (file.size > 150 * 1024) return false;
+
+        // validate dimensions asynchronously
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () =>
+            resolve(img.width === requiredWidth && img.height === requiredHeight);
+          img.onerror = () => resolve(false);
+          img.src = URL.createObjectURL(file);
+        });
+      }
+    );
 
 type AdValue = {
   imageFile?: File | null;
@@ -42,7 +43,7 @@ type AdValue = {
 type FormValues = {
   name: string;
   unviseralClock: boolean;
-  adsTime:string;
+  adsTime: string | number;
   ads: {
     desktop: { top: AdValue[]; left: AdValue[]; right: AdValue[] };
     mobile: { top: AdValue[]; middle: AdValue[]; bottom: AdValue[] };
@@ -55,35 +56,76 @@ const useAddField = (id?: string) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // Validation - name required, basic link URL checks optional
+  // UPDATED VALIDATION SCHEMA ----------------------------------------------------
   const validationSchema = yup.object().shape({
     name: yup.string().required("Field name is required"),
     unviseralClock: yup.boolean().required(),
-    // ads are optional arrays; we won't require image on every ad, but you can tighten if needed.
+    adsTime: yup
+      .number()
+      .min(1, "Ads time must be at least 1 second")
+      .required("Ads time required"),
+
+    ads: yup.object({
+      mobile: yup.object({
+        top: yup.array().of(
+          yup.object({
+            imageFile: validateImage(300, 100),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+        middle: yup.array().of(
+          yup.object({
+            imageFile: validateImage(300, 250),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+        bottom: yup.array().of(
+          yup.object({
+            imageFile: validateImage(350, 50),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+      }),
+
+      desktop: yup.object({
+        top: yup.array().of(
+          yup.object({
+            imageFile: validateImage(728, 90),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+        left: yup.array().of(
+          yup.object({
+            imageFile: validateImage(970, 90),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+        right: yup.array().of(
+          yup.object({
+            imageFile: validateImage(970, 90),
+            link: yup.string().url("Invalid link").nullable(),
+          })
+        ),
+      }),
+    }),
   });
+
+  // ------------------------------------------------------------------------------
 
   const initialValues: FormValues = {
     name: "",
     unviseralClock: true,
-    adsTime:30,
+    adsTime: 30,
     ads: {
-      desktop: {
-        top: [ /* default empty */ ],
-        left: [],
-        right: [],
-      },
-      mobile: {
-        top: [],
-        middle: [],
-        bottom: [],
-      },
+      desktop: { top: [], left: [], right: [] },
+      mobile: { top: [], middle: [], bottom: [] },
     },
   };
 
   const formik = useFormik<FormValues>({
     initialValues,
     validationSchema,
-    enableReinitialize: true, // we'll set values after fetching for update
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setLoading(true);
       try {
@@ -114,21 +156,23 @@ const useAddField = (id?: string) => {
     },
   });
 
-  // Fetch existing field if editing
+  // FETCH FIELD IF EDITING -------------------------------------------------------
+
   useEffect(() => {
     if (!id) return;
     let mounted = true;
+
     const fetchField = async () => {
       setLoading(true);
       try {
         const res = await fieldDetails(id);
         if (res && res.field && mounted) {
           const f = res.field;
-          // Map backend field structure to Formik initial values.
+
           const mapped: FormValues = {
             name: f.name || "",
             unviseralClock: typeof f.unviseralClock === "boolean" ? f.unviseralClock : true,
-            adsTime:f.adsTime||30,
+            adsTime: f.adsTime || 30,
             ads: {
               desktop: {
                 top: (f.ads?.desktop?.top || []).map((a: any) => ({
@@ -166,6 +210,7 @@ const useAddField = (id?: string) => {
               },
             },
           };
+
           formik.setValues(mapped);
         }
       } catch (err) {
@@ -175,6 +220,7 @@ const useAddField = (id?: string) => {
         setLoading(false);
       }
     };
+
     fetchField();
     return () => {
       mounted = false;
@@ -186,16 +232,10 @@ const useAddField = (id?: string) => {
 
 /**
  * Build multipart/form-data from Formik values.
- *
- * Strategy:
- * - For each ad with a new File (imageFile), append file to FormData with a unique key.
- * - Build a JSON-friendly ads object where each ad.imageUrl is:
- *     - the original URL (if no new file), or
- *     - the fileKey placeholder (if a file exists). Backend should replace placeholder with actual stored URL.
  */
 function buildFormDataFromValues(values: FormValues) {
   const formData = new FormData();
-  
+
   formData.append("name", values.name);
   formData.append("adsTime", values.adsTime);
   formData.append("unviseralClock", String(values.unviseralClock));
@@ -205,23 +245,20 @@ function buildFormDataFromValues(values: FormValues) {
     mobile: { top: [], middle: [], bottom: [] },
   };
 
-  // Helper to process array and append files
   const processAdsArray = (
     arr: AdValue[],
     platform: "desktop" | "mobile",
-    position: "top" | "left" | "right" | "middle" | "bottom",
+    position: "top" | "left" | "right" | "middle" | "bottom"
   ) => {
     arr.forEach((ad, idx) => {
       if (ad.imageFile) {
-        // create a unique file key
         const fileKey = `file_${platform}_${position}_${idx}_${Date.now()}`;
         formData.append(fileKey, ad.imageFile);
         adsPayload[platform][position].push({
-          imageUrl: fileKey, // placeholder for backend to replace with saved URL
+          imageUrl: fileKey,
           link: ad.link || "",
         });
       } else {
-        // no new file, keep existing imageUrl (may be empty)
         adsPayload[platform][position].push({
           imageUrl: ad.imageUrl || "",
           link: ad.link || "",
@@ -239,7 +276,6 @@ function buildFormDataFromValues(values: FormValues) {
   processAdsArray(values.ads.mobile.bottom, "mobile", "bottom");
 
   formData.append("ads", JSON.stringify(adsPayload));
-
   return formData;
 }
 
