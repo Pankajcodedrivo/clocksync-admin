@@ -3,7 +3,7 @@ import { Link,useLocation, useNavigate, useParams } from "react-router-dom";
 import { Itable, complex, IUsersRoleTable } from "../../../interfaces/Itable";
 import { useTranslation } from "react-i18next";
 import noImage from "../../../assets/images/dummy.jpg";
-
+import userSwitch from "../../../assets/images/switch.png";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -24,17 +24,19 @@ import Stack from "@mui/material/Stack";
 import dataTable from "./datatable.module.scss";
 import del from "../../../assets/images/ic_outline-delete.png";
 import delt from "../../../assets/images/delete.png";
-import { userApi, deleteUser, addAmount } from "../../../service/apis/user.api";
+import { userApi, deleteUser, addAmount, switchUserAPi } from "../../../service/apis/user.api";
 
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { faCircleDollarToSlot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { setSwitchedUser, setUser } from "../../../store/auth.store";
 
 const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.authSlice.user);
   const location = useLocation();
   const { currentRole } = useParams<{ currentRole: string }>(); // ✅ proper typing
@@ -102,6 +104,41 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
     }
   };
 
+  const handleSwitchUser = async (selectedUserId:any) => {
+    // Show a confirmation popup
+    const isConfirmed = window.confirm(
+      "Are you sure you want to switch to this user?"
+    );
+    // If user clicks Cancel, stop the function
+    if (!isConfirmed) return;
+    setLoading(true);
+    try {
+      const response = await switchUserAPi(selectedUserId);
+      const currentUser = user;
+      const currentAccess = localStorage.getItem("access_token") ?? "";
+      const currentRefresh = localStorage.getItem("refresh_token") ?? "";
+      localStorage.setItem(
+        "temp_session",
+        JSON.stringify({
+          user: currentUser,
+          access: currentAccess,
+          refresh: currentRefresh,
+        })
+      );
+      dispatch(setSwitchedUser(true));
+      dispatch(setUser(response.user));
+      localStorage.setItem("access_token", response.tokens.accessToken);
+      localStorage.setItem("refresh_token", response.tokens.refreshToken);
+
+      setLoading(false);
+      navigate("/admin/dashboard");
+    } catch (err) {
+      console.error("Failed to switch user", err);
+      setLoading(false);
+    }
+  };
+
+  
   const handleDelete = async () => {
     setLoading(true);
     try {
@@ -379,6 +416,14 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         </TableCell>
                         <TableCell align='left'>
                           <div className={dataTable.actionwrap}>
+                            {
+                              (role==='event-director')?
+                              <p  className={dataTable.edit} onClick={() => handleSwitchUser(row.id)}>
+                                <img src={userSwitch} alt="Switch User"/>  
+                              </p>
+                              :null
+                            }
+                            
                             <Link to={`/admin/users/update-user/${row.id}`}state={{ fromPage: currentPage }}>
                               <p className={dataTable.edit}>
                                 <FontAwesomeIcon

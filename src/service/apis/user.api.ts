@@ -10,6 +10,13 @@ export const userApi = catchAsync(async (values: any) => {
   return data;
 });
 
+export const switchUserAPi = catchAsync(async (values) => {
+  const response = await httpsCall.get(
+    `/admin/user-management/switch-user/${values}`
+  );
+  return response;
+});
+
 export const userDetails = catchAsync(async (values) => {
   const response = await httpsCall.get(
     `/admin/user-management/edit-user/${values}`

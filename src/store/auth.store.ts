@@ -16,11 +16,13 @@ export type User = {
 export type AuthState = {
   isLoggedIn: boolean;
   user: User | null;
+  isSwitchedUser: false, 
 };
 
 const initialState: AuthState = {
   isLoggedIn: false,
   user: null,
+  isSwitchedUser: false, 
 };
 
 const authSlice = createSlice({
@@ -35,9 +37,12 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isLoggedIn = true;
     },
+    setSwitchedUser: (state, action) => {
+      state.isSwitchedUser = action.payload;
+    },
   },
   extraReducers: () => {},
 });
 
-export const { logOut, setUser } = authSlice.actions;
+export const { logOut, setUser,setSwitchedUser } = authSlice.actions;
 export default authSlice.reducer;
